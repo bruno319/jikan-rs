@@ -3,12 +3,12 @@ use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 use crate::base::MALItem;
 
-const URI: &str = "http://api.jikan.moe/v3/anime/";
+const BASE_URL: &str = "http://api.jikan.moe/v3/anime/";
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub async fn find_anime_by_id(id: &str, http_clt: &Client<HttpConnector, Body>) -> Result<Anime> {
-    let url = format!("{}{}", URI, id).parse()?;
+pub(crate) async fn find_anime_by_id(id: &str, http_clt: &Client<HttpConnector, Body>) -> Result<Anime> {
+    let url = format!("{}{}", BASE_URL, id).parse()?;
     let res = http_clt.get(url).await?;
     let body = hyper::body::aggregate(res).await?;
     let anime: Anime = serde_json::from_reader(body.reader())?;
