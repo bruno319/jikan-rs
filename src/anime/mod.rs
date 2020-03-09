@@ -2,18 +2,19 @@ use bytes::buf::BufExt as _;
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
-use crate::base::MALItem;
-use crate::character::{Character, TypeSource};
-use crate::character;
+use crate::base::{MALItem, TypeSource};
+use crate::character::{Character};
+use crate::{character, news};
 use crate::client::BASE_URL;
 use crate::anime::episodes::Episode;
+use crate::news::News;
 
 pub mod episodes;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub(crate) async fn find_anime(id: &str, http_clt: &Client<HttpConnector, Body>) -> Result<Anime> {
-    let url = format!("{}/anime/{}", BASE_URL, id).parse()?;
+pub(crate) async fn find_anime(mal_id: &str, http_clt: &Client<HttpConnector, Body>) -> Result<Anime> {
+    let url = format!("{}/anime/{}", BASE_URL, mal_id).parse()?;
     let res = http_clt.get(url).await?;
     let body = hyper::body::aggregate(res).await?;
     let mut anime: Anime = serde_json::from_reader(body.reader())?;
@@ -94,10 +95,6 @@ pub struct RelatedContent {
     pub summaries: Vec<MALItem>,
 }
 
-fn default_content() -> Vec<MALItem> {
-    Vec::with_capacity(0)
-}
-
 impl Anime {
     pub async fn get_characters(&self) -> Result<Vec<Character>> {
         character::find_characters(TypeSource::Anime(self.mal_id.to_string()), &self.client).await
@@ -106,4 +103,12 @@ impl Anime {
     pub async fn get_episodes(&self) -> Result<Vec<Episode>> {
         episodes::find_anime_episodes(&self.mal_id.to_string(), &self.client).await
     }
+
+    pub async fn get_news(&self) -> Result<Vec<News>> {
+        news::find_news(TypeSource::Anime(self.mal_id.to_string()), &self.client).await
+    }
+}
+
+fn default_content() -> Vec<MALItem> {
+    Vec::with_capacity(0)
 }

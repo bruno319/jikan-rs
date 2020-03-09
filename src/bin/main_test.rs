@@ -3,7 +3,7 @@ extern crate rand;
 
 use jikan_rs::client::JikanClient;
 use rand::Rng;
-use jikan_rs::character::TypeSource;
+use jikan_rs::base::TypeSource;
 
 #[tokio::main]
 async fn main() {
@@ -13,8 +13,8 @@ async fn main() {
     let jikancl = JikanClient::new();
 
     let anime = jikancl.find_anime("21").await.unwrap();
-    // println!("Response {:#?} \n-------------------------------------------", anime);
-    //
+    println!("Response {:#?} \n-------------------------------------------", anime);
+
     // let characters = anime.get_characters().await.unwrap();
     // println!("Response {:#?} \n-------------------------------------------", characters);
     //
@@ -23,11 +23,19 @@ async fn main() {
     //
     // let characters = jikancl.find_characters_from(TypeSource::Manga("1".to_string())).await.unwrap();
     // println!("Response {:#?} \n-------------------------------------------", characters);
-
-    let episodes = anime.get_episodes().await.unwrap();
-    println!("Response {:#?} \n-------------------------------------------", episodes);
-
-    let episodes = jikancl.find_episodes("21").await.unwrap();
-    println!("Response {:#?} \n-------------------------------------------", episodes.len());
-
+    //
+    // let episodes = anime.get_episodes().await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", episodes);
+    //
+    // let episodes = jikancl.find_episodes("21").await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", episodes.len());
+    //
+    // let news = anime.get_news().await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", news);
+    //
+    // let news = jikancl.find_news(TypeSource::Anime("1".to_string())).await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", news);
+    //
+    // let news = jikancl.find_news(TypeSource::Manga("1".to_string())).await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", news);
 }
