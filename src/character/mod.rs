@@ -1,8 +1,7 @@
 use hyper::{Client, Body};
 use hyper::client::HttpConnector;
 use bytes::buf::BufExt;
-
-const BASE_URL: &str = "http://api.jikan.moe/v3";
+use crate::client::BASE_URL;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
@@ -20,7 +19,7 @@ impl TypeSource {
     }
 }
 
-pub(crate) async fn find_characters_by_id(id: TypeSource, http_clt: &Client<HttpConnector, Body>) -> Result<Vec<Character>> {
+pub(crate) async fn find_characters(id: TypeSource, http_clt: &Client<HttpConnector, Body>) -> Result<Vec<Character>> {
     let url = format!("{}{}", BASE_URL, id.get_uri()).parse()?;
     let res = http_clt.get(url).await?;
     let body = hyper::body::aggregate(res).await?;
@@ -33,13 +32,13 @@ pub(crate) async fn find_characters_by_id(id: TypeSource, http_clt: &Client<Http
 struct Response {
     request_hash: String,
     request_cached: bool,
-    request_cache_expiry: i32,
+    request_cache_expiry: u32,
     pub characters: Vec<Character>,
 }
 
 #[derive(Deserialize, Debug)]
 pub struct Character {
-    pub mal_id: i32,
+    pub mal_id: u32,
     pub url: String,
     pub image_url: String,
     pub name: String,
@@ -50,7 +49,7 @@ pub struct Character {
 
 #[derive(Deserialize, Debug)]
 pub struct VoiceActor {
-    pub mal_id: i32,
+    pub mal_id: u32,
     pub url: String,
     pub image_url: String,
     pub name: String,

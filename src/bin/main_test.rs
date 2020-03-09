@@ -12,13 +12,22 @@ async fn main() {
 
     let jikancl = JikanClient::new();
 
-    let anime = jikancl.find_anime_by_id("1").await.unwrap();
-    println!("Response {:#?} \n-------------------------------------------", anime);
+    let anime = jikancl.find_anime("21").await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", anime);
+    //
+    // let characters = anime.get_characters().await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", characters);
+    //
+    // let characters = jikancl.find_characters_from(TypeSource::Anime(anime.mal_id.to_string())).await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", characters);
+    //
+    // let characters = jikancl.find_characters_from(TypeSource::Manga("1".to_string())).await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", characters);
 
-    let characters = jikancl.find_characters_from(TypeSource::Anime("1".to_string())).await.unwrap();
-    println!("Response {:#?} \n-------------------------------------------", characters);
+    let episodes = anime.get_episodes().await.unwrap();
+    println!("Response {:#?} \n-------------------------------------------", episodes);
 
-    let characters = jikancl.find_characters_from(TypeSource::Manga("1".to_string())).await.unwrap();
-    println!("Response {:#?} \n-------------------------------------------", characters);
+    let episodes = jikancl.find_episodes("21").await.unwrap();
+    println!("Response {:#?} \n-------------------------------------------", episodes.len());
 
 }

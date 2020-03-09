@@ -1,27 +1,36 @@
 use bytes::buf::BufExt as _;
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
-use crate::base::MALItem;
 
-const BASE_URL: &str = "http://api.jikan.moe/v3/anime/";
+use crate::base::MALItem;
+use crate::character::{Character, TypeSource};
+use crate::character;
+use crate::client::BASE_URL;
+use crate::anime::episodes::Episode;
+
+pub mod episodes;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub(crate) async fn find_anime_by_id(id: &str, http_clt: &Client<HttpConnector, Body>) -> Result<Anime> {
-    let url = format!("{}{}", BASE_URL, id).parse()?;
+pub(crate) async fn find_anime(id: &str, http_clt: &Client<HttpConnector, Body>) -> Result<Anime> {
+    let url = format!("{}/anime/{}", BASE_URL, id).parse()?;
     let res = http_clt.get(url).await?;
     let body = hyper::body::aggregate(res).await?;
-    let anime: Anime = serde_json::from_reader(body.reader())?;
+    let mut anime: Anime = serde_json::from_reader(body.reader())?;
+
+    anime.client = http_clt.clone();
 
     Ok(anime)
 }
 
 #[derive(Deserialize, Debug)]
 pub struct Anime {
+    #[serde(skip)]
+    client: Client<HttpConnector, Body>,
     pub request_hash: String,
     pub request_cached: bool,
-    pub request_cache_expiry: i32,
-    pub mal_id: i32,
+    pub request_cache_expiry: u32,
+    pub mal_id: u32,
     pub url: String,
     pub image_url: Option<String>,
     pub trailer_url: Option<String>,
@@ -32,18 +41,18 @@ pub struct Anime {
     #[serde(rename = "type")]
     pub anime_type: String,
     pub source: String,
-    pub episodes: i16,
+    pub episodes: Option<u16>,
     pub status: String,
     pub airing: bool,
     pub aired: Aired,
     pub duration: Option<String>,
     pub rating: Option<String>,
     pub score: Option<f32>,
-    pub scored_by: Option<i32>,
-    pub rank: Option<i32>,
-    pub popularity: Option<i32>,
-    pub members: Option<i32>,
-    pub favorites: Option<i32>,
+    pub scored_by: Option<u32>,
+    pub rank: Option<u32>,
+    pub popularity: Option<u32>,
+    pub members: Option<u32>,
+    pub favorites: Option<u32>,
     pub synopsis: String,
     pub background: Option<String>,
     pub premiered: Option<String>,
@@ -87,4 +96,14 @@ pub struct RelatedContent {
 
 fn default_content() -> Vec<MALItem> {
     Vec::with_capacity(0)
+}
+
+impl Anime {
+    pub async fn get_characters(&self) -> Result<Vec<Character>> {
+        character::find_characters(TypeSource::Anime(self.mal_id.to_string()), &self.client).await
+    }
+
+    pub async fn get_episodes(&self) -> Result<Vec<Episode>> {
+        episodes::find_anime_episodes(&self.mal_id.to_string(), &self.client).await
+    }
 }

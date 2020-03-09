@@ -2,8 +2,10 @@ use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
 use crate::{anime, character};
-use crate::anime::Anime;
-use crate::character::{TypeSource, Character};
+use crate::anime::{Anime, episodes::Episode};
+use crate::character::{Character, TypeSource};
+
+pub const BASE_URL: &str = "http://api.jikan.moe/v3";
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
@@ -18,11 +20,15 @@ impl JikanClient {
         }
     }
 
-    pub async fn find_anime_by_id(&self, id: &str) -> Result<Anime> {
-        anime::find_anime_by_id(id, &self.http_client).await
+    pub async fn find_anime(&self, mal_id: &str) -> Result<Anime> {
+        anime::find_anime(mal_id, &self.http_client).await
     }
 
-    pub async fn find_characters_from(&self, id: TypeSource) -> Result<Vec<Character>> {
-        character::find_characters_by_id(id, &self.http_client).await
+    pub async fn find_characters_from(&self, mal_id: TypeSource) -> Result<Vec<Character>> {
+        character::find_characters(mal_id, &self.http_client).await
+    }
+
+    pub async fn find_episodes(&self, mal_id: &str) -> Result<Vec<Episode>> {
+        anime::episodes::find_anime_episodes(&mal_id.to_string(), &self.http_client).await
     }
 }
