@@ -38,4 +38,13 @@ async fn main() {
     //
     // let news = jikancl.find_news(TypeSource::Manga("1".to_string())).await.unwrap();
     // println!("Response {:#?} \n-------------------------------------------", news);
+    //
+    let pictures = anime.get_pictures().await.unwrap();
+    println!("Response {:#?} \n-------------------------------------------", pictures);
+
+    let pictures = jikancl.find_pictures(TypeSource::Anime("1".to_string())).await.unwrap();
+    println!("Response {:#?} \n-------------------------------------------", pictures);
+
+    let pictures = jikancl.find_pictures(TypeSource::Manga("1".to_string())).await.unwrap();
+    println!("Response {:#?} \n-------------------------------------------", pictures);
 }

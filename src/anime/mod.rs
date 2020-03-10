@@ -4,10 +4,11 @@ use hyper::client::HttpConnector;
 
 use crate::base::{MALItem, TypeSource};
 use crate::character::{Character};
-use crate::{character, news};
+use crate::{character, news, pictures};
 use crate::client::BASE_URL;
 use crate::anime::episodes::Episode;
 use crate::news::News;
+use crate::pictures::Picture;
 
 pub mod episodes;
 
@@ -106,6 +107,10 @@ impl Anime {
 
     pub async fn get_news(&self) -> Result<Vec<News>> {
         news::find_news(TypeSource::Anime(self.mal_id.to_string()), &self.client).await
+    }
+
+    pub async fn get_pictures(&self) -> Result<Vec<Picture>> {
+        pictures::find_pictures(TypeSource::Anime(self.mal_id.to_string()), &self.client).await
     }
 }
 

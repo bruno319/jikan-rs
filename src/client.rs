@@ -1,11 +1,12 @@
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
-use crate::{anime, character, news};
+use crate::{anime, character, news, pictures};
 use crate::anime::{Anime, episodes::Episode};
-use crate::character::{Character};
+use crate::character::Character;
 use crate::base::TypeSource;
 use crate::news::News;
+use crate::pictures::Picture;
 
 pub const BASE_URL: &str = "http://api.jikan.moe/v3";
 
@@ -36,5 +37,9 @@ impl JikanClient {
 
     pub async fn find_news(&self, mal_id: TypeSource) -> Result<Vec<News>> {
         news::find_news(mal_id, &self.http_client).await
+    }
+
+    pub async fn find_pictures(&self, mal_id: TypeSource) -> Result<Vec<Picture>> {
+        pictures::find_pictures(mal_id, &self.http_client).await
     }
 }

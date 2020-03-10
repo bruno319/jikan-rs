@@ -6,4 +6,5 @@ mod anime;
 mod search;
 mod character;
 mod news;
+mod pictures;
 pub mod base;
