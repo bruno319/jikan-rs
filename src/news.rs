@@ -20,7 +20,7 @@ struct Response {
     request_hash: String,
     request_cached: bool,
     request_cache_expiry: u32,
-    articles: Vec<News>,
+    pub articles: Vec<News>,
 }
 
 #[derive(Deserialize, Debug)]

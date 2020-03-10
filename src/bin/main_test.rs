@@ -7,7 +7,7 @@ use jikan_rs::base::TypeSource;
 
 #[tokio::main]
 async fn main() {
-    let id: u32 = rand::thread_rng().gen_range(1,30000);
+    let id: u32 = rand::thread_rng().gen_range(1, 30000);
     println!("ID {}", id);
 
     let jikancl = JikanClient::new();
@@ -48,9 +48,18 @@ async fn main() {
     // let pictures = jikancl.find_pictures(TypeSource::Manga("1".to_string())).await.unwrap();
     // println!("Response {:#?} \n-------------------------------------------", pictures);
     //
-    let videos = anime.get_videos().await.unwrap();
-    println!("Response {:#?} \n-------------------------------------------", videos);
-
-    let videos = jikancl.find_videos("1").await.unwrap();
-    println!("Response {:#?} \n-------------------------------------------", videos);
+    // let videos = anime.get_videos().await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", videos);
+    //
+    // let videos = jikancl.find_videos("1").await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", videos);
+    //
+    // let stats = anime.get_stats().await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", stats);
+    //
+    // let stats = jikancl.find_stats(TypeSource::Anime("1".to_string())).await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", stats);
+    //
+    // let stats = jikancl.find_stats(TypeSource::Manga("1".to_string())).await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", stats);
 }
