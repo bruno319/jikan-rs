@@ -3,8 +3,8 @@ use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
 use crate::base::{MALItem, TypeSource};
-use crate::character::{Character};
-use crate::{character, news, pictures};
+use crate::characters::{Character};
+use crate::{characters, news, pictures};
 use crate::client::BASE_URL;
 use crate::anime::episodes::Episode;
 use crate::news::News;
@@ -98,7 +98,7 @@ pub struct RelatedContent {
 
 impl Anime {
     pub async fn get_characters(&self) -> Result<Vec<Character>> {
-        character::find_characters(TypeSource::Anime(self.mal_id.to_string()), &self.client).await
+        characters::find_characters(TypeSource::Anime(self.mal_id.to_string()), &self.client).await
     }
 
     pub async fn get_episodes(&self) -> Result<Vec<Episode>> {

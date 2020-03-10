@@ -1,9 +1,9 @@
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
-use crate::{anime, character, news, pictures};
+use crate::{anime, characters, news, pictures};
 use crate::anime::{Anime, episodes::Episode};
-use crate::character::Character;
+use crate::characters::Character;
 use crate::base::TypeSource;
 use crate::news::News;
 use crate::pictures::Picture;
@@ -28,7 +28,7 @@ impl JikanClient {
     }
 
     pub async fn find_characters_from(&self, mal_id: TypeSource) -> Result<Vec<Character>> {
-        character::find_characters(mal_id, &self.http_client).await
+        characters::find_characters(mal_id, &self.http_client).await
     }
 
     pub async fn find_episodes(&self, mal_id: &str) -> Result<Vec<Episode>> {
