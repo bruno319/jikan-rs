@@ -47,4 +47,10 @@ async fn main() {
     //
     // let pictures = jikancl.find_pictures(TypeSource::Manga("1".to_string())).await.unwrap();
     // println!("Response {:#?} \n-------------------------------------------", pictures);
+    //
+    let videos = anime.get_videos().await.unwrap();
+    println!("Response {:#?} \n-------------------------------------------", videos);
+
+    let videos = jikancl.find_videos("1").await.unwrap();
+    println!("Response {:#?} \n-------------------------------------------", videos);
 }

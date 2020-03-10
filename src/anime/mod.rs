@@ -9,8 +9,10 @@ use crate::client::BASE_URL;
 use crate::anime::episodes::Episode;
 use crate::news::News;
 use crate::pictures::Picture;
+use crate::anime::videos::Videos;
 
 pub mod episodes;
+pub mod videos;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
@@ -111,6 +113,10 @@ impl Anime {
 
     pub async fn get_pictures(&self) -> Result<Vec<Picture>> {
         pictures::find_pictures(TypeSource::Anime(self.mal_id.to_string()), &self.client).await
+    }
+
+    pub async fn get_videos(&self) -> Result<Videos> {
+        videos::find_videos(&self.mal_id.to_string(), &self.client).await
     }
 }
 

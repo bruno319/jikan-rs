@@ -6,7 +6,7 @@ use crate::base::TypeSource;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub(crate) async fn find_characters(mal_id: TypeSource, http_clt: &Client<HttpConnector, Body>) -> Result<Vec<Character>> {
+pub async fn find_characters(mal_id: TypeSource, http_clt: &Client<HttpConnector, Body>) -> Result<Vec<Character>> {
     let url = match mal_id {
         TypeSource::Anime(_) => format!("{}{}/characters_staff", BASE_URL, mal_id.get_uri()),
         TypeSource::Manga(_) => format!("{}{}/characters", BASE_URL, mal_id.get_uri()),

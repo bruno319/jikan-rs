@@ -7,6 +7,7 @@ use crate::characters::Character;
 use crate::base::TypeSource;
 use crate::news::News;
 use crate::pictures::Picture;
+use crate::anime::videos::Videos;
 
 pub const BASE_URL: &str = "http://api.jikan.moe/v3";
 
@@ -41,5 +42,9 @@ impl JikanClient {
 
     pub async fn find_pictures(&self, mal_id: TypeSource) -> Result<Vec<Picture>> {
         pictures::find_pictures(mal_id, &self.http_client).await
+    }
+
+    pub async fn find_videos(&self, mal_id: &str) -> Result<Videos> {
+        anime::videos::find_videos(&mal_id.to_string(), &self.http_client).await
     }
 }
