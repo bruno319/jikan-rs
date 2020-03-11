@@ -1,7 +1,7 @@
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
-use crate::{anime, characters, news, pictures, stats};
+use crate::{anime, characters, news, pictures, stats, forum};
 use crate::anime::{Anime, episodes::Episode};
 use crate::characters::Character;
 use crate::base::TypeSource;
@@ -9,6 +9,7 @@ use crate::news::News;
 use crate::pictures::Picture;
 use crate::anime::videos::Videos;
 use crate::stats::Stats;
+use crate::forum::Topic;
 
 pub const BASE_URL: &str = "http://api.jikan.moe/v3";
 
@@ -51,5 +52,9 @@ impl JikanClient {
 
     pub async fn find_stats(&self, mal_id: TypeSource) -> Result<Stats> {
         stats::find_stats(mal_id, &self.http_client).await
+    }
+
+    pub async fn find_forum(&self, mal_id: TypeSource) -> Result<Vec<Topic>> {
+        forum::find_forum(mal_id, &self.http_client).await
     }
 }

@@ -55,20 +55,30 @@ async fn main() {
     // let videos = jikancl.find_videos("1").await.unwrap();
     // println!("Response {:#?} \n-------------------------------------------", videos);
     //
-    let stats = anime.get_stats().await.unwrap();
-    println!("Response {:#?} \n-------------------------------------------", stats);
+    // let stats = anime.get_stats().await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", stats);
+    //
+    // let stats = jikancl.find_stats(TypeSource::Anime("1".to_string())).await.unwrap();
+    // let stats = match stats {
+    //     Stats::Anime(stats) => Some(stats),
+    //     _ => None
+    // };
+    // println!("Response {:#?} \n-------------------------------------------", stats.unwrap());
+    //
+    // let stats = jikancl.find_stats(TypeSource::Manga("1".to_string())).await.unwrap();
+    // let stats = match stats {
+    //     Stats::Manga(stats) => Some(stats),
+    //     _ => None
+    // };
+    // println!("Response {:#?} \n-------------------------------------------", stats.unwrap());
 
-    let stats = jikancl.find_stats(TypeSource::Anime("1".to_string())).await.unwrap();
-    let stats = match stats {
-        Stats::Anime(stats) => Some(stats),
-        _ => None
-    };
-    println!("Response {:#?} \n-------------------------------------------", stats.unwrap());
+    let topics = anime.get_forum().await.unwrap();
+    println!("Response {:#?} \n-------------------------------------------", topics);
 
-    let stats = jikancl.find_stats(TypeSource::Manga("1".to_string())).await.unwrap();
-    let stats = match stats {
-        Stats::Manga(stats) => Some(stats),
-        _ => None
-    };
-    println!("Response {:#?} \n-------------------------------------------", stats.unwrap());
+    let topics = jikancl.find_forum(TypeSource::Anime("1".to_string())).await.unwrap();
+    println!("Response {:#?} \n-------------------------------------------", topics);
+
+    let topics = jikancl.find_forum(TypeSource::Manga("1".to_string())).await.unwrap();
+    println!("Response {:#?} \n-------------------------------------------", topics);
+
 }
