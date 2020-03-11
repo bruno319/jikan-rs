@@ -10,7 +10,7 @@ use crate::anime::episodes::Episode;
 use crate::news::News;
 use crate::pictures::Picture;
 use crate::anime::videos::Videos;
-use crate::stats::Stats;
+use crate::stats::{Stats, AnimeStats};
 
 pub mod episodes;
 pub mod videos;
@@ -120,8 +120,12 @@ impl Anime {
         videos::find_videos(&self.mal_id.to_string(), &self.client).await
     }
 
-    pub async fn get_stats(&self) -> Result<Stats> {
-        stats::find_stats(TypeSource::Anime(self.mal_id.to_string()), &self.client).await
+    pub async fn get_stats(&self) -> Result<AnimeStats> {
+        let stats = stats::find_stats(TypeSource::Anime(self.mal_id.to_string()), &self.client).await?;
+        match stats {
+            Stats::Anime(stats) => Ok(stats),
+            Stats::Manga(_) => Err(Box::from("Expected Anime Stats, but returned Manga Stats")),
+        }
     }
 }
 

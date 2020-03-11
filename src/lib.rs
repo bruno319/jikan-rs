@@ -7,5 +7,5 @@ mod search;
 mod characters;
 mod news;
 mod pictures;
-mod stats;
+pub mod stats;
 pub mod base;
