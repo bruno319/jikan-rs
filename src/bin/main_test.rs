@@ -89,11 +89,20 @@ async fn main() {
     //
     // let more_info = jikancl.find_more_info(TypeSource::Manga("2".to_string())).await.unwrap();
     // println!("Response {:#?} \n-------------------------------------------", more_info);
+    //
+    // let reviews = anime.get_reviews(&1).await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", reviews);
+    //
+    // let reviews = jikancl.find_reviews("1", &1).await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", reviews);
 
-    let reviews = anime.get_reviews(&1).await.unwrap();
-    println!("Response {:#?} \n-------------------------------------------", reviews);
+    let recommendations = anime.get_recommendations().await.unwrap();
+    println!("Response {:#?} \n-------------------------------------------", recommendations);
 
-    let reviews = jikancl.find_reviews("1", &1).await.unwrap();
-    println!("Response {:#?} \n-------------------------------------------", reviews);
+    let recommendations = jikancl.find_recommendations(TypeSource::Anime("1".to_string())).await.unwrap();
+    println!("Response {:#?} \n-------------------------------------------", recommendations);
+
+    let recommendations = jikancl.find_recommendations(TypeSource::Manga("1".to_string())).await.unwrap();
+    println!("Response {:#?} \n-------------------------------------------", recommendations);
 
 }

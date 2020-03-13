@@ -9,5 +9,6 @@ mod news;
 mod pictures;
 mod forum;
 mod more_info;
+mod recommendations;
 pub mod stats;
 pub mod base;

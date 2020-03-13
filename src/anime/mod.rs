@@ -2,7 +2,7 @@ use bytes::buf::BufExt as _;
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
-use crate::{characters, forum, more_info, news, pictures, stats};
+use crate::{characters, forum, more_info, news, pictures, recommendations, stats};
 use crate::anime::episodes::Episode;
 use crate::anime::reviews::Review;
 use crate::anime::videos::Videos;
@@ -13,6 +13,7 @@ use crate::forum::Topic;
 use crate::news::News;
 use crate::pictures::Picture;
 use crate::stats::{AnimeStats, Stats};
+use crate::recommendations::Recommendation;
 
 pub mod episodes;
 pub mod videos;
@@ -142,7 +143,10 @@ impl Anime {
     pub async fn get_reviews(&self, page: &u16) -> Result<Vec<Review>> {
         reviews::find_reviews(&self.mal_id.to_string(), page, &self.client).await
     }
-}
+
+    pub async fn get_recommendations(&self) -> Result<Vec<Recommendation>> {
+        recommendations::find_recommendations(TypeSource::Anime(self.mal_id.to_string()), &self.client).await
+    }}
 
 fn default_content() -> Vec<MALItem> {
     Vec::with_capacity(0)
