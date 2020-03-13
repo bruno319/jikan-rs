@@ -1,7 +1,7 @@
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
-use crate::{anime, characters, news, pictures, stats, forum};
+use crate::{anime, characters, news, pictures, stats, forum, moreinfo};
 use crate::anime::{Anime, episodes::Episode};
 use crate::characters::Character;
 use crate::base::TypeSource;
@@ -56,5 +56,9 @@ impl JikanClient {
 
     pub async fn find_forum(&self, mal_id: TypeSource) -> Result<Vec<Topic>> {
         forum::find_forum(mal_id, &self.http_client).await
+    }
+
+    pub async fn find_more_info(&self, mal_id: TypeSource) -> Result<Option<String>> {
+        moreinfo::find_more_info(mal_id, &self.http_client).await
     }
 }

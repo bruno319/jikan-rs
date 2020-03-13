@@ -8,5 +8,6 @@ mod characters;
 mod news;
 mod pictures;
 mod forum;
+mod moreinfo;
 pub mod stats;
 pub mod base;

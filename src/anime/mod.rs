@@ -2,16 +2,16 @@ use bytes::buf::BufExt as _;
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
-use crate::base::{MALItem, TypeSource};
-use crate::characters::{Character};
-use crate::{characters, news, pictures, stats, forum};
-use crate::client::BASE_URL;
+use crate::{characters, forum, moreinfo, news, pictures, stats};
 use crate::anime::episodes::Episode;
+use crate::anime::videos::Videos;
+use crate::base::{MALItem, TypeSource};
+use crate::characters::Character;
+use crate::client::BASE_URL;
+use crate::forum::Topic;
 use crate::news::News;
 use crate::pictures::Picture;
-use crate::anime::videos::Videos;
-use crate::stats::{Stats, AnimeStats};
-use crate::forum::Topic;
+use crate::stats::{AnimeStats, Stats};
 
 pub mod episodes;
 pub mod videos;
@@ -131,6 +131,10 @@ impl Anime {
 
     pub async fn get_forum(&self) -> Result<Vec<Topic>> {
         forum::find_forum(TypeSource::Anime(self.mal_id.to_string()), &self.client).await
+    }
+
+    pub async fn get_more_info(&self) -> Result<Option<String>> {
+        moreinfo::find_more_info(TypeSource::Anime(self.mal_id.to_string()), &self.client).await
     }
 }
 
