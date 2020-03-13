@@ -80,14 +80,20 @@ async fn main() {
     //
     // let topics = jikancl.find_forum(TypeSource::Manga("1".to_string())).await.unwrap();
     // println!("Response {:#?} \n-------------------------------------------", topics);
+    //
+    // let more_info = anime.get_more_info().await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", more_info);
+    //
+    // let more_info = jikancl.find_more_info(TypeSource::Anime("1".to_string())).await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", more_info);
+    //
+    // let more_info = jikancl.find_more_info(TypeSource::Manga("2".to_string())).await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", more_info);
 
-    let more_info = anime.get_more_info().await.unwrap();
-    println!("Response {:#?} \n-------------------------------------------", more_info);
+    let reviews = anime.get_reviews(&1).await.unwrap();
+    println!("Response {:#?} \n-------------------------------------------", reviews);
 
-    let more_info = jikancl.find_more_info(TypeSource::Anime("1".to_string())).await.unwrap();
-    println!("Response {:#?} \n-------------------------------------------", more_info);
-
-    let more_info = jikancl.find_more_info(TypeSource::Manga("2".to_string())).await.unwrap();
-    println!("Response {:#?} \n-------------------------------------------", more_info);
+    let reviews = jikancl.find_reviews("1", &1).await.unwrap();
+    println!("Response {:#?} \n-------------------------------------------", reviews);
 
 }

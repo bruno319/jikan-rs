@@ -2,8 +2,9 @@ use bytes::buf::BufExt as _;
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
-use crate::{characters, forum, moreinfo, news, pictures, stats};
+use crate::{characters, forum, more_info, news, pictures, stats};
 use crate::anime::episodes::Episode;
+use crate::anime::reviews::Review;
 use crate::anime::videos::Videos;
 use crate::base::{MALItem, TypeSource};
 use crate::characters::Character;
@@ -15,10 +16,11 @@ use crate::stats::{AnimeStats, Stats};
 
 pub mod episodes;
 pub mod videos;
+pub mod reviews;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub(crate) async fn find_anime(mal_id: &str, http_clt: &Client<HttpConnector, Body>) -> Result<Anime> {
+pub async fn find_anime(mal_id: &str, http_clt: &Client<HttpConnector, Body>) -> Result<Anime> {
     let url = format!("{}/anime/{}", BASE_URL, mal_id).parse()?;
     let res = http_clt.get(url).await?;
     let body = hyper::body::aggregate(res).await?;
@@ -63,13 +65,13 @@ pub struct Anime {
     pub background: Option<String>,
     pub premiered: Option<String>,
     pub broadcast: Option<String>,
-    pub related: RelatedContent
+    pub related: RelatedContent,
 }
 
 #[derive(Deserialize, Debug)]
 pub struct Aired {
     pub from: Option<String>,
-    pub to: Option<String>
+    pub to: Option<String>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -134,7 +136,11 @@ impl Anime {
     }
 
     pub async fn get_more_info(&self) -> Result<Option<String>> {
-        moreinfo::find_more_info(TypeSource::Anime(self.mal_id.to_string()), &self.client).await
+        more_info::find_more_info(TypeSource::Anime(self.mal_id.to_string()), &self.client).await
+    }
+
+    pub async fn get_reviews(&self, page: &u16) -> Result<Vec<Review>> {
+        reviews::find_reviews(&self.mal_id.to_string(), page, &self.client).await
     }
 }
 
