@@ -10,5 +10,6 @@ mod pictures;
 mod forum;
 mod more_info;
 mod recommendations;
+pub mod user_updates;
 pub mod stats;
 pub mod base;

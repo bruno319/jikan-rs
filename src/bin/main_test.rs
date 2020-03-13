@@ -5,6 +5,7 @@ use jikan_rs::client::JikanClient;
 use rand::Rng;
 use jikan_rs::base::TypeSource;
 use jikan_rs::stats::Stats;
+use jikan_rs::user_updates::UserUpdates;
 
 #[tokio::main]
 async fn main() {
@@ -95,14 +96,30 @@ async fn main() {
     //
     // let reviews = jikancl.find_reviews("1", &1).await.unwrap();
     // println!("Response {:#?} \n-------------------------------------------", reviews);
+    //
+    // let recommendations = anime.get_recommendations().await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", recommendations);
+    //
+    // let recommendations = jikancl.find_recommendations(TypeSource::Anime("1".to_string())).await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", recommendations);
+    //
+    // let recommendations = jikancl.find_recommendations(TypeSource::Manga("1".to_string())).await.unwrap();
+    // println!("Response {:#?} \n-------------------------------------------", recommendations);
 
-    let recommendations = anime.get_recommendations().await.unwrap();
-    println!("Response {:#?} \n-------------------------------------------", recommendations);
+    let updates = anime.get_user_updates(&1).await.unwrap();
+    println!("Response {:#?} \n-------------------------------------------", updates);
 
-    let recommendations = jikancl.find_recommendations(TypeSource::Anime("1".to_string())).await.unwrap();
-    println!("Response {:#?} \n-------------------------------------------", recommendations);
+    let user_updates = jikancl.find_user_updates(TypeSource::Anime("1".to_string()), &1).await.unwrap();
+    let user_updates = match user_updates {
+        UserUpdates::Anime(u) => Some(u),
+        _ => None
+    };
+    println!("Response {:#?} \n-------------------------------------------", user_updates.unwrap());
 
-    let recommendations = jikancl.find_recommendations(TypeSource::Manga("1".to_string())).await.unwrap();
-    println!("Response {:#?} \n-------------------------------------------", recommendations);
-
+    let user_updates = jikancl.find_user_updates(TypeSource::Manga("1".to_string()), &1).await.unwrap();
+    let user_updates = match user_updates {
+        UserUpdates::Manga(u) => Some(u),
+        _ => None
+    };
+    println!("Response {:#?} \n-------------------------------------------", user_updates.unwrap());
 }

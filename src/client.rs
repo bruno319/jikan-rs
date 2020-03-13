@@ -1,17 +1,18 @@
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
-use crate::{anime, characters, news, pictures, stats, forum, more_info, recommendations};
+use crate::{anime, characters, forum, more_info, news, pictures, recommendations, stats, user_updates};
 use crate::anime::{Anime, episodes::Episode};
-use crate::characters::Character;
+use crate::anime::reviews::Review;
+use crate::anime::videos::Videos;
 use crate::base::TypeSource;
+use crate::characters::Character;
+use crate::forum::Topic;
 use crate::news::News;
 use crate::pictures::Picture;
-use crate::anime::videos::Videos;
-use crate::stats::Stats;
-use crate::forum::Topic;
-use crate::anime::reviews::Review;
 use crate::recommendations::Recommendation;
+use crate::stats::Stats;
+use crate::user_updates::UserUpdates;
 
 pub const BASE_URL: &str = "http://api.jikan.moe/v3";
 
@@ -70,5 +71,9 @@ impl JikanClient {
 
     pub async fn find_recommendations(&self, mal_id: TypeSource) -> Result<Vec<Recommendation>> {
         recommendations::find_recommendations(mal_id, &self.http_client).await
+    }
+
+    pub async fn find_user_updates(&self, mal_id: TypeSource, page: &u16) -> Result<UserUpdates> {
+        user_updates::find_user_updates(mal_id, page, &self.http_client).await
     }
 }

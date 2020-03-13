@@ -1,4 +1,3 @@
-
 pub enum TypeSource {
     Anime(String),
     Manga(String),
@@ -20,4 +19,26 @@ pub struct MALItem {
     pub content_type: String,
     pub name: String,
     pub url: String,
+}
+
+#[derive(Deserialize, Debug)]
+pub enum AnimeStatus {
+    Watching,
+    Completed,
+    #[serde(rename = "On-Hold")]
+    OnHold,
+    Dropped,
+    #[serde(rename = "Plan to Watch")]
+    PlanToWatch,
+}
+
+#[derive(Deserialize, Debug)]
+pub enum MangaStatus {
+    Reading,
+    Completed,
+    #[serde(rename = "On-Hold")]
+    OnHold,
+    Dropped,
+    #[serde(rename = "Plan to Read")]
+    PlanToRead,
 }

@@ -2,7 +2,7 @@ use bytes::buf::BufExt as _;
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
-use crate::{characters, forum, more_info, news, pictures, recommendations, stats};
+use crate::{characters, forum, more_info, news, pictures, recommendations, stats, user_updates};
 use crate::anime::episodes::Episode;
 use crate::anime::reviews::Review;
 use crate::anime::videos::Videos;
@@ -14,6 +14,7 @@ use crate::news::News;
 use crate::pictures::Picture;
 use crate::stats::{AnimeStats, Stats};
 use crate::recommendations::Recommendation;
+use crate::user_updates::{AnimeUserUpdate, UserUpdates};
 
 pub mod episodes;
 pub mod videos;
@@ -146,7 +147,16 @@ impl Anime {
 
     pub async fn get_recommendations(&self) -> Result<Vec<Recommendation>> {
         recommendations::find_recommendations(TypeSource::Anime(self.mal_id.to_string()), &self.client).await
-    }}
+    }
+
+    pub async fn get_user_updates(&self, page: &u16) -> Result<Vec<AnimeUserUpdate>> {
+        let user_updates = user_updates::find_user_updates(TypeSource::Anime(self.mal_id.to_string()), page, &self.client).await?;
+        match user_updates {
+            UserUpdates::Anime(user_updates) => Ok(user_updates),
+            UserUpdates::Manga(_) => Err(Box::from("Expected Anime User Updates, but returned Manga User Updates")),
+        }
+    }
+}
 
 fn default_content() -> Vec<MALItem> {
     Vec::with_capacity(0)
