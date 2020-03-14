@@ -5,7 +5,7 @@ use bytes::buf::BufExt as _;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub(crate) async fn find_reviews(mal_id: &String, page: &u16, http_clt: &Client<HttpConnector, Body>) -> Result<Vec<Review>> {
+pub(crate) async fn find_reviews(mal_id: &u32, page: &u16, http_clt: &Client<HttpConnector, Body>) -> Result<Vec<Review>> {
     let url = format!("{}/anime/{}/reviews/{}", BASE_URL, mal_id, page).parse()?;
     let res = http_clt.get(url).await?;
     let body = hyper::body::aggregate(res).await?;
@@ -15,7 +15,7 @@ pub(crate) async fn find_reviews(mal_id: &String, page: &u16, http_clt: &Client<
 }
 
 #[derive(Deserialize, Debug)]
-pub struct Response {
+struct Response {
     request_hash: String,
     request_cached: bool,
     request_cache_expiry: u32,

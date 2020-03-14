@@ -29,16 +29,16 @@ impl JikanClient {
         }
     }
 
-    pub async fn find_anime(&self, mal_id: &str) -> Result<Anime> {
+    pub async fn find_anime(&self, mal_id: u32) -> Result<Anime> {
         anime::find_anime(mal_id, &self.http_client).await
     }
 
-    pub async fn find_characters_from(&self, mal_id: TypeSource) -> Result<Vec<Character>> {
+    pub async fn find_characters(&self, mal_id: TypeSource) -> Result<Vec<Character>> {
         characters::find_characters(mal_id, &self.http_client).await
     }
 
-    pub async fn find_episodes(&self, mal_id: &str) -> Result<Vec<Episode>> {
-        anime::episodes::find_anime_episodes(&mal_id.to_string(), &self.http_client).await
+    pub async fn find_episodes(&self, mal_id: u32) -> Result<Vec<Episode>> {
+        anime::episodes::find_anime_episodes(&mal_id, &self.http_client).await
     }
 
     pub async fn find_news(&self, mal_id: TypeSource) -> Result<Vec<News>> {
@@ -49,8 +49,8 @@ impl JikanClient {
         pictures::find_pictures(mal_id, &self.http_client).await
     }
 
-    pub async fn find_videos(&self, mal_id: &str) -> Result<Videos> {
-        anime::videos::find_videos(&mal_id.to_string(), &self.http_client).await
+    pub async fn find_videos(&self, mal_id: u32) -> Result<Videos> {
+        anime::videos::find_videos(&mal_id, &self.http_client).await
     }
 
     pub async fn find_stats(&self, mal_id: TypeSource) -> Result<Stats> {
@@ -65,8 +65,8 @@ impl JikanClient {
         more_info::find_more_info(mal_id, &self.http_client).await
     }
 
-    pub async fn find_reviews(&self, mal_id: &str, page: &u16) -> Result<Vec<Review>> {
-        anime::reviews::find_reviews(&mal_id.to_string(), page, &self.http_client).await
+    pub async fn find_reviews(&self, mal_id: u32, page: &u16) -> Result<Vec<Review>> {
+        anime::reviews::find_reviews(&mal_id, page, &self.http_client).await
     }
 
     pub async fn find_recommendations(&self, mal_id: TypeSource) -> Result<Vec<Recommendation>> {

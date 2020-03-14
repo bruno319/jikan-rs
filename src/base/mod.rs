@@ -1,6 +1,6 @@
 pub enum TypeSource {
-    Anime(String),
-    Manga(String),
+    Anime(u32),
+    Manga(u32),
 }
 
 impl TypeSource {

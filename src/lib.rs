@@ -2,7 +2,7 @@
 extern crate serde_derive;
 
 pub mod client;
-mod anime;
+pub mod anime;
 mod search;
 mod characters;
 mod news;

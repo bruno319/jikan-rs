@@ -5,7 +5,7 @@ use bytes::buf::BufExt as _;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub async fn find_videos(mal_id: &String, http_clt: &Client<HttpConnector, Body>) -> Result<Videos> {
+pub(crate) async fn find_videos(mal_id: &u32, http_clt: &Client<HttpConnector, Body>) -> Result<Videos> {
     let url = format!("{}/anime/{}/videos", BASE_URL, mal_id).parse()?;
     let res = http_clt.get(url).await?;
     let body = hyper::body::aggregate(res).await?;

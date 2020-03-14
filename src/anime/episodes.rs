@@ -5,7 +5,7 @@ use bytes::buf::BufExt as _;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub async fn find_anime_episodes(mal_id: &String, http_clt: &Client<HttpConnector, Body>) -> Result<Vec<Episode>> {
+pub(crate) async fn find_anime_episodes(mal_id: &u32, http_clt: &Client<HttpConnector, Body>) -> Result<Vec<Episode>> {
     let mut page = 1 as u8;
 
     let response = make_request(mal_id, http_clt, &page).await?;
@@ -24,7 +24,7 @@ pub async fn find_anime_episodes(mal_id: &String, http_clt: &Client<HttpConnecto
     Ok(episodes)
 }
 
-async fn make_request(mal_id: &String, http_clt: &Client<HttpConnector, Body>, page: &u8) -> Result<Response> {
+async fn make_request(mal_id: &u32, http_clt: &Client<HttpConnector, Body>, page: &u8) -> Result<Response> {
     let url = format!("{}/anime/{}/episodes/{}", BASE_URL, mal_id, page).parse()?;
     let res = http_clt.get(url).await?;
     let body = hyper::body::aggregate(res).await?;
