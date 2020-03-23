@@ -65,7 +65,7 @@ impl JikanClient {
         more_info::find_more_info(mal_id, &self.http_client).await
     }
 
-    pub async fn find_reviews(&self, mal_id: u32, page: &u16) -> Result<Vec<Review>> {
+    pub async fn find_anime_reviews(&self, mal_id: u32, page: &u16) -> Result<Vec<Review>> {
         anime::reviews::find_reviews(&mal_id, page, &self.http_client).await
     }
 
