@@ -78,7 +78,7 @@ async fn should_find_anime_stats() {
         Stats::Anime(stats) => Some(stats),
         _ => None
     }.unwrap();
-    assert!(stats.completed > 0);
+    assert!(stats.total > 0);
 }
 
 #[tokio::test]
@@ -89,7 +89,7 @@ async fn should_find_manga_stats() {
         Stats::Manga(stats) => Some(stats),
         _ => None
     }.unwrap();
-    assert!(stats.completed > 0);
+    assert!(stats.total > 0);
 }
 
 #[tokio::test]
