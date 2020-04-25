@@ -1,8 +1,9 @@
-use hyper::{Client, Body};
-use hyper::client::HttpConnector;
-use crate::client::BASE_URL;
 use bytes::buf::BufExt as _;
+use hyper::{Body, Client};
+use hyper::client::HttpConnector;
+
 use crate::base::TypeSource;
+use crate::client::BASE_URL;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 

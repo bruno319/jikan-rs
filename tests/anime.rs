@@ -1,12 +1,8 @@
+extern crate jikan_rs;
 #[macro_use]
 extern crate lazy_static;
-extern crate jikan_rs;
 
-use jikan_rs::anime::Anime;
-use jikan_rs::base::TypeSource;
 use jikan_rs::client::JikanClient;
-use jikan_rs::stats::Stats;
-use jikan_rs::user_updates::UserUpdates;
 
 lazy_static! {
     static ref JIKAN_CL: JikanClient = JikanClient::new();

@@ -42,3 +42,35 @@ pub enum MangaStatus {
     #[serde(rename = "Plan to Read")]
     PlanToRead,
 }
+
+#[derive(Deserialize, Debug)]
+pub struct RelatedContent {
+    #[serde(rename = "Alternative Version", default = "default_content")]
+    pub alternative_versions: Vec<MALItem>,
+    #[serde(rename = "Alternative Setting", default = "default_content")]
+    pub alternative_settings: Vec<MALItem>,
+    #[serde(rename = "Adaptation", default = "default_content")]
+    pub adaptations: Vec<MALItem>,
+    #[serde(rename = "Character", default = "default_content")]
+    pub characters: Vec<MALItem>,
+    #[serde(rename = "Full story", default = "default_content")]
+    pub full_stories: Vec<MALItem>,
+    #[serde(rename = "Parent story", default = "default_content")]
+    pub parent_stories: Vec<MALItem>,
+    #[serde(rename = "Prequel", default = "default_content")]
+    pub prequels: Vec<MALItem>,
+    #[serde(rename = "Sequel", default = "default_content")]
+    pub sequels: Vec<MALItem>,
+    #[serde(rename = "Other", default = "default_content")]
+    pub others: Vec<MALItem>,
+    #[serde(rename = "Side story", default = "default_content")]
+    pub side_stories: Vec<MALItem>,
+    #[serde(rename = "Spin-off", default = "default_content")]
+    pub spin_offs: Vec<MALItem>,
+    #[serde(rename = "Summary", default = "default_content")]
+    pub summaries: Vec<MALItem>,
+}
+
+fn default_content() -> Vec<MALItem> {
+    Vec::with_capacity(0)
+}

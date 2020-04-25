@@ -1,7 +1,8 @@
 extern crate jikan_rs;
 
-use jikan_rs::client::JikanClient;
 use jikan_rs::base::TypeSource;
+use jikan_rs::client::JikanClient;
+use jikan_rs::reviews::Reviews;
 use jikan_rs::stats::Stats;
 use jikan_rs::user_updates::UserUpdates;
 
@@ -11,6 +12,14 @@ async fn should_find_an_anime() {
     let anime = jikancl.find_anime(1).await.unwrap();
     assert_eq!(anime.mal_id, 1);
     assert_eq!(anime.title, "Cowboy Bebop");
+}
+
+#[tokio::test]
+async fn should_find_a_manga() {
+    let jikancl = JikanClient::new();
+    let manga = jikancl.find_manga(1).await.unwrap();
+    assert_eq!(manga.mal_id, 1);
+    assert_eq!(manga.title, "Monster");
 }
 
 #[tokio::test]
@@ -123,7 +132,22 @@ async fn should_find_more_manga_info() {
 #[tokio::test]
 async fn should_find_anime_reviews() {
     let jikancl = JikanClient::new();
-    let reviews = jikancl.find_anime_reviews(1, &1).await.unwrap();
+    let reviews = jikancl.find_reviews(TypeSource::Anime(1), &1).await.unwrap();
+    let reviews = match reviews {
+        Reviews::Anime(u) => Some(u),
+        _ => None,
+    }.unwrap();
+    assert!(reviews.len() > 0 && reviews.len() <= 20);
+}
+
+#[tokio::test]
+async fn should_find_manga_reviews() {
+    let jikancl = JikanClient::new();
+    let reviews = jikancl.find_reviews(TypeSource::Manga(1), &1).await.unwrap();
+    let reviews = match reviews {
+        Reviews::Manga(u) => Some(u),
+        _ => None,
+    }.unwrap();
     assert!(reviews.len() > 0 && reviews.len() <= 20);
 }
 
