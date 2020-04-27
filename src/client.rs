@@ -1,11 +1,10 @@
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
-use crate::{anime, forum, manga, more_info, news, person, pictures, recommendations, reviews, stats, user_updates};
+use crate::{anime, character, forum, manga, more_info, news, person, pictures, recommendations, reviews, stats, user_updates};
 use crate::anime::{Anime, characters::CharactersStaff, episodes::Episode, videos::Videos};
-use crate::base::TypeSource;
+use crate::base::{TypeSource, MALRoleItem};
 use crate::forum::Topic;
-use crate::manga::characters::Character;
 use crate::manga::Manga;
 use crate::news::News;
 use crate::person::Person;
@@ -14,6 +13,7 @@ use crate::recommendations::Recommendation;
 use crate::reviews::Reviews;
 use crate::stats::Stats;
 use crate::user_updates::UserUpdates;
+use crate::character::Character;
 
 pub const BASE_URL: &str = "http://api.jikan.moe/v3";
 
@@ -42,11 +42,15 @@ impl JikanClient {
         person::find_person(mal_id, &self.http_client).await
     }
 
+    pub async fn find_character(&self, mal_id: u32) -> Result<Character> {
+        character::find_character(mal_id, &self.http_client).await
+    }
+
     pub async fn find_anime_characters(&self, mal_id: u32) -> Result<CharactersStaff> {
         anime::characters::find_characters(&mal_id, &self.http_client).await
     }
 
-    pub async fn find_manga_characters(&self, mal_id: u32) -> Result<Vec<Character>> {
+    pub async fn find_manga_characters(&self, mal_id: u32) -> Result<Vec<MALRoleItem>> {
         manga::characters::find_characters(&mal_id, &self.http_client).await
     }
 

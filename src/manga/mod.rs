@@ -3,8 +3,7 @@ use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
 use crate::{news, pictures, stats, forum, more_info, reviews, recommendations, user_updates};
-use crate::base::{MALItem, RelatedContent, TypeSource};
-use crate::manga::characters::Character;
+use crate::base::{MALItem, RelatedContent, TypeSource, MALRoleItem};
 use crate::client::BASE_URL;
 use crate::news::News;
 use crate::pictures::Picture;
@@ -71,7 +70,7 @@ pub struct Published {
 }
 
 impl Manga {
-    pub async fn get_characters(&self) -> Result<Vec<Character>> {
+    pub async fn get_characters(&self) -> Result<Vec<MALRoleItem>> {
         characters::find_characters(&self.mal_id, &self.client).await
     }
 

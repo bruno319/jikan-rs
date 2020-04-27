@@ -5,6 +5,7 @@ pub mod client;
 pub mod anime;
 pub mod manga;
 pub mod person;
+pub mod character;
 pub mod search;
 pub mod news;
 pub mod pictures;

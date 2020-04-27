@@ -31,6 +31,14 @@ async fn should_find_a_person() {
 }
 
 #[tokio::test]
+async fn should_find_a_character() {
+    let jikancl = JikanClient::new();
+    let character = jikancl.find_character(1).await.unwrap();
+    assert_eq!(character.mal_id, 1);
+    assert_eq!(character.name, "Spike Spiegel");
+}
+
+#[tokio::test]
 async fn should_find_anime_characters() {
     let jikancl = JikanClient::new();
     let characters_staff = jikancl.find_anime_characters(1).await.unwrap();

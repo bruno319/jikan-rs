@@ -2,6 +2,7 @@ pub enum TypeSource {
     Anime(u32),
     Manga(u32),
     Person(u32),
+    Character(u32)
 }
 
 impl TypeSource {
@@ -10,6 +11,7 @@ impl TypeSource {
             TypeSource::Anime(id) => format!("/anime/{}", id),
             TypeSource::Manga(id) => format!("/manga/{}", id),
             TypeSource::Person(id) => format!("/person/{}", id),
+            TypeSource::Character(id) => format!("/character/{}", id),
         }
     }
 }
@@ -29,6 +31,24 @@ pub struct MALImageItem {
     pub name: String,
     pub url: String,
     pub image_url: String,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct MALRoleItem {
+    pub mal_id: u32,
+    pub name: String,
+    pub url: String,
+    pub image_url: String,
+    pub role: String,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct VoiceActor {
+    pub mal_id: u32,
+    pub url: String,
+    pub image_url: String,
+    pub name: String,
+    pub language: String,
 }
 
 #[derive(Deserialize, Debug)]
