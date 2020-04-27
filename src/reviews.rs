@@ -7,7 +7,7 @@ use crate::client::BASE_URL;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub async fn find_reviews(mal_id: TypeSource, page: &u16, http_clt: &Client<HttpConnector, Body>) -> Result<Reviews> {
+pub(crate) async fn find_reviews(mal_id: TypeSource, page: &u16, http_clt: &Client<HttpConnector, Body>) -> Result<Reviews> {
     let url = format!("{}{}/reviews/{}", BASE_URL, mal_id.get_uri(), page).parse()?;
     let res = http_clt.get(url).await?;
     let body = hyper::body::aggregate(res).await?;
@@ -20,6 +20,7 @@ pub async fn find_reviews(mal_id: TypeSource, page: &u16, http_clt: &Client<Http
             let response: ResponseReview<MangaReviewer> = serde_json::from_reader(body.reader())?;
             Reviews::Manga(response.reviews)
         }
+        _ => return Err(Box::from("There is no reviews for this type source")),
     };
     Ok(response)
 }

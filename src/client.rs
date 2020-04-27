@@ -1,13 +1,14 @@
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
-use crate::{anime, characters, forum, manga, more_info, news, pictures, recommendations, reviews, stats, user_updates};
+use crate::{anime, characters, forum, manga, more_info, news, person, pictures, recommendations, reviews, stats, user_updates};
 use crate::anime::{Anime, episodes::Episode, videos::Videos};
 use crate::base::TypeSource;
 use crate::characters::Character;
 use crate::forum::Topic;
 use crate::manga::Manga;
 use crate::news::News;
+use crate::person::Person;
 use crate::pictures::Picture;
 use crate::recommendations::Recommendation;
 use crate::reviews::Reviews;
@@ -35,6 +36,10 @@ impl JikanClient {
 
     pub async fn find_manga(&self, mal_id: u32) -> Result<Manga> {
         manga::find_manga(mal_id, &self.http_client).await
+    }
+
+    pub async fn find_person(&self, mal_id: u32) -> Result<Person> {
+        person::find_person(mal_id, &self.http_client).await
     }
 
     pub async fn find_characters(&self, mal_id: TypeSource) -> Result<Vec<Character>> {

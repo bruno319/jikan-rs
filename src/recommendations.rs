@@ -7,7 +7,7 @@ use crate::client::BASE_URL;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub async fn find_recommendations(mal_id: TypeSource, http_clt: &Client<HttpConnector, Body>) -> Result<Vec<Recommendation>> {
+pub(crate) async fn find_recommendations(mal_id: TypeSource, http_clt: &Client<HttpConnector, Body>) -> Result<Vec<Recommendation>> {
     let url = format!("{}{}/recommendations", BASE_URL, mal_id.get_uri()).parse()?;
     let res = http_clt.get(url).await?;
     let body = hyper::body::aggregate(res).await?;

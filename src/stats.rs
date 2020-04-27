@@ -14,6 +14,7 @@ pub(crate) async fn find_stats(mal_id: TypeSource, http_clt: &Client<HttpConnect
     let stats = match mal_id {
         TypeSource::Anime(_) => Stats::Anime(serde_json::from_reader(body.reader())?),
         TypeSource::Manga(_) => Stats::Manga(serde_json::from_reader(body.reader())?),
+        _ => return Err(Box::from("There is no stats for this type source")),
     };
 
     Ok(stats)

@@ -23,6 +23,14 @@ async fn should_find_a_manga() {
 }
 
 #[tokio::test]
+async fn should_find_a_person() {
+    let jikancl = JikanClient::new();
+    let person = jikancl.find_person(1).await.unwrap();
+    assert_eq!(person.mal_id, 1);
+    assert_eq!(person.name, "Tomokazu Seki");
+}
+
+#[tokio::test]
 async fn should_find_anime_characters() {
     let jikancl = JikanClient::new();
     let characters = jikancl.find_characters(TypeSource::Anime(1)).await.unwrap();

@@ -1,6 +1,7 @@
 pub enum TypeSource {
     Anime(u32),
     Manga(u32),
+    Person(u32),
 }
 
 impl TypeSource {
@@ -8,6 +9,7 @@ impl TypeSource {
         match self {
             TypeSource::Anime(id) => format!("/anime/{}", id),
             TypeSource::Manga(id) => format!("/manga/{}", id),
+            TypeSource::Person(id) => format!("/person/{}", id),
         }
     }
 }
@@ -19,6 +21,14 @@ pub struct MALItem {
     pub content_type: String,
     pub name: String,
     pub url: String,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct MALImageItem {
+    pub mal_id: u32,
+    pub name: String,
+    pub url: String,
+    pub image_url: String,
 }
 
 #[derive(Deserialize, Debug)]

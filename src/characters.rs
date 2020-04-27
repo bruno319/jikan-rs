@@ -7,10 +7,10 @@ use crate::client::BASE_URL;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub async fn find_characters(mal_id: TypeSource, http_clt: &Client<HttpConnector, Body>) -> Result<Vec<Character>> {
+pub(crate) async fn find_characters(mal_id: TypeSource, http_clt: &Client<HttpConnector, Body>) -> Result<Vec<Character>> {
     let url = match mal_id {
         TypeSource::Anime(_) => format!("{}{}/characters_staff", BASE_URL, mal_id.get_uri()),
-        TypeSource::Manga(_) => format!("{}{}/characters", BASE_URL, mal_id.get_uri()),
+        _ => format!("{}{}/characters", BASE_URL, mal_id.get_uri()),
     };
     let res = http_clt.get(url.parse()?).await?;
     let body = hyper::body::aggregate(res).await?;

@@ -7,7 +7,7 @@ use crate::client::BASE_URL;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub async fn find_forum(mal_id: TypeSource, http_clt: &Client<HttpConnector, Body>) -> Result<Vec<Topic>> {
+pub(crate) async fn find_forum(mal_id: TypeSource, http_clt: &Client<HttpConnector, Body>) -> Result<Vec<Topic>> {
     let url = format!("{}{}/forum", BASE_URL, mal_id.get_uri()).parse()?;
     let res = http_clt.get(url).await?;
     let body = hyper::body::aggregate(res).await?;

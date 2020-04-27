@@ -20,6 +20,7 @@ pub(crate) async fn find_user_updates(mal_id: TypeSource, page: &u16, http_clt: 
             let user_updates: MangaUserUpdatesResponse = serde_json::from_reader(body.reader())?;
             UserUpdates::Manga(user_updates.users)
         }
+        _ => return Err(Box::from("There is no user updates for this type source")),
     };
 
     Ok(user_updates)
