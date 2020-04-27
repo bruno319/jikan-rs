@@ -10,11 +10,12 @@ lazy_static! {
 
 #[tokio::test]
 async fn should_get_anime_characters() {
-    let characters = JIKAN_CL.find_anime(1)
+    let characters_staff = JIKAN_CL.find_anime(1)
         .await.unwrap()
         .get_characters()
         .await.unwrap();
-    assert!(!characters.is_empty());
+    assert!(!characters_staff.characters.is_empty());
+    assert!(!characters_staff.staff.is_empty());
 }
 
 #[tokio::test]

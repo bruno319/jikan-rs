@@ -6,7 +6,6 @@ pub mod anime;
 pub mod manga;
 pub mod person;
 pub mod search;
-pub mod characters;
 pub mod news;
 pub mod pictures;
 pub mod forum;

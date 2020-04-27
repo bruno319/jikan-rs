@@ -33,14 +33,15 @@ async fn should_find_a_person() {
 #[tokio::test]
 async fn should_find_anime_characters() {
     let jikancl = JikanClient::new();
-    let characters = jikancl.find_characters(TypeSource::Anime(1)).await.unwrap();
-    assert!(characters.len() > 0);
+    let characters_staff = jikancl.find_anime_characters(1).await.unwrap();
+    assert!(characters_staff.characters.len() > 0);
+    assert!(characters_staff.staff.len() > 0);
 }
 
 #[tokio::test]
 async fn should_find_manga_characters() {
     let jikancl = JikanClient::new();
-    let characters = jikancl.find_characters(TypeSource::Manga(1)).await.unwrap();
+    let characters = jikancl.find_manga_characters(1).await.unwrap();
     assert!(characters.len() > 0);
 }
 

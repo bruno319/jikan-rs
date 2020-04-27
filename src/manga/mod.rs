@@ -2,9 +2,9 @@ use bytes::buf::BufExt;
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
-use crate::{characters, news, pictures, stats, forum, more_info, reviews, recommendations, user_updates};
+use crate::{news, pictures, stats, forum, more_info, reviews, recommendations, user_updates};
 use crate::base::{MALItem, RelatedContent, TypeSource};
-use crate::characters::Character;
+use crate::manga::characters::Character;
 use crate::client::BASE_URL;
 use crate::news::News;
 use crate::pictures::Picture;
@@ -13,6 +13,8 @@ use crate::forum::Topic;
 use crate::reviews::{Review, MangaReviewer, Reviews};
 use crate::recommendations::Recommendation;
 use crate::user_updates::{MangaUserUpdate, UserUpdates};
+
+pub mod characters;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
@@ -70,7 +72,7 @@ pub struct Published {
 
 impl Manga {
     pub async fn get_characters(&self) -> Result<Vec<Character>> {
-        characters::find_characters(TypeSource::Manga(self.mal_id), &self.client).await
+        characters::find_characters(&self.mal_id, &self.client).await
     }
 
     pub async fn get_news(&self) -> Result<Vec<News>> {

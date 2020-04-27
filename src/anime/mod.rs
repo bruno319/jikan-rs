@@ -2,11 +2,11 @@ use bytes::buf::BufExt as _;
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
-use crate::{characters, forum, more_info, news, pictures, recommendations, reviews, stats, user_updates};
+use crate::{forum, more_info, news, pictures, recommendations, reviews, stats, user_updates};
+use crate::anime::characters::CharactersStaff;
 use crate::anime::episodes::Episode;
 use crate::anime::videos::Videos;
 use crate::base::{MALItem, RelatedContent, TypeSource};
-use crate::characters::Character;
 use crate::client::BASE_URL;
 use crate::forum::Topic;
 use crate::news::News;
@@ -18,6 +18,7 @@ use crate::user_updates::{AnimeUserUpdate, UserUpdates};
 
 pub mod episodes;
 pub mod videos;
+pub mod characters;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
@@ -82,8 +83,8 @@ pub struct Aired {
 }
 
 impl Anime {
-    pub async fn get_characters(&self) -> Result<Vec<Character>> {
-        characters::find_characters(TypeSource::Anime(self.mal_id), &self.client).await
+    pub async fn get_characters(&self) -> Result<CharactersStaff> {
+        characters::find_characters(&self.mal_id, &self.client).await
     }
 
     pub async fn get_episodes(&self) -> Result<Vec<Episode>> {
