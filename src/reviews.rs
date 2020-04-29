@@ -2,21 +2,21 @@ use bytes::buf::BufExt as _;
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
-use crate::base::TypeSource;
+use crate::base::SourceType;
 use crate::client::BASE_URL;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub(crate) async fn find_reviews(mal_id: TypeSource, page: &u16, http_clt: &Client<HttpConnector, Body>) -> Result<Reviews> {
+pub(crate) async fn find_reviews(mal_id: SourceType, page: &u16, http_clt: &Client<HttpConnector, Body>) -> Result<Reviews> {
     let url = format!("{}{}/reviews/{}", BASE_URL, mal_id.get_uri(), page).parse()?;
     let res = http_clt.get(url).await?;
     let body = hyper::body::aggregate(res).await?;
     let response = match mal_id {
-        TypeSource::Anime(_) => {
+        SourceType::Anime(_) => {
             let response: ResponseReview<AnimeReviewer> = serde_json::from_reader(body.reader())?;
             Reviews::Anime(response.reviews)
         }
-        TypeSource::Manga(_) => {
+        SourceType::Manga(_) => {
             let response: ResponseReview<MangaReviewer> = serde_json::from_reader(body.reader())?;
             Reviews::Manga(response.reviews)
         }

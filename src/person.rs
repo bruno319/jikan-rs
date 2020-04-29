@@ -2,7 +2,7 @@ use bytes::buf::BufExt as _;
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
-use crate::base::{MALImageItem, TypeSource};
+use crate::base::{MALImageItem, SourceType};
 use crate::client::BASE_URL;
 use crate::pictures;
 use crate::pictures::Picture;
@@ -64,6 +64,6 @@ pub struct PublishedManga {
 
 impl Person {
     pub async fn get_pictures(&self) -> Result<Vec<Picture>> {
-        pictures::find_pictures(TypeSource::Person(self.mal_id), &self.client).await
+        pictures::find_pictures(SourceType::Person(self.mal_id), &self.client).await
     }
 }

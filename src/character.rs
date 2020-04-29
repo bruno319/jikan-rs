@@ -2,7 +2,7 @@ use bytes::buf::BufExt as _;
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
-use crate::base::{TypeSource, VoiceActor, MALRoleItem};
+use crate::base::{SourceType, VoiceActor, MALRoleItem};
 use crate::client::BASE_URL;
 use crate::pictures;
 use crate::pictures::Picture;
@@ -42,6 +42,6 @@ pub struct Character {
 
 impl Character {
     pub async fn get_pictures(&self) -> Result<Vec<Picture>> {
-        pictures::find_pictures(TypeSource::Character(self.mal_id), &self.client).await
+        pictures::find_pictures(SourceType::Character(self.mal_id), &self.client).await
     }
 }

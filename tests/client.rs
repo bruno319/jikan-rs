@@ -1,6 +1,6 @@
 extern crate jikan_rs;
 
-use jikan_rs::base::TypeSource;
+use jikan_rs::base::SourceType;
 use jikan_rs::client::JikanClient;
 use jikan_rs::reviews::Reviews;
 use jikan_rs::stats::Stats;
@@ -63,28 +63,28 @@ async fn should_find_anime_episodes_info() {
 #[tokio::test]
 async fn should_find_anime_news() {
     let jikancl = JikanClient::new();
-    let news = jikancl.find_news(TypeSource::Anime(1)).await.unwrap();
+    let news = jikancl.find_news(SourceType::Anime(1)).await.unwrap();
     assert!(news.len() > 0);
 }
 
 #[tokio::test]
 async fn should_find_manga_news() {
     let jikancl = JikanClient::new();
-    let news = jikancl.find_news(TypeSource::Manga(1)).await.unwrap();
+    let news = jikancl.find_news(SourceType::Manga(1)).await.unwrap();
     assert!(news.len() > 0);
 }
 
 #[tokio::test]
 async fn should_find_anime_pictures() {
     let jikancl = JikanClient::new();
-    let pictures = jikancl.find_pictures(TypeSource::Anime(1)).await.unwrap();
+    let pictures = jikancl.find_pictures(SourceType::Anime(1)).await.unwrap();
     assert!(pictures.len() > 0);
 }
 
 #[tokio::test]
 async fn should_find_manga_pictures() {
     let jikancl = JikanClient::new();
-    let pictures = jikancl.find_pictures(TypeSource::Manga(1)).await.unwrap();
+    let pictures = jikancl.find_pictures(SourceType::Manga(1)).await.unwrap();
     assert!(pictures.len() > 0);
 }
 
@@ -99,7 +99,7 @@ async fn should_find_anime_videos() {
 #[tokio::test]
 async fn should_find_anime_stats() {
     let jikancl = JikanClient::new();
-    let stats = jikancl.find_stats(TypeSource::Anime(1)).await.unwrap();
+    let stats = jikancl.find_stats(SourceType::Anime(1)).await.unwrap();
     let stats = match stats {
         Stats::Anime(stats) => Some(stats),
         _ => None
@@ -110,7 +110,7 @@ async fn should_find_anime_stats() {
 #[tokio::test]
 async fn should_find_manga_stats() {
     let jikancl = JikanClient::new();
-    let stats = jikancl.find_stats(TypeSource::Manga(1)).await.unwrap();
+    let stats = jikancl.find_stats(SourceType::Manga(1)).await.unwrap();
     let stats = match stats {
         Stats::Manga(stats) => Some(stats),
         _ => None
@@ -121,35 +121,35 @@ async fn should_find_manga_stats() {
 #[tokio::test]
 async fn should_find_anime_forum() {
     let jikancl = JikanClient::new();
-    let topics = jikancl.find_forum(TypeSource::Anime(1)).await.unwrap();
+    let topics = jikancl.find_forum(SourceType::Anime(1)).await.unwrap();
     assert!(topics.len() > 0);
 }
 
 #[tokio::test]
 async fn should_find_manga_forum() {
     let jikancl = JikanClient::new();
-    let topics = jikancl.find_forum(TypeSource::Manga(1)).await.unwrap();
+    let topics = jikancl.find_forum(SourceType::Manga(1)).await.unwrap();
     assert!(topics.len() > 0);
 }
 
 #[tokio::test]
 async fn should_find_more_anime_info() {
     let jikancl = JikanClient::new();
-    let more_info = jikancl.find_more_info(TypeSource::Anime(1)).await.unwrap().unwrap();
+    let more_info = jikancl.find_more_info(SourceType::Anime(1)).await.unwrap().unwrap();
     assert!(!more_info.is_empty());
 }
 
 #[tokio::test]
 async fn should_find_more_manga_info() {
     let jikancl = JikanClient::new();
-    let more_info = jikancl.find_more_info(TypeSource::Manga(2)).await.unwrap().unwrap();
+    let more_info = jikancl.find_more_info(SourceType::Manga(2)).await.unwrap().unwrap();
     assert!(!more_info.is_empty());
 }
 
 #[tokio::test]
 async fn should_find_anime_reviews() {
     let jikancl = JikanClient::new();
-    let reviews = jikancl.find_reviews(TypeSource::Anime(1), &1).await.unwrap();
+    let reviews = jikancl.find_reviews(SourceType::Anime(1), &1).await.unwrap();
     let reviews = match reviews {
         Reviews::Anime(u) => Some(u),
         _ => None,
@@ -160,7 +160,7 @@ async fn should_find_anime_reviews() {
 #[tokio::test]
 async fn should_find_manga_reviews() {
     let jikancl = JikanClient::new();
-    let reviews = jikancl.find_reviews(TypeSource::Manga(1), &1).await.unwrap();
+    let reviews = jikancl.find_reviews(SourceType::Manga(1), &1).await.unwrap();
     let reviews = match reviews {
         Reviews::Manga(u) => Some(u),
         _ => None,
@@ -171,21 +171,21 @@ async fn should_find_manga_reviews() {
 #[tokio::test]
 async fn should_find_anime_recommendations() {
     let jikancl = JikanClient::new();
-    let recommendations = jikancl.find_recommendations(TypeSource::Anime(1)).await.unwrap();
+    let recommendations = jikancl.find_recommendations(SourceType::Anime(1)).await.unwrap();
     assert!(recommendations.len() > 0);
 }
 
 #[tokio::test]
 async fn should_find_manga_recommendations() {
     let jikancl = JikanClient::new();
-    let recommendations = jikancl.find_recommendations(TypeSource::Manga(1)).await.unwrap();
+    let recommendations = jikancl.find_recommendations(SourceType::Manga(1)).await.unwrap();
     assert!(recommendations.len() > 0);
 }
 
 #[tokio::test]
 async fn should_find_anime_user_updates() {
     let jikancl = JikanClient::new();
-    let user_updates = jikancl.find_user_updates(TypeSource::Anime(1), &1).await.unwrap();
+    let user_updates = jikancl.find_user_updates(SourceType::Anime(1), &1).await.unwrap();
     let user_updates = match user_updates {
         UserUpdates::Anime(u) => Some(u),
         _ => None,
@@ -196,7 +196,7 @@ async fn should_find_anime_user_updates() {
 #[tokio::test]
 async fn should_find_manga_user_updates() {
     let jikancl = JikanClient::new();
-    let user_updates = jikancl.find_user_updates(TypeSource::Manga(1), &1).await.unwrap();
+    let user_updates = jikancl.find_user_updates(SourceType::Manga(1), &1).await.unwrap();
     let user_updates = match user_updates {
         UserUpdates::Manga(u) => Some(u),
         _ => None,

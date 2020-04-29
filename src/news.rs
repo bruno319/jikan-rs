@@ -2,12 +2,12 @@ use bytes::buf::BufExt as _;
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
-use crate::base::TypeSource;
+use crate::base::SourceType;
 use crate::client::BASE_URL;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub(crate) async fn find_news(mal_id: TypeSource, http_clt: &Client<HttpConnector, Body>) -> Result<Vec<News>> {
+pub(crate) async fn find_news(mal_id: SourceType, http_clt: &Client<HttpConnector, Body>) -> Result<Vec<News>> {
     let url = format!("{}{}/news", BASE_URL, mal_id.get_uri()).parse()?;
     let res = http_clt.get(url).await?;
     let body = hyper::body::aggregate(res).await?;

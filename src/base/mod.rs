@@ -1,28 +1,32 @@
-pub enum TypeSource {
+use std::fmt::Display;
+use serde::export::Formatter;
+use core::fmt;
+
+pub enum SourceType {
     Anime(u32),
     Manga(u32),
     Person(u32),
     Character(u32)
 }
 
-impl TypeSource {
+impl SourceType {
     pub(crate) fn get_uri(&self) -> String {
         match self {
-            TypeSource::Anime(id) => format!("/anime/{}", id),
-            TypeSource::Manga(id) => format!("/manga/{}", id),
-            TypeSource::Person(id) => format!("/person/{}", id),
-            TypeSource::Character(id) => format!("/character/{}", id),
+            SourceType::Anime(id) => format!("/anime/{}", id),
+            SourceType::Manga(id) => format!("/manga/{}", id),
+            SourceType::Person(id) => format!("/person/{}", id),
+            SourceType::Character(id) => format!("/character/{}", id),
         }
     }
 }
 
 #[derive(Deserialize, Debug)]
-pub struct MALItem {
+pub struct MALTypeItem {
     pub mal_id: u32,
-    #[serde(rename = "type")]
-    pub content_type: String,
     pub name: String,
     pub url: String,
+    #[serde(rename = "type")]
+    pub content_type: String,
 }
 
 #[derive(Deserialize, Debug)]
@@ -45,9 +49,9 @@ pub struct MALRoleItem {
 #[derive(Deserialize, Debug)]
 pub struct VoiceActor {
     pub mal_id: u32,
+    pub name: String,
     pub url: String,
     pub image_url: String,
-    pub name: String,
     pub language: String,
 }
 
@@ -76,31 +80,53 @@ pub enum MangaStatus {
 #[derive(Deserialize, Debug)]
 pub struct RelatedContent {
     #[serde(rename = "Alternative Version", default = "default_content")]
-    pub alternative_versions: Vec<MALItem>,
+    pub alternative_versions: Vec<MALTypeItem>,
     #[serde(rename = "Alternative Setting", default = "default_content")]
-    pub alternative_settings: Vec<MALItem>,
+    pub alternative_settings: Vec<MALTypeItem>,
     #[serde(rename = "Adaptation", default = "default_content")]
-    pub adaptations: Vec<MALItem>,
+    pub adaptations: Vec<MALTypeItem>,
     #[serde(rename = "Character", default = "default_content")]
-    pub characters: Vec<MALItem>,
+    pub characters: Vec<MALTypeItem>,
     #[serde(rename = "Full story", default = "default_content")]
-    pub full_stories: Vec<MALItem>,
+    pub full_stories: Vec<MALTypeItem>,
     #[serde(rename = "Parent story", default = "default_content")]
-    pub parent_stories: Vec<MALItem>,
+    pub parent_stories: Vec<MALTypeItem>,
     #[serde(rename = "Prequel", default = "default_content")]
-    pub prequels: Vec<MALItem>,
+    pub prequels: Vec<MALTypeItem>,
     #[serde(rename = "Sequel", default = "default_content")]
-    pub sequels: Vec<MALItem>,
+    pub sequels: Vec<MALTypeItem>,
     #[serde(rename = "Other", default = "default_content")]
-    pub others: Vec<MALItem>,
+    pub others: Vec<MALTypeItem>,
     #[serde(rename = "Side story", default = "default_content")]
-    pub side_stories: Vec<MALItem>,
+    pub side_stories: Vec<MALTypeItem>,
     #[serde(rename = "Spin-off", default = "default_content")]
-    pub spin_offs: Vec<MALItem>,
+    pub spin_offs: Vec<MALTypeItem>,
     #[serde(rename = "Summary", default = "default_content")]
-    pub summaries: Vec<MALItem>,
+    pub summaries: Vec<MALTypeItem>,
 }
 
-fn default_content() -> Vec<MALItem> {
+fn default_content() -> Vec<MALTypeItem> {
     Vec::with_capacity(0)
+}
+
+pub struct Date {
+    year: u16,
+    month: u8,
+    day: u8,
+}
+
+impl Date {
+    pub fn new(year: u16, month: u8, day: u8) -> Date {
+        Date {
+            year,
+            month,
+            day
+        }
+    }
+}
+
+impl Display for Date {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "{}-{}-{}", self.year, self.month, self.day)
+    }
 }

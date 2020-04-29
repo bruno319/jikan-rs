@@ -3,7 +3,7 @@ use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
 use crate::{news, pictures, stats, forum, more_info, reviews, recommendations, user_updates};
-use crate::base::{MALItem, RelatedContent, TypeSource, MALRoleItem};
+use crate::base::{MALTypeItem, RelatedContent, SourceType, MALRoleItem};
 use crate::client::BASE_URL;
 use crate::news::News;
 use crate::pictures::Picture;
@@ -58,9 +58,9 @@ pub struct Manga {
     pub synopsis: String,
     pub background: Option<String>,
     pub related: RelatedContent,
-    pub genres: Vec<MALItem>,
-    pub authors: Vec<MALItem>,
-    pub serializations: Vec<MALItem>,
+    pub genres: Vec<MALTypeItem>,
+    pub authors: Vec<MALTypeItem>,
+    pub serializations: Vec<MALTypeItem>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -75,15 +75,15 @@ impl Manga {
     }
 
     pub async fn get_news(&self) -> Result<Vec<News>> {
-        news::find_news(TypeSource::Manga(self.mal_id), &self.client).await
+        news::find_news(SourceType::Manga(self.mal_id), &self.client).await
     }
 
     pub async fn get_pictures(&self) -> Result<Vec<Picture>> {
-        pictures::find_pictures(TypeSource::Manga(self.mal_id), &self.client).await
+        pictures::find_pictures(SourceType::Manga(self.mal_id), &self.client).await
     }
 
     pub async fn get_stats(&self) -> Result<MangaStats> {
-        let stats = stats::find_stats(TypeSource::Manga(self.mal_id), &self.client).await?;
+        let stats = stats::find_stats(SourceType::Manga(self.mal_id), &self.client).await?;
         match stats {
             Stats::Manga(stats) => Ok(stats),
             Stats::Anime(_) => Err(Box::from("Expected Manga Stats, but returned Anime Stats")),
@@ -91,15 +91,15 @@ impl Manga {
     }
 
     pub async fn get_forum(&self) -> Result<Vec<Topic>> {
-        forum::find_forum(TypeSource::Manga(self.mal_id), &self.client).await
+        forum::find_forum(SourceType::Manga(self.mal_id), &self.client).await
     }
 
     pub async fn get_more_info(&self) -> Result<Option<String>> {
-        more_info::find_more_info(TypeSource::Manga(self.mal_id), &self.client).await
+        more_info::find_more_info(SourceType::Manga(self.mal_id), &self.client).await
     }
 
     pub async fn get_reviews(&self, page: &u16) -> Result<Vec<Review<MangaReviewer>>> {
-        let reviews = reviews::find_reviews(TypeSource::Manga(self.mal_id), page, &self.client).await?;
+        let reviews = reviews::find_reviews(SourceType::Manga(self.mal_id), page, &self.client).await?;
         match reviews {
             Reviews::Manga(reviews) => Ok(reviews),
             Reviews::Anime(_) => Err(Box::from("Expected Manga Reviews, but returned Anime Reviews")),
@@ -107,11 +107,11 @@ impl Manga {
     }
 
     pub async fn get_recommendations(&self) -> Result<Vec<Recommendation>> {
-        recommendations::find_recommendations(TypeSource::Manga(self.mal_id), &self.client).await
+        recommendations::find_recommendations(SourceType::Manga(self.mal_id), &self.client).await
     }
 
     pub async fn get_user_updates(&self, page: &u16) -> Result<Vec<MangaUserUpdate>> {
-        let user_updates = user_updates::find_user_updates(TypeSource::Manga(self.mal_id), page, &self.client).await?;
+        let user_updates = user_updates::find_user_updates(SourceType::Manga(self.mal_id), page, &self.client).await?;
         match user_updates {
             UserUpdates::Manga(user_updates) => Ok(user_updates),
             UserUpdates::Anime(_) => Err(Box::from("Expected Manga User Updates, but returned Anime User Updates")),

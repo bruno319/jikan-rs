@@ -1,9 +1,9 @@
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
-use crate::{anime, character, forum, manga, more_info, news, person, pictures, recommendations, reviews, stats, user_updates};
+use crate::{anime, character, forum, manga, more_info, news, person, pictures, recommendations, reviews, search, stats, user_updates};
 use crate::anime::{Anime, characters::CharactersStaff, episodes::Episode, videos::Videos};
-use crate::base::{TypeSource, MALRoleItem};
+use crate::base::{SourceType, MALRoleItem};
 use crate::forum::Topic;
 use crate::manga::Manga;
 use crate::news::News;
@@ -14,6 +14,7 @@ use crate::reviews::Reviews;
 use crate::stats::Stats;
 use crate::user_updates::UserUpdates;
 use crate::character::Character;
+use crate::search::{SearchQuery, results::SearchResultEnum};
 
 pub const BASE_URL: &str = "http://api.jikan.moe/v3";
 
@@ -58,11 +59,11 @@ impl JikanClient {
         anime::episodes::find_anime_episodes(&mal_id, &self.http_client).await
     }
 
-    pub async fn find_news(&self, mal_id: TypeSource) -> Result<Vec<News>> {
+    pub async fn find_news(&self, mal_id: SourceType) -> Result<Vec<News>> {
         news::find_news(mal_id, &self.http_client).await
     }
 
-    pub async fn find_pictures(&self, mal_id: TypeSource) -> Result<Vec<Picture>> {
+    pub async fn find_pictures(&self, mal_id: SourceType) -> Result<Vec<Picture>> {
         pictures::find_pictures(mal_id, &self.http_client).await
     }
 
@@ -70,27 +71,31 @@ impl JikanClient {
         anime::videos::find_videos(&mal_id, &self.http_client).await
     }
 
-    pub async fn find_stats(&self, mal_id: TypeSource) -> Result<Stats> {
+    pub async fn find_stats(&self, mal_id: SourceType) -> Result<Stats> {
         stats::find_stats(mal_id, &self.http_client).await
     }
 
-    pub async fn find_forum(&self, mal_id: TypeSource) -> Result<Vec<Topic>> {
+    pub async fn find_forum(&self, mal_id: SourceType) -> Result<Vec<Topic>> {
         forum::find_forum(mal_id, &self.http_client).await
     }
 
-    pub async fn find_more_info(&self, mal_id: TypeSource) -> Result<Option<String>> {
+    pub async fn find_more_info(&self, mal_id: SourceType) -> Result<Option<String>> {
         more_info::find_more_info(mal_id, &self.http_client).await
     }
 
-    pub async fn find_reviews(&self, mal_id: TypeSource, page: &u16) -> Result<Reviews> {
+    pub async fn find_reviews(&self, mal_id: SourceType, page: &u16) -> Result<Reviews> {
         reviews::find_reviews(mal_id, page, &self.http_client).await
     }
 
-    pub async fn find_recommendations(&self, mal_id: TypeSource) -> Result<Vec<Recommendation>> {
+    pub async fn find_recommendations(&self, mal_id: SourceType) -> Result<Vec<Recommendation>> {
         recommendations::find_recommendations(mal_id, &self.http_client).await
     }
 
-    pub async fn find_user_updates(&self, mal_id: TypeSource, page: &u16) -> Result<UserUpdates> {
+    pub async fn find_user_updates(&self, mal_id: SourceType, page: &u16) -> Result<UserUpdates> {
         user_updates::find_user_updates(mal_id, page, &self.http_client).await
+    }
+
+    pub async fn search(&self, query: SearchQuery) -> Result<SearchResultEnum> {
+        search::search(query, &self.http_client).await
     }
 }
