@@ -2,7 +2,7 @@ use bytes::buf::BufExt;
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
-use crate::base::MALTypeItem;
+use crate::base::AnimeInfo;
 use crate::client::BASE_URL;
 
 pub mod archive;
@@ -46,27 +46,5 @@ pub struct SeasonResult {
     pub season_name: String,
     pub season_year: Option<u16>,
     #[serde(rename = "anime")]
-    pub animes: Vec<AnimeSeason>,
-}
-
-#[derive(Deserialize, Debug)]
-pub struct AnimeSeason {
-    pub mal_id: u32,
-    pub url: String,
-    pub title: String,
-    pub image_url: Option<String>,
-    pub synopsis: String,
-    #[serde(rename = "type")]
-    pub anime_type: String,
-    pub airing_start: Option<String>,
-    pub episodes: Option<u16>,
-    pub members: Option<u32>,
-    pub genres: Vec<MALTypeItem>,
-    pub source: String,
-    pub producers: Vec<MALTypeItem>,
-    pub score: Option<f32>,
-    pub licensors: Vec<String>,
-    pub r18: bool,
-    pub kids: bool,
-    pub continuing: bool,
+    pub animes: Vec<AnimeInfo>,
 }

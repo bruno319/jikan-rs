@@ -1,9 +1,10 @@
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
 
-use crate::{anime, character, forum, manga, more_info, news, person, pictures, recommendations, reviews, search, season, stats, user_updates};
+use crate::{anime, character, forum, manga, more_info, news, person, pictures, recommendations, reviews, schedule, search, season, stats, user_updates};
 use crate::anime::{Anime, characters::CharactersStaff, episodes::Episode, videos::Videos};
-use crate::base::{SourceType, MALRoleItem};
+use crate::base::{MALRoleItem, SourceType};
+use crate::character::Character;
 use crate::forum::Topic;
 use crate::manga::Manga;
 use crate::news::News;
@@ -11,12 +12,12 @@ use crate::person::Person;
 use crate::pictures::Picture;
 use crate::recommendations::Recommendation;
 use crate::reviews::Reviews;
+use crate::schedule::{Schedule, ScheduleOn};
+use crate::search::{results::SearchResultEnum, SearchQuery};
+use crate::season::{Season, SeasonResult};
+use crate::season::archive::ArchivedSeason;
 use crate::stats::Stats;
 use crate::user_updates::UserUpdates;
-use crate::character::Character;
-use crate::search::{SearchQuery, results::SearchResultEnum};
-use crate::season::{SeasonResult, Season};
-use crate::season::archive::ArchivedSeason;
 
 pub const BASE_URL: &str = "http://api.jikan.moe/v3";
 
@@ -103,6 +104,10 @@ impl JikanClient {
 
     pub async fn find_season_archives(&self) -> Result<Vec<ArchivedSeason>> {
         season::archive::find_season_archives(&self.http_client).await
+    }
+
+    pub async fn find_schedule(&self, schedule_on: ScheduleOn) -> Result<Schedule> {
+        schedule::find_schedule(schedule_on, &self.http_client).await
     }
 
     pub async fn search(&self, query: SearchQuery) -> Result<SearchResultEnum> {

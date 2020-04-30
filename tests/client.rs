@@ -6,6 +6,7 @@ use jikan_rs::reviews::Reviews;
 use jikan_rs::stats::Stats;
 use jikan_rs::user_updates::UserUpdates;
 use jikan_rs::season::Season;
+use jikan_rs::schedule::ScheduleOn;
 
 #[tokio::test]
 async fn should_find_an_anime() {
@@ -225,4 +226,34 @@ async fn should_find_season_archives() {
     let jikancl = JikanClient::new();
     let archives = jikancl.find_season_archives().await.unwrap();
     assert!(archives.len() > 0);
+}
+
+#[tokio::test]
+async fn should_find_schedule() {
+    let jikancl = JikanClient::new();
+    let schedule = jikancl.find_schedule(ScheduleOn::All).await.unwrap();
+    assert!(schedule.monday.len() > 0);
+    assert!(schedule.tuesday.len() > 0);
+    assert!(schedule.wednesday.len() > 0);
+    assert!(schedule.thursday.len() > 0);
+    assert!(schedule.friday.len() > 0);
+    assert!(schedule.saturday.len() > 0);
+    assert!(schedule.sunday.len() > 0);
+    assert!(schedule.other.len() > 0);
+    assert!(schedule.unknown.len() > 0);
+}
+
+#[tokio::test]
+async fn should_find_schedule_for_specific_day() {
+    let jikancl = JikanClient::new();
+    let schedule = jikancl.find_schedule(ScheduleOn::Sunday).await.unwrap();
+    assert!(schedule.sunday.len() > 0);
+    assert!(schedule.monday.is_empty());
+    assert!(schedule.tuesday.is_empty());
+    assert!(schedule.wednesday.is_empty());
+    assert!(schedule.thursday.is_empty());
+    assert!(schedule.friday.is_empty());
+    assert!(schedule.saturday.is_empty());
+    assert!(schedule.other.is_empty());
+    assert!(schedule.unknown.is_empty());
 }

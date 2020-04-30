@@ -1,6 +1,4 @@
-use std::fmt::Display;
-use serde::export::Formatter;
-use core::fmt;
+use std::fmt;
 
 pub enum SourceType {
     Anime(u32),
@@ -109,6 +107,29 @@ fn default_content() -> Vec<MALTypeItem> {
     Vec::with_capacity(0)
 }
 
+#[derive(Deserialize, Debug)]
+pub struct AnimeInfo {
+    pub mal_id: u32,
+    pub url: String,
+    pub title: String,
+    pub image_url: Option<String>,
+    pub synopsis: String,
+    #[serde(rename = "type")]
+    pub anime_type: String,
+    pub airing_start: Option<String>,
+    pub episodes: Option<u16>,
+    pub members: Option<u32>,
+    pub genres: Vec<MALTypeItem>,
+    pub source: String,
+    pub producers: Vec<MALTypeItem>,
+    pub score: Option<f32>,
+    pub licensors: Vec<String>,
+    pub r18: bool,
+    pub kids: bool,
+    #[serde(default)]
+    pub continuing: bool,
+}
+
 pub struct Date {
     year: u16,
     month: u8,
@@ -125,8 +146,8 @@ impl Date {
     }
 }
 
-impl Display for Date {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+impl fmt::Display for Date {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}-{}-{}", self.year, self.month, self.day)
     }
 }

@@ -17,3 +17,4 @@ pub mod user_updates;
 pub mod stats;
 pub mod base;
 pub mod season;
+pub mod schedule;
