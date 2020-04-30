@@ -1,12 +1,10 @@
-use bytes::buf::BufExt;
-use hyper::{Body, Client, Uri};
-use hyper::client::HttpConnector;
 use percent_encoding::{AsciiSet, CONTROLS, utf8_percent_encode};
+use reqwest::Client;
 
-use crate::client::BASE_URL;
-use crate::search::enums::{Source, SourceType, SourceStatus, Rating, OrderBy, Sort, Genre};
-use crate::search::results::SearchResultEnum;
 use crate::base::Date;
+use crate::client::BASE_URL;
+use crate::search::enums::{Genre, OrderBy, Rating, Sort, Source, SourceStatus, SourceType};
+use crate::search::results::SearchResultEnum;
 
 pub mod enums;
 pub mod results;
@@ -30,15 +28,17 @@ const FRAGMENT: &AsciiSet = &CONTROLS
     .add(b',')
     .add(b'&');
 
-pub(crate) async fn search(search_query: SearchQuery, http_clt: &Client<HttpConnector, Body>) -> Result<SearchResultEnum> {
-    let url: Uri = format!("{}/{}?{}", BASE_URL, search_query.source.get_uri(), search_query.query).parse()?;
-    let res = http_clt.get(url).await?;
-    let body = hyper::body::aggregate(res).await?;
+pub(crate) async fn search(search_query: SearchQuery, http_clt: &Client) -> Result<SearchResultEnum> {
+    let url = format!("{}/{}?{}", BASE_URL, search_query.source.get_uri(), search_query.query);
+    let body = http_clt.get(&url).send()
+        .await?
+        .text()
+        .await?;
     let search_result = match search_query.source {
-        Source::Anime => SearchResultEnum::Anime(serde_json::from_reader(body.reader())?),
-        Source::Manga => SearchResultEnum::Manga(serde_json::from_reader(body.reader())?),
-        Source::Person => SearchResultEnum::Person(serde_json::from_reader(body.reader())?),
-        Source::Character => SearchResultEnum::Character(serde_json::from_reader(body.reader())?),
+        Source::Anime => SearchResultEnum::Anime(serde_json::from_str(&body)?),
+        Source::Manga => SearchResultEnum::Manga(serde_json::from_str(&body)?),
+        Source::Person => SearchResultEnum::Person(serde_json::from_str(&body)?),
+        Source::Character => SearchResultEnum::Character(serde_json::from_str(&body)?),
     };
     Ok(search_result)
 }

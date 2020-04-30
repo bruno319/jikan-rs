@@ -1,6 +1,3 @@
-use hyper::{Body, Client};
-use hyper::client::HttpConnector;
-
 use crate::{anime, character, forum, manga, more_info, news, person, pictures, recommendations, reviews, schedule, search, season, stats, user_updates};
 use crate::anime::{Anime, characters::CharactersStaff, episodes::Episode, videos::Videos};
 use crate::base::{MALRoleItem, SourceType};
@@ -24,13 +21,13 @@ pub const BASE_URL: &str = "http://api.jikan.moe/v3";
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
 pub struct JikanClient {
-    http_client: Client<HttpConnector, Body>,
+    http_client: reqwest::Client,
 }
 
 impl JikanClient {
     pub fn new() -> JikanClient {
         JikanClient {
-            http_client: Client::new()
+            http_client: reqwest::Client::new()
         }
     }
 

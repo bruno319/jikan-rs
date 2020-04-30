@@ -1,21 +1,19 @@
 use std::fmt;
 
-use bytes::buf::BufExt;
-use hyper::{Body, Client};
-use hyper::client::HttpConnector;
+use reqwest::Client;
 
 use crate::base::AnimeInfo;
 use crate::client::BASE_URL;
-use hyper::{body::HttpBody as _};
-use tokio::io::{self, AsyncWriteExt as _};
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub(crate) async fn find_schedule(schedule_on: ScheduleOn, http_clt: &Client<HttpConnector, Body>) -> Result<Schedule> {
-    let url = format!("{}/schedule/{}", BASE_URL, schedule_on.get_uri()).parse()?;
-    let mut res = http_clt.get(url).await?;
-    let body = hyper::body::aggregate(res).await?;
-    let schedule: Schedule = serde_json::from_reader(body.reader())?;
+pub(crate) async fn find_schedule(schedule_on: ScheduleOn, http_clt: &Client) -> Result<Schedule> {
+    let url = format!("{}/schedule/{}", BASE_URL, schedule_on.get_uri());
+    let body = http_clt.get(&url).send()
+        .await?
+        .text()
+        .await?;
+    let schedule: Schedule = serde_json::from_str(&body)?;
 
     Ok(schedule)
 }

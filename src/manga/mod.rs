@@ -1,27 +1,27 @@
-use bytes::buf::BufExt;
-use hyper::{Body, Client};
-use hyper::client::HttpConnector;
+use reqwest::Client;
 
-use crate::{news, pictures, stats, forum, more_info, reviews, recommendations, user_updates};
-use crate::base::{MALTypeItem, RelatedContent, SourceType, MALRoleItem};
+use crate::{forum, more_info, news, pictures, recommendations, reviews, stats, user_updates};
+use crate::base::{MALRoleItem, MALTypeItem, RelatedContent, SourceType};
 use crate::client::BASE_URL;
+use crate::forum::Topic;
 use crate::news::News;
 use crate::pictures::Picture;
-use crate::stats::{Stats, MangaStats};
-use crate::forum::Topic;
-use crate::reviews::{Review, MangaReviewer, Reviews};
 use crate::recommendations::Recommendation;
+use crate::reviews::{MangaReviewer, Review, Reviews};
+use crate::stats::{MangaStats, Stats};
 use crate::user_updates::{MangaUserUpdate, UserUpdates};
 
 pub mod characters;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub(crate) async fn find_manga(mal_id: u32, http_clt: &Client<HttpConnector, Body>) -> Result<Manga> {
-    let url = format!("{}/manga/{}", BASE_URL, mal_id).parse()?;
-    let res = http_clt.get(url).await?;
-    let body = hyper::body::aggregate(res).await?;
-    let mut manga: Manga = serde_json::from_reader(body.reader())?;
+pub(crate) async fn find_manga(mal_id: u32, http_clt: &Client) -> Result<Manga> {
+    let url = format!("{}/manga/{}", BASE_URL, mal_id);
+    let body = http_clt.get(&url).send()
+        .await?
+        .text()
+        .await?;
+    let mut manga: Manga = serde_json::from_str(&body)?;
 
     manga.client = http_clt.clone();
 
@@ -31,7 +31,7 @@ pub(crate) async fn find_manga(mal_id: u32, http_clt: &Client<HttpConnector, Bod
 #[derive(Deserialize, Debug)]
 pub struct Manga {
     #[serde(skip)]
-    client: Client<HttpConnector, Body>,
+    client: Client,
     pub request_hash: String,
     pub request_cached: bool,
     pub request_cache_expiry: u32,

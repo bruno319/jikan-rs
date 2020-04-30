@@ -1,12 +1,10 @@
-use bytes::buf::BufExt as _;
-use hyper::{Body, Client};
-use hyper::client::HttpConnector;
+use reqwest::Client;
 
 use crate::client::BASE_URL;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub(crate) async fn find_anime_episodes(mal_id: &u32, http_clt: &Client<HttpConnector, Body>) -> Result<Vec<Episode>> {
+pub(crate) async fn find_anime_episodes(mal_id: &u32, http_clt: &Client) -> Result<Vec<Episode>> {
     let mut page = 1 as u8;
 
     let response = make_request(mal_id, http_clt, &page).await?;
@@ -25,11 +23,13 @@ pub(crate) async fn find_anime_episodes(mal_id: &u32, http_clt: &Client<HttpConn
     Ok(episodes)
 }
 
-async fn make_request(mal_id: &u32, http_clt: &Client<HttpConnector, Body>, page: &u8) -> Result<Response> {
-    let url = format!("{}/anime/{}/episodes/{}", BASE_URL, mal_id, page).parse()?;
-    let res = http_clt.get(url).await?;
-    let body = hyper::body::aggregate(res).await?;
-    let response: Response = serde_json::from_reader(body.reader())?;
+async fn make_request(mal_id: &u32, http_clt: &Client, page: &u8) -> Result<Response> {
+    let url = format!("{}/anime/{}/episodes/{}", BASE_URL, mal_id, page);
+    let body = http_clt.get(&url).send()
+        .await?
+        .text()
+        .await?;
+    let response: Response = serde_json::from_str(&body)?;
     Ok(response)
 }
 

@@ -1,23 +1,23 @@
-use bytes::buf::BufExt as _;
-use hyper::{Body, Client};
-use hyper::client::HttpConnector;
+use reqwest::Client;
 
 use crate::base::SourceType;
 use crate::client::BASE_URL;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub(crate) async fn find_reviews(mal_id: SourceType, page: &u16, http_clt: &Client<HttpConnector, Body>) -> Result<Reviews> {
-    let url = format!("{}{}/reviews/{}", BASE_URL, mal_id.get_uri(), page).parse()?;
-    let res = http_clt.get(url).await?;
-    let body = hyper::body::aggregate(res).await?;
+pub(crate) async fn find_reviews(mal_id: SourceType, page: &u16, http_clt: &Client) -> Result<Reviews> {
+    let url = format!("{}{}/reviews/{}", BASE_URL, mal_id.get_uri(), page);
+    let body = http_clt.get(&url).send()
+        .await?
+        .text()
+        .await?;
     let response = match mal_id {
         SourceType::Anime(_) => {
-            let response: ResponseReview<AnimeReviewer> = serde_json::from_reader(body.reader())?;
+            let response: ResponseReview<AnimeReviewer> = serde_json::from_str(&body)?;
             Reviews::Anime(response.reviews)
         }
         SourceType::Manga(_) => {
-            let response: ResponseReview<MangaReviewer> = serde_json::from_reader(body.reader())?;
+            let response: ResponseReview<MangaReviewer> = serde_json::from_str(&body)?;
             Reviews::Manga(response.reviews)
         }
         _ => return Err(Box::from("There is no reviews for this type source")),

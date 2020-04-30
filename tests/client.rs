@@ -3,10 +3,10 @@ extern crate jikan_rs;
 use jikan_rs::base::SourceType;
 use jikan_rs::client::JikanClient;
 use jikan_rs::reviews::Reviews;
+use jikan_rs::schedule::ScheduleOn;
+use jikan_rs::season::Season;
 use jikan_rs::stats::Stats;
 use jikan_rs::user_updates::UserUpdates;
-use jikan_rs::season::Season;
-use jikan_rs::schedule::ScheduleOn;
 
 #[tokio::test]
 async fn should_find_an_anime() {

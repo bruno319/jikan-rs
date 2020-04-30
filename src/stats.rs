@@ -1,19 +1,19 @@
-use bytes::buf::BufExt as _;
-use hyper::{Body, Client};
-use hyper::client::HttpConnector;
+use reqwest::Client;
 
 use crate::base::SourceType;
 use crate::client::BASE_URL;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub(crate) async fn find_stats(mal_id: SourceType, http_clt: &Client<HttpConnector, Body>) -> Result<Stats> {
-    let url = format!("{}{}/stats", BASE_URL, mal_id.get_uri()).parse()?;
-    let res = http_clt.get(url).await?;
-    let body = hyper::body::aggregate(res).await?;
+pub(crate) async fn find_stats(mal_id: SourceType, http_clt: &Client) -> Result<Stats> {
+    let url = format!("{}{}/stats", BASE_URL, mal_id.get_uri());
+    let body = http_clt.get(&url).send()
+        .await?
+        .text()
+        .await?;
     let stats = match mal_id {
-        SourceType::Anime(_) => Stats::Anime(serde_json::from_reader(body.reader())?),
-        SourceType::Manga(_) => Stats::Manga(serde_json::from_reader(body.reader())?),
+        SourceType::Anime(_) => Stats::Anime(serde_json::from_str(&body)?),
+        SourceType::Manga(_) => Stats::Manga(serde_json::from_str(&body)?),
         _ => return Err(Box::from("There is no stats for this type source")),
     };
 

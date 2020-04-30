@@ -1,19 +1,19 @@
-use bytes::buf::BufExt as _;
-use hyper::{Body, Client};
-use hyper::client::HttpConnector;
+use reqwest::Client;
 
-use crate::base::{SourceType, VoiceActor, MALRoleItem};
+use crate::base::{MALRoleItem, SourceType, VoiceActor};
 use crate::client::BASE_URL;
 use crate::pictures;
 use crate::pictures::Picture;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub(crate) async fn find_character(mal_id: u32, http_clt: &Client<HttpConnector, Body>) -> Result<Character> {
-    let url = format!("{}/character/{}", BASE_URL, mal_id).parse()?;
-    let res = http_clt.get(url).await?;
-    let body = hyper::body::aggregate(res).await?;
-    let mut character: Character = serde_json::from_reader(body.reader())?;
+pub(crate) async fn find_character(mal_id: u32, http_clt: &Client) -> Result<Character> {
+    let url = format!("{}/character/{}", BASE_URL, mal_id);
+    let body = http_clt.get(&url).send()
+        .await?
+        .text()
+        .await?;
+    let mut character: Character = serde_json::from_str(&body)?;
 
     character.client = http_clt.clone();
 
@@ -23,7 +23,7 @@ pub(crate) async fn find_character(mal_id: u32, http_clt: &Client<HttpConnector,
 #[derive(Deserialize, Debug)]
 pub struct Character {
     #[serde(skip)]
-    client: Client<HttpConnector, Body>,
+    client: Client,
     request_hash: String,
     request_cached: bool,
     request_cache_expiry: u32,

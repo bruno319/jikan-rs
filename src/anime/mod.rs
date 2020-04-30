@@ -1,6 +1,4 @@
-use bytes::buf::BufExt as _;
-use hyper::{Body, Client};
-use hyper::client::HttpConnector;
+use reqwest::Client;
 
 use crate::{forum, more_info, news, pictures, recommendations, reviews, stats, user_updates};
 use crate::anime::characters::CharactersStaff;
@@ -22,12 +20,13 @@ pub mod characters;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub(crate) async fn find_anime(mal_id: u32, http_clt: &Client<HttpConnector, Body>) -> Result<Anime> {
-    let url = format!("{}/anime/{}", BASE_URL, mal_id).parse()?;
-    let res = http_clt.get(url).await?;
-    let body = hyper::body::aggregate(res).await?;
-    let mut anime: Anime = serde_json::from_reader(body.reader())?;
-
+pub(crate) async fn find_anime(mal_id: u32, http_clt: &Client) -> Result<Anime> {
+    let url = format!("{}/anime/{}", BASE_URL, mal_id);
+    let body = http_clt.get(&url).send()
+        .await?
+        .text()
+        .await?;
+    let mut anime: Anime = serde_json::from_str(&body)?;
     anime.client = http_clt.clone();
 
     Ok(anime)
@@ -36,7 +35,7 @@ pub(crate) async fn find_anime(mal_id: u32, http_clt: &Client<HttpConnector, Bod
 #[derive(Deserialize, Debug)]
 pub struct Anime {
     #[serde(skip)]
-    client: Client<HttpConnector, Body>,
+    client: Client,
     pub request_hash: String,
     pub request_cached: bool,
     pub request_cache_expiry: u32,
