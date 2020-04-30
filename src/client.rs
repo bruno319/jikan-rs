@@ -16,6 +16,7 @@ use crate::user_updates::UserUpdates;
 use crate::character::Character;
 use crate::search::{SearchQuery, results::SearchResultEnum};
 use crate::season::{SeasonResult, Season};
+use crate::season::archive::ArchivedSeason;
 
 pub const BASE_URL: &str = "http://api.jikan.moe/v3";
 
@@ -98,6 +99,10 @@ impl JikanClient {
 
     pub async fn find_season(&self, season: Season) -> Result<SeasonResult> {
         season::find_season(season, &self.http_client).await
+    }
+
+    pub async fn find_season_archives(&self) -> Result<Vec<ArchivedSeason>> {
+        season::archive::find_season_archives(&self.http_client).await
     }
 
     pub async fn search(&self, query: SearchQuery) -> Result<SearchResultEnum> {

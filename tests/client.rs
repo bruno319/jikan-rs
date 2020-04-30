@@ -219,3 +219,10 @@ async fn should_find_animes_with_undefined_season() {
     let season = jikancl.find_season(Season::Later).await.unwrap();
     assert!(season.animes.len() > 0);
 }
+
+#[tokio::test]
+async fn should_find_season_archives() {
+    let jikancl = JikanClient::new();
+    let archives = jikancl.find_season_archives().await.unwrap();
+    assert!(archives.len() > 0);
+}

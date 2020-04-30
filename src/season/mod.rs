@@ -1,8 +1,11 @@
 use bytes::buf::BufExt;
 use hyper::{Body, Client};
 use hyper::client::HttpConnector;
+
 use crate::base::MALTypeItem;
 use crate::client::BASE_URL;
+
+pub mod archive;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
@@ -20,7 +23,7 @@ pub enum Season {
     Fall(u16),
     Summer(u16),
     Spring(u16),
-    Later
+    Later,
 }
 
 impl Season {
