@@ -3,7 +3,7 @@ use hyper::client::HttpConnector;
 
 use crate::{anime, character, forum, manga, more_info, news, person, pictures, recommendations, reviews, search, season, stats, user_updates};
 use crate::anime::{Anime, characters::CharactersStaff, episodes::Episode, videos::Videos};
-use crate::base::{SourceType, MALRoleItem, Season};
+use crate::base::{SourceType, MALRoleItem};
 use crate::forum::Topic;
 use crate::manga::Manga;
 use crate::news::News;
@@ -15,7 +15,7 @@ use crate::stats::Stats;
 use crate::user_updates::UserUpdates;
 use crate::character::Character;
 use crate::search::{SearchQuery, results::SearchResultEnum};
-use crate::season::SeasonResult;
+use crate::season::{SeasonResult, Season};
 
 pub const BASE_URL: &str = "http://api.jikan.moe/v3";
 
@@ -96,8 +96,8 @@ impl JikanClient {
         user_updates::find_user_updates(mal_id, page, &self.http_client).await
     }
 
-    pub async fn find_season(&self, year: u16, season: Season) -> Result<SeasonResult> {
-        season::find_season(year, season, &self.http_client).await
+    pub async fn find_season(&self, season: Season) -> Result<SeasonResult> {
+        season::find_season(season, &self.http_client).await
     }
 
     pub async fn search(&self, query: SearchQuery) -> Result<SearchResultEnum> {

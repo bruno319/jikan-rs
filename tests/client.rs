@@ -1,10 +1,11 @@
 extern crate jikan_rs;
 
-use jikan_rs::base::{SourceType, Season};
+use jikan_rs::base::SourceType;
 use jikan_rs::client::JikanClient;
 use jikan_rs::reviews::Reviews;
 use jikan_rs::stats::Stats;
 use jikan_rs::user_updates::UserUpdates;
+use jikan_rs::season::Season;
 
 #[tokio::test]
 async fn should_find_an_anime() {
@@ -207,6 +208,14 @@ async fn should_find_manga_user_updates() {
 #[tokio::test]
 async fn should_find_a_season() {
     let jikancl = JikanClient::new();
-    let season = jikancl.find_season(2020, Season::Winter).await.unwrap();
+    let season = jikancl.find_season(Season::Winter(2020)).await.unwrap();
+    assert!(season.animes.len() > 0);
+}
+
+
+#[tokio::test]
+async fn should_find_animes_with_undefined_season() {
+    let jikancl = JikanClient::new();
+    let season = jikancl.find_season(Season::Later).await.unwrap();
     assert!(season.animes.len() > 0);
 }
