@@ -31,7 +31,6 @@ const FRAGMENT: &AsciiSet = &CONTROLS
     .add(b'&');
 
 pub(crate) async fn search(search_query: SearchQuery, http_clt: &Client<HttpConnector, Body>) -> Result<SearchResultEnum> {
-    println!("{}", search_query.query);
     let url: Uri = format!("{}/{}?{}", BASE_URL, search_query.source.get_uri(), search_query.query).parse()?;
     let res = http_clt.get(url).await?;
     let body = hyper::body::aggregate(res).await?;
@@ -97,8 +96,8 @@ impl SearchQueryBuilder {
         self
     }
 
-    pub fn name(mut self, name: String) -> SearchQueryBuilder {
-        self.name = Some(utf8_percent_encode(name.as_str(), FRAGMENT).to_string());
+    pub fn name(mut self, name: &str) -> SearchQueryBuilder {
+        self.name = Some(utf8_percent_encode(name, FRAGMENT).to_string());
         self
     }
 
