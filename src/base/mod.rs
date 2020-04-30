@@ -109,6 +109,20 @@ fn default_content() -> Vec<MALTypeItem> {
     Vec::with_capacity(0)
 }
 
+#[derive(Debug)]
+pub enum Season {
+    Winter,
+    Fall,
+    Summer,
+    Spring
+}
+
+impl Display for Season {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "{:?}", self)
+    }
+}
+
 pub struct Date {
     year: u16,
     month: u8,
