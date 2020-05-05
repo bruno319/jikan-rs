@@ -6,6 +6,7 @@ use jikan_rs::reviews::Reviews;
 use jikan_rs::schedule::ScheduleOn;
 use jikan_rs::season::Season;
 use jikan_rs::stats::Stats;
+use jikan_rs::top::{Top, TopAnimeSubtype, TopMangaSubtype, TopResult};
 use jikan_rs::user_updates::UserUpdates;
 
 #[tokio::test]
@@ -256,4 +257,48 @@ async fn should_find_schedule_for_specific_day() {
     assert!(schedule.saturday.is_empty());
     assert!(schedule.other.is_empty());
     assert!(schedule.unknown.is_empty());
+}
+
+#[tokio::test]
+async fn should_find_top_anime() {
+    let jikancl = JikanClient::new();
+    let top_anime = jikancl.find_top(Top::Anime { page: 1, subtype: TopAnimeSubtype::All }).await.unwrap();
+    let top_anime = match top_anime {
+        TopResult::Anime(top_anime) => Some(top_anime),
+        _ => None
+    }.unwrap();
+    assert_eq!(top_anime.len(), 50);
+}
+
+#[tokio::test]
+async fn should_find_top_manga() {
+    let jikancl = JikanClient::new();
+    let top_manga = jikancl.find_top(Top::Manga { page: 1, subtype: TopMangaSubtype::All }).await.unwrap();
+    let top_manga = match top_manga {
+        TopResult::Manga(top_manga) => Some(top_manga),
+        _ => None
+    }.unwrap();
+    assert_eq!(top_manga.len(), 50);
+}
+
+#[tokio::test]
+async fn should_find_top_characters() {
+    let jikancl = JikanClient::new();
+    let top_character = jikancl.find_top(Top::Character(1)).await.unwrap();
+    let top_character = match top_character {
+        TopResult::Character(top_character) => Some(top_character),
+        _ => None
+    }.unwrap();
+    assert_eq!(top_character.len(), 50);
+}
+
+#[tokio::test]
+async fn should_find_top_people() {
+    let jikancl = JikanClient::new();
+    let top_people = jikancl.find_top(Top::People(1)).await.unwrap();
+    let top_people = match top_people {
+        TopResult::People(top_people) => Some(top_people),
+        _ => None
+    }.unwrap();
+    assert_eq!(top_people.len(), 50);
 }

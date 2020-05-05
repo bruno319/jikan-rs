@@ -1,4 +1,4 @@
-use crate::{anime, character, forum, manga, more_info, news, person, pictures, recommendations, reviews, schedule, search, season, stats, user_updates};
+use crate::{anime, character, forum, manga, more_info, news, person, pictures, recommendations, reviews, schedule, search, season, stats, top, user_updates};
 use crate::anime::{Anime, characters::CharactersStaff, episodes::Episode, videos::Videos};
 use crate::base::{MALRoleItem, SourceType};
 use crate::character::Character;
@@ -14,6 +14,7 @@ use crate::search::{results::SearchResultEnum, SearchQuery};
 use crate::season::{Season, SeasonResult};
 use crate::season::archive::ArchivedSeason;
 use crate::stats::Stats;
+use crate::top::{Top, TopResult};
 use crate::user_updates::UserUpdates;
 
 pub const BASE_URL: &str = "http://api.jikan.moe/v3";
@@ -105,6 +106,10 @@ impl JikanClient {
 
     pub async fn find_schedule(&self, schedule_on: ScheduleOn) -> Result<Schedule> {
         schedule::find_schedule(schedule_on, &self.http_client).await
+    }
+
+    pub async fn find_top(&self, top: Top) -> Result<TopResult> {
+        top::find_top(top, &self.http_client).await
     }
 
     pub async fn search(&self, query: SearchQuery) -> Result<SearchResultEnum> {

@@ -1,6 +1,6 @@
 use reqwest::Client;
 
-use crate::base::{AnimeStatus, MangaStatus, SourceType};
+use crate::base::{AnimeStatusForUser, MangaStatusForUser, SourceType};
 use crate::client::BASE_URL;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
@@ -53,7 +53,7 @@ pub struct AnimeUserUpdate {
     pub url: Option<String>,
     pub image_url: Option<String>,
     pub score: Option<u8>,
-    pub status: Option<AnimeStatus>,
+    pub status: Option<AnimeStatusForUser>,
     pub episodes_seen: Option<u16>,
     pub episodes_total: Option<u16>,
     pub date: Option<String>,
@@ -65,7 +65,7 @@ pub struct MangaUserUpdate {
     pub url: Option<String>,
     pub image_url: Option<String>,
     pub score: Option<u8>,
-    pub status: Option<MangaStatus>,
+    pub status: Option<MangaStatusForUser>,
     pub volumes_read: Option<u16>,
     pub volumes_total: Option<u16>,
     pub chapters_read: Option<u16>,

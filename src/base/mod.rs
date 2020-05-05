@@ -8,7 +8,7 @@ pub enum SourceType {
 }
 
 impl SourceType {
-    pub(crate) fn get_uri(&self) -> String {
+    pub fn get_uri(&self) -> String {
         match self {
             SourceType::Anime(id) => format!("/anime/{}", id),
             SourceType::Manga(id) => format!("/manga/{}", id),
@@ -54,7 +54,7 @@ pub struct VoiceActor {
 }
 
 #[derive(Deserialize, Debug)]
-pub enum AnimeStatus {
+pub enum AnimeStatusForUser {
     Watching,
     Completed,
     #[serde(rename = "On-Hold")]
@@ -65,7 +65,7 @@ pub enum AnimeStatus {
 }
 
 #[derive(Deserialize, Debug)]
-pub enum MangaStatus {
+pub enum MangaStatusForUser {
     Reading,
     Completed,
     #[serde(rename = "On-Hold")]
