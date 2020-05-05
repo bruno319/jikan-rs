@@ -1,4 +1,5 @@
-use crate::{anime, character, forum, genre, manga, more_info, news, person, pictures, recommendations, reviews, schedule, search, season, stats, top, user_updates};
+use crate::{anime, character, forum, genre, magazine, manga, more_info, news, person, pictures,
+            producer, recommendations, reviews, schedule, search, season, stats, top, user_updates};
 use crate::anime::{Anime, characters::CharactersStaff, episodes::Episode, videos::Videos};
 use crate::base::{MALRoleItem, SourceType};
 use crate::character::Character;
@@ -18,6 +19,8 @@ use crate::season::archive::ArchivedSeason;
 use crate::stats::Stats;
 use crate::top::{Top, TopResult};
 use crate::user_updates::UserUpdates;
+use crate::producer::Producer;
+use crate::magazine::Magazine;
 
 pub const BASE_URL: &str = "http://api.jikan.moe/v3";
 
@@ -120,6 +123,14 @@ impl JikanClient {
 
     pub async fn find_mangas_with_genre(&self, genre: MangaGenre, page: &u16) -> Result<GenreMangaResult> {
         genre::find_mangas_with_genre(genre, page, &self.http_client).await
+    }
+
+    pub async fn find_producer(&self, id: u32, page: &u16) -> Result<Producer> {
+        producer::find_producer(id, page, &self.http_client).await
+    }
+
+    pub async fn find_magazine(&self, id: u32, page: &u16) -> Result<Magazine> {
+        magazine::find_magazine(id, page, &self.http_client).await
     }
 
     pub async fn search(&self, query: SearchQuery) -> Result<SearchResultEnum> {

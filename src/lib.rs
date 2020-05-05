@@ -20,3 +20,5 @@ pub mod season;
 pub mod schedule;
 pub mod top;
 pub mod genre;
+pub mod producer;
+pub mod magazine;

@@ -319,3 +319,17 @@ async fn should_find_shoujo_mangas() {
     assert_eq!(shoujo_mangas.mal_url.name, "Shoujo Manga");
     assert!(shoujo_mangas.mangas.len() > 0);
 }
+
+#[tokio::test]
+async fn should_find_a_producer() {
+    let jikancl = JikanClient::new();
+    let producer = jikancl.find_producer(1, &1).await.unwrap();
+    assert!(producer.animes.len() > 0);
+}
+
+#[tokio::test]
+async fn should_find_a_magazine() {
+    let jikancl = JikanClient::new();
+    let magazine = jikancl.find_magazine(1, &1).await.unwrap();
+    assert!(magazine.mangas.len() > 0);
+}
