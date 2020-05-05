@@ -3,7 +3,7 @@ use reqwest::Client;
 
 use crate::base::Date;
 use crate::client::BASE_URL;
-use crate::search::enums::{Genre, OrderBy, Rating, Sort, Source, SourceStatus, SourceType};
+use crate::search::enums::{Genres, OrderBy, Rating, Sort, Source, SourceStatus, SourceType};
 use crate::search::results::SearchResultEnum;
 
 pub mod enums;
@@ -57,7 +57,7 @@ pub struct SearchQueryBuilder {
     rating: Option<Rating>,
     order_by: Option<OrderBy>,
     sort: Option<Sort>,
-    genre: Option<Genre>,
+    genre: Option<Genres>,
     score: Option<u8>,
     genre_exclude: bool,
     start_date: Option<String>,
@@ -122,7 +122,7 @@ impl SearchQueryBuilder {
         self
     }
 
-    pub fn genre(mut self, genre: Genre) -> SearchQueryBuilder {
+    pub fn genre(mut self, genre: Genres) -> SearchQueryBuilder {
         self.genre = Some(genre);
         self
     }
@@ -232,14 +232,14 @@ impl SearchQueryBuilder {
         if let Some(genre) = self.genre {
             query = format!("{}&genre=", query);
             match genre {
-                Genre::Anime(genres) => {
+                Genres::Anime(genres) => {
                     let genres = genres.iter()
                         .map(|genre| (*genre as u8).to_string())
                         .collect::<Vec<String>>()
                         .join(",");
                     query = format!("{}{}", query, genres);
                 }
-                Genre::Manga(genres) => {
+                Genres::Manga(genres) => {
                     let genres = genres.iter()
                         .map(|genre| (*genre as u8).to_string())
                         .collect::<Vec<String>>()

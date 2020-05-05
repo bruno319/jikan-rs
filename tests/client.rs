@@ -4,6 +4,7 @@ use jikan_rs::base::SourceType;
 use jikan_rs::client::JikanClient;
 use jikan_rs::reviews::Reviews;
 use jikan_rs::schedule::ScheduleOn;
+use jikan_rs::search::enums::{AnimeGenre, MangaGenre};
 use jikan_rs::season::Season;
 use jikan_rs::stats::Stats;
 use jikan_rs::top::{Top, TopAnimeSubtype, TopMangaSubtype, TopResult};
@@ -301,4 +302,20 @@ async fn should_find_top_people() {
         _ => None
     }.unwrap();
     assert_eq!(top_people.len(), 50);
+}
+
+#[tokio::test]
+async fn should_find_action_animes() {
+    let jikancl = JikanClient::new();
+    let action_animes = jikancl.find_animes_with_genre(AnimeGenre::Action, &1).await.unwrap();
+    assert_eq!(action_animes.mal_url.name, "Action Anime");
+    assert!(action_animes.animes.len() > 0);
+}
+
+#[tokio::test]
+async fn should_find_shoujo_mangas() {
+    let jikancl = JikanClient::new();
+    let shoujo_mangas = jikancl.find_mangas_with_genre(MangaGenre::Shoujo, &1).await.unwrap();
+    assert_eq!(shoujo_mangas.mal_url.name, "Shoujo Manga");
+    assert!(shoujo_mangas.mangas.len() > 0);
 }

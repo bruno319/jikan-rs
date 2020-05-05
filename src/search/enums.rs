@@ -170,7 +170,7 @@ impl Sort {
     }
 }
 
-pub enum Genre {
+pub enum Genres {
     Anime(Vec<AnimeGenre>),
     Manga(Vec<MangaGenre>),
 }

@@ -1,8 +1,9 @@
-use crate::{anime, character, forum, manga, more_info, news, person, pictures, recommendations, reviews, schedule, search, season, stats, top, user_updates};
+use crate::{anime, character, forum, genre, manga, more_info, news, person, pictures, recommendations, reviews, schedule, search, season, stats, top, user_updates};
 use crate::anime::{Anime, characters::CharactersStaff, episodes::Episode, videos::Videos};
 use crate::base::{MALRoleItem, SourceType};
 use crate::character::Character;
 use crate::forum::Topic;
+use crate::genre::{GenreAnimeResult, GenreMangaResult};
 use crate::manga::Manga;
 use crate::news::News;
 use crate::person::Person;
@@ -11,6 +12,7 @@ use crate::recommendations::Recommendation;
 use crate::reviews::Reviews;
 use crate::schedule::{Schedule, ScheduleOn};
 use crate::search::{results::SearchResultEnum, SearchQuery};
+use crate::search::enums::{AnimeGenre, MangaGenre};
 use crate::season::{Season, SeasonResult};
 use crate::season::archive::ArchivedSeason;
 use crate::stats::Stats;
@@ -110,6 +112,14 @@ impl JikanClient {
 
     pub async fn find_top(&self, top: Top) -> Result<TopResult> {
         top::find_top(top, &self.http_client).await
+    }
+
+    pub async fn find_animes_with_genre(&self, genre: AnimeGenre, page: &u16) -> Result<GenreAnimeResult> {
+        genre::find_animes_with_genre(genre, page, &self.http_client).await
+    }
+
+    pub async fn find_mangas_with_genre(&self, genre: MangaGenre, page: &u16) -> Result<GenreMangaResult> {
+        genre::find_mangas_with_genre(genre, page, &self.http_client).await
     }
 
     pub async fn search(&self, query: SearchQuery) -> Result<SearchResultEnum> {

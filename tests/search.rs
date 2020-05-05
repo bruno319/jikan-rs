@@ -3,7 +3,7 @@ extern crate jikan_rs;
 extern crate lazy_static;
 
 use jikan_rs::client::JikanClient;
-use jikan_rs::search::enums::{AnimeType, Genre, MangaType, Source, SourceType};
+use jikan_rs::search::enums::{AnimeType, Genres, MangaType, Source, SourceType};
 use jikan_rs::search::enums::AnimeGenre::{Adventure, Shounen};
 use jikan_rs::search::results::SearchResultEnum;
 use jikan_rs::search::SearchQueryBuilder;
@@ -17,7 +17,7 @@ async fn should_search_for_anime_one_piece() {
     let query = SearchQueryBuilder::new(Source::Anime)
         .name("one p")
         .type_source(SourceType::Anime(AnimeType::TV))
-        .genre(Genre::Anime(vec![Shounen, Adventure]))
+        .genre(Genres::Anime(vec![Shounen, Adventure]))
         .build()
         .expect("Fail on build search query");
 

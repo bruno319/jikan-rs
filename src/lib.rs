@@ -19,3 +19,4 @@ pub mod base;
 pub mod season;
 pub mod schedule;
 pub mod top;
+pub mod genre;

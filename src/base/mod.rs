@@ -130,6 +130,24 @@ pub struct AnimeInfo {
     pub continuing: bool,
 }
 
+#[derive(Deserialize, Debug)]
+pub struct MangaInfo {
+    pub mal_id: u32,
+    pub url: String,
+    pub title: String,
+    pub image_url: Option<String>,
+    pub synopsis: String,
+    #[serde(rename = "type")]
+    pub manga_type: String,
+    pub publishing_start: Option<String>,
+    pub volumes: Option<u16>,
+    pub members: Option<u32>,
+    pub genres: Vec<MALTypeItem>,
+    pub authors: Vec<MALTypeItem>,
+    pub score: Option<f32>,
+    pub serialization: Vec<String>,
+}
+
 pub struct Date {
     year: u16,
     month: u8,
