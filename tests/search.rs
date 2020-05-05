@@ -2,14 +2,14 @@ extern crate jikan_rs;
 #[macro_use]
 extern crate lazy_static;
 
-use jikan_rs::client::JikanClient;
+use jikan_rs::client::Jikan;
 use jikan_rs::search::enums::{AnimeType, Genres, MangaType, Source, SourceType};
 use jikan_rs::search::enums::AnimeGenre::{Adventure, Shounen};
 use jikan_rs::search::results::SearchResultEnum;
 use jikan_rs::search::SearchQueryBuilder;
 
 lazy_static! {
-    static ref JIKAN_CL: JikanClient = JikanClient::new();
+    static ref JIKAN: Jikan = Jikan::new();
 }
 
 #[tokio::test]
@@ -21,7 +21,7 @@ async fn should_search_for_anime_one_piece() {
         .build()
         .expect("Fail on build search query");
 
-    let anime = JIKAN_CL.search(query)
+    let anime = JIKAN.search(query)
         .await.unwrap();
 
     let anime = match anime {
@@ -40,7 +40,7 @@ async fn should_search_for_manga_berserk() {
         .build()
         .expect("Fail on build search query");
 
-    let manga = JIKAN_CL.search(query)
+    let manga = JIKAN.search(query)
         .await.unwrap();
 
     let manga = match manga {
@@ -58,7 +58,7 @@ async fn should_search_for_person_masashi_kishimoto() {
         .build()
         .expect("Fail on build search query");
 
-    let person = JIKAN_CL.search(query)
+    let person = JIKAN.search(query)
         .await.unwrap();
 
     let person = match person {
@@ -76,7 +76,7 @@ async fn should_search_for_character_lelouch_lamperouge() {
         .build()
         .expect("Fail on build search query");
 
-    let characters = JIKAN_CL.search(query)
+    let characters = JIKAN.search(query)
         .await.unwrap();
 
     let characters = match characters {

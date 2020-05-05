@@ -26,13 +26,13 @@ pub const BASE_URL: &str = "http://api.jikan.moe/v3";
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub struct JikanClient {
+pub struct Jikan {
     http_client: reqwest::Client,
 }
 
-impl JikanClient {
-    pub fn new() -> JikanClient {
-        JikanClient {
+impl Jikan {
+    pub fn new() -> Jikan {
+        Jikan {
             http_client: reqwest::Client::new()
         }
     }

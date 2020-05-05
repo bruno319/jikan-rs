@@ -2,15 +2,15 @@ extern crate jikan_rs;
 #[macro_use]
 extern crate lazy_static;
 
-use jikan_rs::client::JikanClient;
+use jikan_rs::client::Jikan;
 
 lazy_static! {
-    static ref JIKAN_CL: JikanClient = JikanClient::new();
+    static ref JIKAN: Jikan = Jikan::new();
 }
 
 #[tokio::test]
 async fn should_get_manga_characters() {
-    let characters = JIKAN_CL.find_manga(1)
+    let characters = JIKAN.find_manga(1)
         .await.unwrap()
         .get_characters()
         .await.unwrap();
@@ -19,7 +19,7 @@ async fn should_get_manga_characters() {
 
 #[tokio::test]
 async fn should_get_manga_news() {
-    let news = JIKAN_CL.find_manga(1)
+    let news = JIKAN.find_manga(1)
         .await.unwrap()
         .get_news()
         .await.unwrap();
@@ -28,7 +28,7 @@ async fn should_get_manga_news() {
 
 #[tokio::test]
 async fn should_get_manga_pictures() {
-    let pictures = JIKAN_CL.find_manga(1)
+    let pictures = JIKAN.find_manga(1)
         .await.unwrap()
         .get_pictures()
         .await.unwrap();
@@ -37,7 +37,7 @@ async fn should_get_manga_pictures() {
 
 #[tokio::test]
 async fn should_get_manga_stats() {
-    let stats = JIKAN_CL.find_manga(1)
+    let stats = JIKAN.find_manga(1)
         .await.unwrap()
         .get_stats()
         .await.unwrap();
@@ -46,7 +46,7 @@ async fn should_get_manga_stats() {
 
 #[tokio::test]
 async fn should_get_manga_forum() {
-    let topics = JIKAN_CL.find_manga(1)
+    let topics = JIKAN.find_manga(1)
         .await.unwrap()
         .get_forum()
         .await.unwrap();
@@ -55,7 +55,7 @@ async fn should_get_manga_forum() {
 
 #[tokio::test]
 async fn should_get_more_manga_info() {
-    let more_info = JIKAN_CL.find_manga(2)
+    let more_info = JIKAN.find_manga(2)
         .await.unwrap()
         .get_more_info()
         .await.unwrap().unwrap();
@@ -64,7 +64,7 @@ async fn should_get_more_manga_info() {
 
 #[tokio::test]
 async fn should_get_manga_reviews() {
-    let reviews = JIKAN_CL.find_manga(1)
+    let reviews = JIKAN.find_manga(1)
         .await.unwrap()
         .get_reviews(&1)
         .await.unwrap();
@@ -73,7 +73,7 @@ async fn should_get_manga_reviews() {
 
 #[tokio::test]
 async fn should_get_manga_recommendations() {
-    let recommendations = JIKAN_CL.find_manga(1)
+    let recommendations = JIKAN.find_manga(1)
         .await.unwrap()
         .get_recommendations()
         .await.unwrap();
@@ -82,7 +82,7 @@ async fn should_get_manga_recommendations() {
 
 #[tokio::test]
 async fn should_get_manga_user_updates() {
-    let user_updates = JIKAN_CL.find_manga(1)
+    let user_updates = JIKAN.find_manga(1)
         .await.unwrap()
         .get_user_updates(&1)
         .await.unwrap();

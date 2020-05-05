@@ -2,15 +2,15 @@ extern crate jikan_rs;
 #[macro_use]
 extern crate lazy_static;
 
-use jikan_rs::client::JikanClient;
+use jikan_rs::client::Jikan;
 
 lazy_static! {
-    static ref JIKAN_CL: JikanClient = JikanClient::new();
+    static ref JIKAN: Jikan = Jikan::new();
 }
 
 #[tokio::test]
 async fn should_get_anime_characters() {
-    let characters_staff = JIKAN_CL.find_anime(1)
+    let characters_staff = JIKAN.find_anime(1)
         .await.unwrap()
         .get_characters()
         .await.unwrap();
@@ -20,7 +20,7 @@ async fn should_get_anime_characters() {
 
 #[tokio::test]
 async fn should_get_anime_episodes() {
-    let episodes = JIKAN_CL.find_anime(1)
+    let episodes = JIKAN.find_anime(1)
         .await.unwrap()
         .get_episodes()
         .await.unwrap();
@@ -29,7 +29,7 @@ async fn should_get_anime_episodes() {
 
 #[tokio::test]
 async fn should_get_anime_news() {
-    let news = JIKAN_CL.find_anime(1)
+    let news = JIKAN.find_anime(1)
         .await.unwrap()
         .get_news()
         .await.unwrap();
@@ -38,7 +38,7 @@ async fn should_get_anime_news() {
 
 #[tokio::test]
 async fn should_get_anime_pictures() {
-    let pictures = JIKAN_CL.find_anime(1)
+    let pictures = JIKAN.find_anime(1)
         .await.unwrap()
         .get_pictures()
         .await.unwrap();
@@ -47,7 +47,7 @@ async fn should_get_anime_pictures() {
 
 #[tokio::test]
 async fn should_get_anime_videos() {
-    let videos = JIKAN_CL.find_anime(1)
+    let videos = JIKAN.find_anime(1)
         .await.unwrap()
         .get_videos()
         .await.unwrap();
@@ -57,7 +57,7 @@ async fn should_get_anime_videos() {
 
 #[tokio::test]
 async fn should_get_anime_stats() {
-    let stats = JIKAN_CL.find_anime(1)
+    let stats = JIKAN.find_anime(1)
         .await.unwrap()
         .get_stats()
         .await.unwrap();
@@ -66,7 +66,7 @@ async fn should_get_anime_stats() {
 
 #[tokio::test]
 async fn should_get_anime_forum() {
-    let topics = JIKAN_CL.find_anime(1)
+    let topics = JIKAN.find_anime(1)
         .await.unwrap()
         .get_forum()
         .await.unwrap();
@@ -75,7 +75,7 @@ async fn should_get_anime_forum() {
 
 #[tokio::test]
 async fn should_get_more_anime_info() {
-    let more_info = JIKAN_CL.find_anime(1)
+    let more_info = JIKAN.find_anime(1)
         .await.unwrap()
         .get_more_info()
         .await.unwrap().unwrap();
@@ -84,7 +84,7 @@ async fn should_get_more_anime_info() {
 
 #[tokio::test]
 async fn should_get_anime_reviews() {
-    let reviews = JIKAN_CL.find_anime(1)
+    let reviews = JIKAN.find_anime(1)
         .await.unwrap()
         .get_reviews(&1)
         .await.unwrap();
@@ -93,7 +93,7 @@ async fn should_get_anime_reviews() {
 
 #[tokio::test]
 async fn should_get_anime_recommendations() {
-    let recommendations = JIKAN_CL.find_anime(1)
+    let recommendations = JIKAN.find_anime(1)
         .await.unwrap()
         .get_recommendations()
         .await.unwrap();
@@ -102,7 +102,7 @@ async fn should_get_anime_recommendations() {
 
 #[tokio::test]
 async fn should_get_anime_user_updates() {
-    let user_updates = JIKAN_CL.find_anime(1)
+    let user_updates = JIKAN.find_anime(1)
         .await.unwrap()
         .get_user_updates(&1)
         .await.unwrap();
