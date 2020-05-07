@@ -1,14 +1,17 @@
-use crate::{anime, character, forum, genre, magazine, manga, more_info, news, person, pictures,
+use crate::{anime, character, club, forum, genre, magazine, manga, more_info, news, person, pictures,
             producer, recommendations, reviews, schedule, search, season, stats, top, user_updates};
 use crate::anime::{Anime, characters::CharactersStaff, episodes::Episode, videos::Videos};
 use crate::base::{MALRoleItem, SourceType};
 use crate::character::Character;
+use crate::club::{Club, ClubMember};
 use crate::forum::Topic;
 use crate::genre::{GenreAnimeResult, GenreMangaResult};
+use crate::magazine::Magazine;
 use crate::manga::Manga;
 use crate::news::News;
 use crate::person::Person;
 use crate::pictures::Picture;
+use crate::producer::Producer;
 use crate::recommendations::Recommendation;
 use crate::reviews::Reviews;
 use crate::schedule::{Schedule, ScheduleOn};
@@ -19,8 +22,6 @@ use crate::season::archive::ArchivedSeason;
 use crate::stats::Stats;
 use crate::top::{Top, TopResult};
 use crate::user_updates::UserUpdates;
-use crate::producer::Producer;
-use crate::magazine::Magazine;
 
 pub const BASE_URL: &str = "http://api.jikan.moe/v3";
 
@@ -131,6 +132,14 @@ impl Jikan {
 
     pub async fn find_magazine(&self, id: u32, page: &u16) -> Result<Magazine> {
         magazine::find_magazine(id, page, &self.http_client).await
+    }
+
+    pub async fn find_club(&self, mal_id: u32) -> Result<Club> {
+        club::find_club(mal_id, &self.http_client).await
+    }
+
+    pub async fn find_club_members(&self, club_id: u32, page: &u32) -> Result<Vec<ClubMember>> {
+        club::find_club_members(club_id, page, &self.http_client).await
     }
 
     pub async fn search(&self, query: SearchQuery) -> Result<SearchResultEnum> {

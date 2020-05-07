@@ -333,3 +333,17 @@ async fn should_find_a_magazine() {
     let magazine = jikan.find_magazine(1, &1).await.unwrap();
     assert!(magazine.mangas.len() > 0);
 }
+
+#[tokio::test]
+async fn should_find_a_club() {
+    let jikan = Jikan::new();
+    let club = jikan.find_club(1).await.unwrap();
+    assert_eq!(club.mal_id, 1);
+}
+
+#[tokio::test]
+async fn should_find_club_members() {
+    let jikan = Jikan::new();
+    let members = jikan.find_club_members(1, &1).await.unwrap();
+    assert!(members.len() > 0);
+}
