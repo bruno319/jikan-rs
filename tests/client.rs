@@ -9,6 +9,7 @@ use jikan_rs::season::Season;
 use jikan_rs::stats::Stats;
 use jikan_rs::top::{Top, TopAnimeSubtype, TopMangaSubtype, TopResult};
 use jikan_rs::user_updates::UserUpdates;
+use jikan_rs::meta::{InfoAbout, Period};
 
 #[tokio::test]
 async fn should_find_an_anime() {
@@ -346,4 +347,18 @@ async fn should_find_club_members() {
     let jikan = Jikan::new();
     let members = jikan.find_club_members(1, &1).await.unwrap();
     assert!(members.len() > 0);
+}
+
+#[tokio::test]
+async fn should_retrieve_api_status() {
+    let jikan = Jikan::new();
+    let status = jikan.retrieve_api_status().await.unwrap();
+    assert!(status.requests_this_month > 0);
+}
+
+#[tokio::test]
+async fn should_retrieve_info_on_this_month_about_anime_endpoint() {
+    let jikan = Jikan::new();
+    let endpoints = jikan.retrieve_request_info(InfoAbout::Anime, Period::Monthly, 1).await.unwrap();
+    assert!(endpoints.len() > 0);
 }

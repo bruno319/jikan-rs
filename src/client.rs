@@ -1,4 +1,6 @@
-use crate::{anime, character, club, forum, genre, magazine, manga, more_info, news, person, pictures,
+use std::collections::HashMap;
+
+use crate::{anime, character, club, forum, genre, magazine, manga, meta, more_info, news, person, pictures,
             producer, recommendations, reviews, schedule, search, season, stats, top, user_updates};
 use crate::anime::{Anime, characters::CharactersStaff, episodes::Episode, videos::Videos};
 use crate::base::{MALRoleItem, SourceType};
@@ -8,6 +10,7 @@ use crate::forum::Topic;
 use crate::genre::{GenreAnimeResult, GenreMangaResult};
 use crate::magazine::Magazine;
 use crate::manga::Manga;
+use crate::meta::{ApiStatus, InfoAbout, Period};
 use crate::news::News;
 use crate::person::Person;
 use crate::pictures::Picture;
@@ -144,5 +147,13 @@ impl Jikan {
 
     pub async fn search(&self, query: SearchQuery) -> Result<SearchResultEnum> {
         search::search(query, &self.http_client).await
+    }
+
+    pub async fn retrieve_api_status(&self) -> Result<ApiStatus> {
+        meta::retrieve_api_status(&self.http_client).await
+    }
+
+    pub async fn retrieve_request_info(&self, about: InfoAbout, period: Period, offset: u32) -> Result<HashMap<String, u16>> {
+        meta::retrieve_request_info(about, period, offset, &self.http_client).await
     }
 }

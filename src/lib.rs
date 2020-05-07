@@ -23,3 +23,4 @@ pub mod genre;
 pub mod producer;
 pub mod magazine;
 pub mod club;
+pub mod meta;
