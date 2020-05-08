@@ -1,7 +1,9 @@
 use std::collections::HashMap;
 
+use jikan_resource_derive::Resource;
 use reqwest::Client;
 
+use crate::base::Resource;
 use crate::client::BASE_URL;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
@@ -18,7 +20,7 @@ pub(crate) async fn retrieve_api_status(http_clt: &Client) -> Result<ApiStatus> 
 }
 
 pub(crate) async fn retrieve_request_info(about: InfoAbout, period: Period, offset: u32, http_clt: &Client) -> Result<HashMap<String, u16>> {
-    let url = format!("{}/meta/requests/{}/{}/{}", BASE_URL, about.get_uri(), period.get_uri(), offset);
+    let url = format!("{}/meta/requests/{}/{}/{}", BASE_URL, about.uri(), period.uri(), offset);
     let body = http_clt.get(&url).send()
         .await?
         .text()
@@ -38,6 +40,7 @@ pub struct ApiStatus {
     pub total_connections_received: String,
 }
 
+#[derive(Resource)]
 pub enum InfoAbout {
     Anime,
     Manga,
@@ -49,33 +52,9 @@ pub enum InfoAbout {
     Season,
 }
 
-impl InfoAbout {
-    pub fn get_uri(&self) -> String {
-        match self {
-            InfoAbout::Anime => String::from("anime"),
-            InfoAbout::Manga => String::from("manga"),
-            InfoAbout::Character => String::from("character"),
-            InfoAbout::Person => String::from("person"),
-            InfoAbout::Search => String::from("search"),
-            InfoAbout::Top => String::from("top"),
-            InfoAbout::Schedule => String::from("schedule"),
-            InfoAbout::Season => String::from("season"),
-        }
-    }
-}
-
+#[derive(Resource)]
 pub enum Period {
     Today,
     Weekly,
     Monthly,
-}
-
-impl Period {
-    pub fn get_uri(&self) -> String {
-        match self {
-            Period::Today => String::from("today"),
-            Period::Weekly => String::from("weekly"),
-            Period::Monthly => String::from("monthly"),
-        }
-    }
 }

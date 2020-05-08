@@ -1,10 +1,14 @@
 use std::fmt;
 
+pub trait Resource {
+    fn uri(&self) -> String;
+}
+
 pub enum SourceType {
     Anime(u32),
     Manga(u32),
     Person(u32),
-    Character(u32)
+    Character(u32),
 }
 
 impl SourceType {

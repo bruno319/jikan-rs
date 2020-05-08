@@ -2,6 +2,7 @@ use percent_encoding::{AsciiSet, CONTROLS, utf8_percent_encode};
 use reqwest::Client;
 
 use crate::base::Date;
+use crate::base::Resource;
 use crate::client::BASE_URL;
 use crate::search::enums::{Genres, OrderBy, Rating, Sort, Source, SourceStatus, SourceType};
 use crate::search::results::SearchResultEnum;
@@ -29,7 +30,7 @@ const FRAGMENT: &AsciiSet = &CONTROLS
     .add(b'&');
 
 pub(crate) async fn search(search_query: SearchQuery, http_clt: &Client) -> Result<SearchResultEnum> {
-    let url = format!("{}/{}?{}", BASE_URL, search_query.source.get_uri(), search_query.query);
+    let url = format!("{}{}?{}", BASE_URL, search_query.source.uri(), search_query.query);
     let body = http_clt.get(&url).send()
         .await?
         .text()
@@ -87,7 +88,7 @@ impl SearchQueryBuilder {
             limit: None,
             producer: None,
             magazine: None,
-            letter: None
+            letter: None,
         }
     }
 
@@ -177,24 +178,24 @@ impl SearchQueryBuilder {
 
         if let Some(source_type) = self.source_type {
             match source_type {
-                SourceType::Anime(anime_type) => query = format!("{}&{}", query, anime_type.get_query()),
-                SourceType::Manga(manga_type) => query = format!("{}&{}", query, manga_type.get_query()),
+                SourceType::Anime(anime_type) => query = format!("{}&{}", query, anime_type.uri()),
+                SourceType::Manga(manga_type) => query = format!("{}&{}", query, manga_type.uri()),
             }
         }
 
         if let Some(status) = self.status {
             match status {
-                SourceStatus::Anime(anime_status) => query = format!("{}&{}", query, anime_status.get_query()),
-                SourceStatus::Manga(manga_status) => query = format!("{}&{}", query, manga_status.get_query()),
+                SourceStatus::Anime(anime_status) => query = format!("{}&{}", query, anime_status.uri()),
+                SourceStatus::Manga(manga_status) => query = format!("{}&{}", query, manga_status.uri()),
             }
         }
 
         if let Some(rating) = self.rating {
-            query = format!("{}&{}", query, rating.get_query());
+            query = format!("{}&{}", query, rating.uri());
         }
 
         if let Some(order) = self.order_by {
-            query = format!("{}&{}&{}", query, order.get_query(), self.sort.unwrap().get_query());
+            query = format!("{}&{}&{}", query, order.uri(), self.sort.unwrap().uri());
         }
 
         if let Some(score) = self.score {

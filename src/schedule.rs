@@ -18,8 +18,10 @@ pub(crate) async fn find_schedule(schedule_on: ScheduleOn, http_clt: &Client) ->
     Ok(schedule)
 }
 
+//#[derive(Resource)]
 #[derive(Debug)]
 pub enum ScheduleOn {
+    //#[resource(rename = "")]
     All,
     Monday,
     Tuesday,

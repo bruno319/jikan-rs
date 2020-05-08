@@ -1,3 +1,9 @@
+use jikan_resource_derive::Resource;
+
+use crate::base::Resource;
+
+#[derive(Resource)]
+#[uri_prefix = "/search/"]
 pub enum Source {
     Anime,
     Manga,
@@ -5,22 +11,13 @@ pub enum Source {
     Character,
 }
 
-impl Source {
-    pub fn get_uri(&self) -> String {
-        match self {
-            Source::Anime => String::from("search/anime"),
-            Source::Manga => String::from("search/manga"),
-            Source::Person => String::from("search/person"),
-            Source::Character => String::from("search/character")
-        }
-    }
-}
-
 pub enum SourceType {
     Anime(AnimeType),
     Manga(MangaType),
 }
 
+#[derive(Resource)]
+#[uri_prefix = "type="]
 pub enum AnimeType {
     TV,
     OVA,
@@ -30,19 +27,8 @@ pub enum AnimeType {
     Music,
 }
 
-impl AnimeType {
-    pub fn get_query(&self) -> String {
-        match self {
-            AnimeType::TV => String::from("type=tv"),
-            AnimeType::OVA => String::from("type=ova"),
-            AnimeType::Movie => String::from("type=movie"),
-            AnimeType::Special => String::from("type=special"),
-            AnimeType::ONA => String::from("type=ona"),
-            AnimeType::Music => String::from("type=music"),
-        }
-    }
-}
-
+#[derive(Resource)]
+#[uri_prefix = "type="]
 pub enum MangaType {
     Manga,
     Novel,
@@ -52,56 +38,29 @@ pub enum MangaType {
     Manhua,
 }
 
-impl MangaType {
-    pub fn get_query(&self) -> String {
-        match self {
-            MangaType::Manga => String::from("type=manga"),
-            MangaType::Novel => String::from("type=novel"),
-            MangaType::OneShot => String::from("type=oneshot"),
-            MangaType::Doujin => String::from("type=doujin"),
-            MangaType::Manhwa => String::from("type=manhwa"),
-            MangaType::Manhua => String::from("type=manhua"),
-        }
-    }
-}
-
 pub enum SourceStatus {
     Anime(AnimeStatus),
     Manga(MangaStatus),
 }
 
+#[derive(Resource)]
+#[uri_prefix = "status="]
 pub enum AnimeStatus {
     Airing,
     Completed,
     Upcoming,
 }
 
-impl AnimeStatus {
-    pub fn get_query(&self) -> String {
-        match self {
-            AnimeStatus::Airing => String::from("status=airing"),
-            AnimeStatus::Completed => String::from("status=completed"),
-            AnimeStatus::Upcoming => String::from("status=upcoming"),
-        }
-    }
-}
-
+#[derive(Resource)]
+#[uri_prefix = "status="]
 pub enum MangaStatus {
     Publishing,
     Completed,
     Upcoming,
 }
 
-impl MangaStatus {
-    pub fn get_query(&self) -> String {
-        match self {
-            MangaStatus::Publishing => String::from("status=publishing"),
-            MangaStatus::Completed => String::from("status=completed"),
-            MangaStatus::Upcoming => String::from("status=upcoming"),
-        }
-    }
-}
-
+#[derive(Resource)]
+#[uri_prefix = "rated="]
 pub enum Rating {
     G,
     Pg,
@@ -111,25 +70,14 @@ pub enum Rating {
     Rx,
 }
 
-impl Rating {
-    pub fn get_query(&self) -> String {
-        match self {
-            Rating::G => String::from("rated=g"),
-            Rating::Pg => String::from("rated=pg"),
-            Rating::Pg13 => String::from("rated=pg13"),
-            Rating::R17 => String::from("rated=r17"),
-            Rating::R => String::from("rated=r"),
-            Rating::Rx => String::from("rated=rx"),
-        }
-    }
-}
-
+#[derive(Resource)]
+#[uri_prefix = "order_by="]
 pub enum OrderBy {
     Title,
     StartDate,
     EndDate,
     Score,
-    SourceType,
+    Type,
     Members,
     Id,
     Episodes,
@@ -138,36 +86,11 @@ pub enum OrderBy {
     Chapters,
 }
 
-impl OrderBy {
-    pub fn get_query(&self) -> String {
-        match self {
-            OrderBy::Title => String::from("order_by=title"),
-            OrderBy::StartDate => String::from("order_by=start_date"),
-            OrderBy::EndDate => String::from("order_by=end_date"),
-            OrderBy::Score => String::from("order_by=score"),
-            OrderBy::SourceType => String::from("order_by=type"),
-            OrderBy::Members => String::from("order_by=members"),
-            OrderBy::Id => String::from("order_by=id"),
-            OrderBy::Episodes => String::from("order_by=episodes"),
-            OrderBy::Rating => String::from("order_by=rating"),
-            OrderBy::Volumes => String::from("order_by=volumes"),
-            OrderBy::Chapters => String::from("order_by=chapters"),
-        }
-    }
-}
-
+#[derive(Resource)]
+#[uri_prefix = "sort="]
 pub enum Sort {
     Ascending,
     Descending,
-}
-
-impl Sort {
-    pub fn get_query(&self) -> String {
-        match self {
-            Sort::Ascending => String::from("sort=ascending"),
-            Sort::Descending => String::from("sort=descending")
-        }
-    }
 }
 
 pub enum Genres {
