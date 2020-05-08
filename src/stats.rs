@@ -1,12 +1,13 @@
 use reqwest::Client;
 
+use crate::base::Resource;
 use crate::base::SourceType;
 use crate::client::BASE_URL;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
 pub(crate) async fn find_stats(mal_id: SourceType, http_clt: &Client) -> Result<Stats> {
-    let url = format!("{}{}/stats", BASE_URL, mal_id.get_uri());
+    let url = format!("{}{}/stats", BASE_URL, mal_id.uri());
     let body = http_clt.get(&url).send()
         .await?
         .text()

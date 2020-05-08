@@ -11,8 +11,8 @@ pub enum SourceType {
     Character(u32),
 }
 
-impl SourceType {
-    pub fn get_uri(&self) -> String {
+impl Resource for SourceType {
+    fn uri(&self) -> String {
         match self {
             SourceType::Anime(id) => format!("/anime/{}", id),
             SourceType::Manga(id) => format!("/manga/{}", id),

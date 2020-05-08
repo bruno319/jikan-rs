@@ -1,6 +1,6 @@
 use reqwest::Client;
 
-use crate::base::AnimeInfo;
+use crate::base::{AnimeInfo, Resource};
 use crate::client::BASE_URL;
 
 pub mod archive;
@@ -8,7 +8,7 @@ pub mod archive;
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
 pub(crate) async fn find_season(season: Season, http_clt: &Client) -> Result<SeasonResult> {
-    let url = format!("{}/season/{}", BASE_URL, season.get_uri());
+    let url = format!("{}/season/{}", BASE_URL, season.uri());
     let body = http_clt.get(&url).send()
         .await?
         .text()
@@ -26,8 +26,8 @@ pub enum Season {
     Later,
 }
 
-impl Season {
-    pub fn get_uri(&self) -> String {
+impl Resource for Season {
+    fn uri(&self) -> String {
         match self {
             Season::Winter(year) => format!("{}/winter", year),
             Season::Fall(year) => format!("{}/fall", year),

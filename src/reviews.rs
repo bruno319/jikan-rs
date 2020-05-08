@@ -1,12 +1,13 @@
 use reqwest::Client;
 
+use crate::base::Resource;
 use crate::base::SourceType;
 use crate::client::BASE_URL;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
 pub(crate) async fn find_reviews(mal_id: SourceType, page: &u16, http_clt: &Client) -> Result<Reviews> {
-    let url = format!("{}{}/reviews/{}", BASE_URL, mal_id.get_uri(), page);
+    let url = format!("{}{}/reviews/{}", BASE_URL, mal_id.uri(), page);
     let body = http_clt.get(&url).send()
         .await?
         .text()

@@ -1,12 +1,14 @@
+use jikan_resource_derive::Resource;
 use reqwest::Client;
 
 use crate::base::MALTypeItem;
+use crate::base::Resource;
 use crate::client::BASE_URL;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
 pub(crate) async fn find_top(top: Top, http_clt: &Client) -> Result<TopResult> {
-    let url = format!("{}/top/{}", BASE_URL, top.get_uri());
+    let url = format!("{}/top/{}", BASE_URL, top.uri());
     let body = http_clt.get(&url).send()
         .await?
         .text()
@@ -40,71 +42,47 @@ pub enum Top {
     People(u16),
 }
 
-impl Top {
-    pub fn get_uri(&self) -> String {
+impl Resource for Top {
+    fn uri(&self) -> String {
         match self {
-            Top::Anime { page, subtype } => format!("anime/{}/{}", page, subtype.get_uri_subtype()),
-            Top::Manga { page, subtype } => format!("manga/{}/{}", page, subtype.get_uri_subtype()),
+            Top::Anime { page, subtype } => format!("anime/{}/{}", page, subtype.uri()),
+            Top::Manga { page, subtype } => format!("manga/{}/{}", page, subtype.uri()),
             Top::Character(page) => format!("characters/{}", page),
             Top::People(page) => format!("people/{}", page),
         }
     }
 }
 
+#[derive(Resource)]
 pub enum TopAnimeSubtype {
+    #[rename_uri = ""]
     All,
-    TV,
+    Tv,
     Movie,
-    OVA,
+    Ova,
     Special,
     Airing,
     Upcoming,
+    #[rename_uri = "bypopularity"]
     ByPopularity,
+    #[rename_uri = "byfavorite"]
     ByFavorite,
 }
 
-impl TopAnimeSubtype {
-    fn get_uri_subtype(&self) -> &str {
-        match self {
-            TopAnimeSubtype::All => "",
-            TopAnimeSubtype::TV => "tv",
-            TopAnimeSubtype::Movie => "movie",
-            TopAnimeSubtype::OVA => "ova",
-            TopAnimeSubtype::Special => "special",
-            TopAnimeSubtype::Airing => "airing",
-            TopAnimeSubtype::Upcoming => "upcoming",
-            TopAnimeSubtype::ByPopularity => "bypopularity",
-            TopAnimeSubtype::ByFavorite => "byfavorite",
-        }
-    }
-}
-
+#[derive(Resource)]
 pub enum TopMangaSubtype {
+    #[rename_uri = ""]
     All,
     Manga,
     Novels,
-    OneShots,
-    Doujinshi,
+    Oneshots,
+    Doujin,
     Manhwa,
     Manhua,
+    #[rename_uri = "bypopularity"]
     ByPopularity,
+    #[rename_uri = "byfavorite"]
     ByFavorite,
-}
-
-impl TopMangaSubtype {
-    fn get_uri_subtype(&self) -> &str {
-        match self {
-            TopMangaSubtype::All => "",
-            TopMangaSubtype::Manga => "manga",
-            TopMangaSubtype::Novels => "novels",
-            TopMangaSubtype::OneShots => "oneshots",
-            TopMangaSubtype::Doujinshi => "doujin",
-            TopMangaSubtype::Manhua => "manhua",
-            TopMangaSubtype::Manhwa => "manhwa",
-            TopMangaSubtype::ByPopularity => "bypopularity",
-            TopMangaSubtype::ByFavorite => "byfavorite",
-        }
-    }
 }
 
 pub enum TopResult {

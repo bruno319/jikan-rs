@@ -1,14 +1,14 @@
-use std::fmt;
-
+use jikan_resource_derive::Resource;
 use reqwest::Client;
 
 use crate::base::AnimeInfo;
+use crate::base::Resource;
 use crate::client::BASE_URL;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
 pub(crate) async fn find_schedule(schedule_on: ScheduleOn, http_clt: &Client) -> Result<Schedule> {
-    let url = format!("{}/schedule/{}", BASE_URL, schedule_on.get_uri());
+    let url = format!("{}/schedule/{}", BASE_URL, schedule_on.uri());
     let body = http_clt.get(&url).send()
         .await?
         .text()
@@ -18,10 +18,9 @@ pub(crate) async fn find_schedule(schedule_on: ScheduleOn, http_clt: &Client) ->
     Ok(schedule)
 }
 
-//#[derive(Resource)]
-#[derive(Debug)]
+#[derive(Resource, Debug)]
 pub enum ScheduleOn {
-    //#[resource(rename = "")]
+    #[rename_uri = ""]
     All,
     Monday,
     Tuesday,
@@ -32,21 +31,6 @@ pub enum ScheduleOn {
     Sunday,
     Other,
     Unknown,
-}
-
-impl fmt::Display for ScheduleOn {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{:?}", self)
-    }
-}
-
-impl ScheduleOn {
-    fn get_uri(&self) -> String {
-        match self {
-            ScheduleOn::All => String::new(),
-            _ => self.to_string().to_lowercase(),
-        }
-    }
 }
 
 #[derive(Deserialize, Debug)]
