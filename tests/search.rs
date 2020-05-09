@@ -7,6 +7,8 @@ use jikan_rs::search::enums::{AnimeType, Genres, MangaType, Source, SourceType};
 use jikan_rs::search::enums::AnimeGenre::{Adventure, Shounen};
 use jikan_rs::search::results::SearchResultEnum;
 use jikan_rs::search::SearchQueryBuilder;
+use std::thread;
+use std::time::Duration;
 
 lazy_static! {
     static ref JIKAN: Jikan = Jikan::new();
@@ -14,6 +16,7 @@ lazy_static! {
 
 #[tokio::test]
 async fn should_search_for_anime_one_piece() {
+    thread::sleep(Duration::from_secs(3));
     let query = SearchQueryBuilder::new(Source::Anime)
         .name("one p")
         .type_source(SourceType::Anime(AnimeType::TV))
@@ -34,6 +37,7 @@ async fn should_search_for_anime_one_piece() {
 
 #[tokio::test]
 async fn should_search_for_manga_berserk() {
+    thread::sleep(Duration::from_secs(3));
     let query = SearchQueryBuilder::new(Source::Manga)
         .name("berser")
         .type_source(SourceType::Manga(MangaType::Manga))
@@ -53,6 +57,7 @@ async fn should_search_for_manga_berserk() {
 
 #[tokio::test]
 async fn should_search_for_person_masashi_kishimoto() {
+    thread::sleep(Duration::from_secs(3));
     let query = SearchQueryBuilder::new(Source::Person)
         .name("岸本 斉史")
         .build()
@@ -71,6 +76,7 @@ async fn should_search_for_person_masashi_kishimoto() {
 
 #[tokio::test]
 async fn should_search_for_character_lelouch_lamperouge() {
+    thread::sleep(Duration::from_secs(3));
     let query = SearchQueryBuilder::new(Source::Character)
         .name("ルルーシュ")
         .build()

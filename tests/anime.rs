@@ -3,6 +3,8 @@ extern crate jikan_rs;
 extern crate lazy_static;
 
 use jikan_rs::client::Jikan;
+use std::thread;
+use std::time::Duration;
 
 lazy_static! {
     static ref JIKAN: Jikan = Jikan::new();
@@ -10,6 +12,7 @@ lazy_static! {
 
 #[tokio::test]
 async fn should_get_anime_characters() {
+    thread::sleep(Duration::from_secs(3));
     let characters_staff = JIKAN.find_anime(1)
         .await.unwrap()
         .get_characters()
@@ -20,6 +23,7 @@ async fn should_get_anime_characters() {
 
 #[tokio::test]
 async fn should_get_anime_episodes() {
+    thread::sleep(Duration::from_secs(3));
     let episodes = JIKAN.find_anime(1)
         .await.unwrap()
         .get_episodes()
@@ -29,6 +33,7 @@ async fn should_get_anime_episodes() {
 
 #[tokio::test]
 async fn should_get_anime_news() {
+    thread::sleep(Duration::from_secs(3));
     let news = JIKAN.find_anime(1)
         .await.unwrap()
         .get_news()
@@ -38,6 +43,7 @@ async fn should_get_anime_news() {
 
 #[tokio::test]
 async fn should_get_anime_pictures() {
+    thread::sleep(Duration::from_secs(3));
     let pictures = JIKAN.find_anime(1)
         .await.unwrap()
         .get_pictures()
@@ -47,6 +53,7 @@ async fn should_get_anime_pictures() {
 
 #[tokio::test]
 async fn should_get_anime_videos() {
+    thread::sleep(Duration::from_secs(3));
     let videos = JIKAN.find_anime(1)
         .await.unwrap()
         .get_videos()
@@ -57,6 +64,7 @@ async fn should_get_anime_videos() {
 
 #[tokio::test]
 async fn should_get_anime_stats() {
+    thread::sleep(Duration::from_secs(3));
     let stats = JIKAN.find_anime(1)
         .await.unwrap()
         .get_stats()
@@ -66,6 +74,7 @@ async fn should_get_anime_stats() {
 
 #[tokio::test]
 async fn should_get_anime_forum() {
+    thread::sleep(Duration::from_secs(3));
     let topics = JIKAN.find_anime(1)
         .await.unwrap()
         .get_forum()
@@ -75,6 +84,7 @@ async fn should_get_anime_forum() {
 
 #[tokio::test]
 async fn should_get_more_anime_info() {
+    thread::sleep(Duration::from_secs(3));
     let more_info = JIKAN.find_anime(1)
         .await.unwrap()
         .get_more_info()
@@ -84,6 +94,7 @@ async fn should_get_more_anime_info() {
 
 #[tokio::test]
 async fn should_get_anime_reviews() {
+    thread::sleep(Duration::from_secs(3));
     let reviews = JIKAN.find_anime(1)
         .await.unwrap()
         .get_reviews(&1)
@@ -93,6 +104,7 @@ async fn should_get_anime_reviews() {
 
 #[tokio::test]
 async fn should_get_anime_recommendations() {
+    thread::sleep(Duration::from_secs(3));
     let recommendations = JIKAN.find_anime(1)
         .await.unwrap()
         .get_recommendations()
@@ -102,6 +114,7 @@ async fn should_get_anime_recommendations() {
 
 #[tokio::test]
 async fn should_get_anime_user_updates() {
+    thread::sleep(Duration::from_secs(3));
     let user_updates = JIKAN.find_anime(1)
         .await.unwrap()
         .get_user_updates(&1)

@@ -3,6 +3,8 @@ extern crate jikan_rs;
 extern crate lazy_static;
 
 use jikan_rs::client::Jikan;
+use std::thread;
+use std::time::Duration;
 
 lazy_static! {
     static ref JIKAN: Jikan = Jikan::new();
@@ -10,6 +12,7 @@ lazy_static! {
 
 #[tokio::test]
 async fn should_get_manga_characters() {
+    thread::sleep(Duration::from_secs(3));
     let characters = JIKAN.find_manga(1)
         .await.unwrap()
         .get_characters()
@@ -19,6 +22,7 @@ async fn should_get_manga_characters() {
 
 #[tokio::test]
 async fn should_get_manga_news() {
+    thread::sleep(Duration::from_secs(3));
     let news = JIKAN.find_manga(1)
         .await.unwrap()
         .get_news()
@@ -28,6 +32,7 @@ async fn should_get_manga_news() {
 
 #[tokio::test]
 async fn should_get_manga_pictures() {
+    thread::sleep(Duration::from_secs(3));
     let pictures = JIKAN.find_manga(1)
         .await.unwrap()
         .get_pictures()
@@ -37,6 +42,7 @@ async fn should_get_manga_pictures() {
 
 #[tokio::test]
 async fn should_get_manga_stats() {
+    thread::sleep(Duration::from_secs(3));
     let stats = JIKAN.find_manga(1)
         .await.unwrap()
         .get_stats()
@@ -46,6 +52,7 @@ async fn should_get_manga_stats() {
 
 #[tokio::test]
 async fn should_get_manga_forum() {
+    thread::sleep(Duration::from_secs(3));
     let topics = JIKAN.find_manga(1)
         .await.unwrap()
         .get_forum()
@@ -55,6 +62,7 @@ async fn should_get_manga_forum() {
 
 #[tokio::test]
 async fn should_get_more_manga_info() {
+    thread::sleep(Duration::from_secs(3));
     let more_info = JIKAN.find_manga(2)
         .await.unwrap()
         .get_more_info()
@@ -64,6 +72,7 @@ async fn should_get_more_manga_info() {
 
 #[tokio::test]
 async fn should_get_manga_reviews() {
+    thread::sleep(Duration::from_secs(3));
     let reviews = JIKAN.find_manga(1)
         .await.unwrap()
         .get_reviews(&1)
@@ -73,6 +82,7 @@ async fn should_get_manga_reviews() {
 
 #[tokio::test]
 async fn should_get_manga_recommendations() {
+    thread::sleep(Duration::from_secs(3));
     let recommendations = JIKAN.find_manga(1)
         .await.unwrap()
         .get_recommendations()
@@ -82,6 +92,7 @@ async fn should_get_manga_recommendations() {
 
 #[tokio::test]
 async fn should_get_manga_user_updates() {
+    thread::sleep(Duration::from_secs(3));
     let user_updates = JIKAN.find_manga(1)
         .await.unwrap()
         .get_user_updates(&1)
