@@ -12,13 +12,14 @@ pub mod results;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub(crate) async fn search(search_query: SearchQuery, http_clt: &Client) -> Result<SearchResultEnum> {
-    let url = format!("{}{}?{}", BASE_URL, search_query.source.uri(), search_query.query);
+pub(crate) async fn search(query_builder: SearchQueryBuilder, http_clt: &Client) -> Result<SearchResultEnum> {
+    let query = query_builder.build()?;
+    let url = format!("{}{}?{}", BASE_URL, query.source.uri(), query.query);
     let body = http_clt.get(&url).send()
         .await?
         .text()
         .await?;
-    let search_result = match search_query.source {
+    let search_result = match query.source {
         Source::Anime => SearchResultEnum::Anime(serde_json::from_str(&body)?),
         Source::Manga => SearchResultEnum::Manga(serde_json::from_str(&body)?),
         Source::Person => SearchResultEnum::Person(serde_json::from_str(&body)?),

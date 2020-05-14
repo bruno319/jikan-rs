@@ -20,9 +20,7 @@ async fn should_search_for_anime_one_piece() {
     let query = SearchQueryBuilder::new(Source::Anime)
         .name("one p")
         .type_source(SourceType::Anime(AnimeType::TV))
-        .genre(Genres::Anime(vec![Shounen, Adventure]))
-        .build()
-        .expect("Fail on build search query");
+        .genre(Genres::Anime(vec![Shounen, Adventure]));
 
     let anime = JIKAN.search(query)
         .await.unwrap();
@@ -40,9 +38,7 @@ async fn should_search_for_manga_berserk() {
     thread::sleep(Duration::from_secs(3));
     let query = SearchQueryBuilder::new(Source::Manga)
         .name("berser")
-        .type_source(SourceType::Manga(MangaType::Manga))
-        .build()
-        .expect("Fail on build search query");
+        .type_source(SourceType::Manga(MangaType::Manga));
 
     let manga = JIKAN.search(query)
         .await.unwrap();
@@ -59,9 +55,7 @@ async fn should_search_for_manga_berserk() {
 async fn should_search_for_person_masashi_kishimoto() {
     thread::sleep(Duration::from_secs(3));
     let query = SearchQueryBuilder::new(Source::Person)
-        .name("岸本 斉史")
-        .build()
-        .expect("Fail on build search query");
+        .name("岸本 斉史");
 
     let person = JIKAN.search(query)
         .await.unwrap();
@@ -78,9 +72,7 @@ async fn should_search_for_person_masashi_kishimoto() {
 async fn should_search_for_character_lelouch_lamperouge() {
     thread::sleep(Duration::from_secs(3));
     let query = SearchQueryBuilder::new(Source::Character)
-        .name("ルルーシュ")
-        .build()
-        .expect("Fail on build search query");
+        .name("ルルーシュ");
 
     let characters = JIKAN.search(query)
         .await.unwrap();

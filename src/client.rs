@@ -18,7 +18,7 @@ use crate::producer::Producer;
 use crate::recommendations::Recommendation;
 use crate::reviews::Reviews;
 use crate::schedule::{Schedule, ScheduleOn};
-use crate::search::{results::SearchResultEnum, SearchQuery};
+use crate::search::{results::SearchResultEnum, SearchQueryBuilder};
 use crate::search::enums::{AnimeGenre, MangaGenre};
 use crate::season::{Season, SeasonResult};
 use crate::season::archive::ArchivedSeason;
@@ -151,8 +151,8 @@ impl Jikan {
         user::find_user(username, user_info, &self.http_client).await
     }
 
-    pub async fn search(&self, query: SearchQuery) -> Result<SearchResultEnum> {
-        search::search(query, &self.http_client).await
+    pub async fn search(&self, query_builder: SearchQueryBuilder) -> Result<SearchResultEnum> {
+        search::search(query_builder, &self.http_client).await
     }
 
     pub async fn retrieve_api_status(&self) -> Result<ApiStatus> {
