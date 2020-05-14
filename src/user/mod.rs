@@ -1,9 +1,11 @@
+use percent_encoding::utf8_percent_encode;
 use reqwest::Client;
 
-use crate::base::Resource;
+use crate::base::{FRAGMENT, Resource};
 use crate::client::BASE_URL;
-use crate::user::enums::{AnimeListQuery, build_animelist_query, build_mangalist_query, HistorySource, MangaListQuery};
-use crate::user::results::{FriendResponse, HistoryResponse, UserResultEnum};
+use crate::search::enums::Sort;
+use crate::user::enums::{AnimeListQuery, HistorySource, MangaListQuery};
+use crate::user::results::{AnimeListResponse, FriendResponse, HistoryResponse, MangaListResponse, UserResultEnum};
 
 pub mod enums;
 pub mod results;
@@ -26,8 +28,14 @@ pub(crate) async fn find_user(username: &str, user_info: UserInfo, http_clt: &Cl
             let response: FriendResponse = serde_json::from_str(&body)?;
             UserResultEnum::Friends(response.friends)
         }
-        UserInfo::Animelist { query: _ } => unimplemented!(),
-        UserInfo::Mangalist { query: _ } => unimplemented!(),
+        UserInfo::Animelist { query: _ } => {
+            let response: AnimeListResponse = serde_json::from_str(&body)?;
+            UserResultEnum::AnimeList(response.anime)
+        }
+        UserInfo::Mangalist { query: _ } => {
+            let response: MangaListResponse = serde_json::from_str(&body)?;
+            UserResultEnum::MangaList(response.manga)
+        }
     };
     Ok(user_result)
 }
@@ -46,8 +54,104 @@ impl Resource for UserInfo {
             UserInfo::Profile => String::from("/profile"),
             UserInfo::History { source } => format!("/history/{}", source.uri()),
             UserInfo::Friends { page } => format!("/friends/{}", page),
-            UserInfo::Animelist { query } => format!("/animelist/{}", build_animelist_query(query)),
-            UserInfo::Mangalist { query } => format!("/mangalist/{}", build_mangalist_query(query)),
+            UserInfo::Animelist { query } => format!("/animelist{}", build_animelist_query(query)),
+            UserInfo::Mangalist { query } => format!("/mangalist{}", build_mangalist_query(query)),
         }
     }
+}
+
+fn build_animelist_query(query_builder: &AnimeListQuery) -> String {
+    let mut query= String::from("");
+
+    if let Some(status) = &query_builder.status {
+        query = format!("/{}", status.uri());
+    }
+
+    match &query_builder.page {
+        Some(page) => query = format!("{}?page={}", query, page),
+        None => query = format!("{}?page=1", query),
+    }
+
+    if let Some(title) = &query_builder.title {
+        query = format!("{}&q={}", query, utf8_percent_encode(title, FRAGMENT));
+    }
+
+    match &query_builder.sort {
+        Some(sort) => query = format!("{}&{}", query, sort.uri()),
+        None => query = format!("{}&{}", query, Sort::Descending.uri()),
+    }
+
+    if let Some(order) = &query_builder.order_by {
+        query = format!("{}&order_by={}", query, order.uri());
+    }
+
+    if let Some(order) = &query_builder.order_by_2 {
+        query = format!("{}&order_by2={}", query, order.uri());
+    }
+
+    if let Some(date) = &query_builder.aired_from {
+        query = format!("{}&aired_from={}", query, date);
+    }
+
+    if let Some(date) = &query_builder.aired_to {
+        query = format!("{}&aired_to={}", query, date);
+    }
+
+    if let Some(id) = &query_builder.producer {
+        query = format!("{}&producer={}", query, id);
+    }
+
+    if let Some(status) = &query_builder.airing_status {
+        query = format!("{}&airing_status={}", query, status.uri());
+    }
+
+    return query;
+}
+
+fn build_mangalist_query(query_builder: &MangaListQuery) -> String {
+    let mut query= String::from("");
+
+    if let Some(status) = &query_builder.status {
+        query = format!("/{}", status.uri());
+    }
+
+    match &query_builder.page {
+        Some(page) => query = format!("{}?page={}", query, page),
+        None => query = format!("{}?page=1", query),
+    }
+
+    if let Some(title) = &query_builder.title {
+        query = format!("{}&q={}", query, utf8_percent_encode(title, FRAGMENT));
+    }
+
+    match &query_builder.sort {
+        Some(sort) => query = format!("{}&{}", query, sort.uri()),
+        None => query = format!("{}&{}", query, Sort::Descending.uri()),
+    }
+
+    if let Some(order) = &query_builder.order_by {
+        query = format!("{}&order_by={}", query, order.uri());
+    }
+
+    if let Some(order) = &query_builder.order_by_2 {
+        query = format!("{}&order_by2={}", query, order.uri());
+    }
+
+    if let Some(date) = &query_builder.published_from {
+        query = format!("{}&published_from={}", query, date);
+    }
+
+    if let Some(date) = &query_builder.published_to {
+        query = format!("{}&published_to={}", query, date);
+    }
+
+    if let Some(id) = &query_builder.magazine {
+        query = format!("{}&magazine={}", query, id);
+    }
+
+    if let Some(status) = &query_builder.publishing_status {
+        query = format!("{}&publishing_status={}", query, status.uri());
+    }
+
+    return query;
 }

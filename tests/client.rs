@@ -8,11 +8,11 @@ use jikan_rs::client::Jikan;
 use jikan_rs::meta::{InfoAbout, Period};
 use jikan_rs::reviews::Reviews;
 use jikan_rs::schedule::ScheduleOn;
-use jikan_rs::search::enums::{AnimeGenre, MangaGenre};
+use jikan_rs::search::enums::{AnimeGenre, MangaGenre, Sort};
 use jikan_rs::season::Season;
 use jikan_rs::stats::Stats;
 use jikan_rs::top::{Top, TopAnimeSubtype, TopMangaSubtype, TopResult};
-use jikan_rs::user::enums::HistorySource;
+use jikan_rs::user::enums::{AnimeListQuery, HistorySource, MangaListQuery, OrderAnimeListBy, OrderMangaListBy};
 use jikan_rs::user::results::UserResultEnum;
 use jikan_rs::user::UserInfo;
 use jikan_rs::user_updates::UserUpdates;
@@ -394,8 +394,8 @@ async fn should_find_an_user_profile() {
 async fn should_find_an_user_history() {
     thread::sleep(Duration::from_secs(3));
     let jikan = Jikan::new();
-    let user_profile = jikan.find_user("Bruno319", UserInfo::History { source: HistorySource::Both }).await.unwrap();
-    if let UserResultEnum::History(_history) = user_profile {
+    let user_history = jikan.find_user("Bruno319", UserInfo::History { source: HistorySource::Both }).await.unwrap();
+    if let UserResultEnum::History(_history) = user_history {
         assert!(true);
     } else {
         panic!()
@@ -406,9 +406,65 @@ async fn should_find_an_user_history() {
 async fn should_find_user_friends() {
     thread::sleep(Duration::from_secs(3));
     let jikan = Jikan::new();
-    let user_profile = jikan.find_user("Bruno319", UserInfo::Friends { page: 1 }).await.unwrap();
-    if let UserResultEnum::Friends(friends) = user_profile {
+    let user_friends = jikan.find_user("Bruno319", UserInfo::Friends { page: 1 }).await.unwrap();
+    if let UserResultEnum::Friends(friends) = user_friends {
         assert!(friends.len() > 0);
+    } else {
+        panic!()
+    }
+}
+
+#[tokio::test]
+async fn should_find_anime_list_from_user() {
+    thread::sleep(Duration::from_secs(3));
+    let jikan = Jikan::new();
+    let query = AnimeListQuery::builder();
+    let user_anime_list = jikan.find_user("Bruno319", UserInfo::Animelist { query }).await.unwrap();
+    if let UserResultEnum::AnimeList(anime_list) = user_anime_list {
+        assert!(anime_list.len() > 0);
+    } else {
+        panic!()
+    }
+}
+
+#[tokio::test]
+async fn should_find_top_scored_animes_from_user() {
+    thread::sleep(Duration::from_secs(3));
+    let jikan = Jikan::new();
+    let query = AnimeListQuery::builder()
+        .order_by(OrderAnimeListBy::Score)
+        .sort(Sort::Descending);
+    let user_anime_list = jikan.find_user("Bruno319", UserInfo::Animelist { query }).await.unwrap();
+    if let UserResultEnum::AnimeList(anime_list) = user_anime_list {
+        assert!(anime_list.len() > 0);
+    } else {
+        panic!()
+    }
+}
+
+#[tokio::test]
+async fn should_find_manga_list_from_user() {
+    thread::sleep(Duration::from_secs(3));
+    let jikan = Jikan::new();
+    let query = MangaListQuery::builder();
+    let user_manga_list = jikan.find_user("Bruno319", UserInfo::Mangalist { query }).await.unwrap();
+    if let UserResultEnum::MangaList(manga_list) = user_manga_list {
+        assert!(manga_list.len() > 0);
+    } else {
+        panic!()
+    }
+}
+
+#[tokio::test]
+async fn should_find_top_scored_mangas_from_user() {
+    thread::sleep(Duration::from_secs(3));
+    let jikan = Jikan::new();
+    let query = MangaListQuery::builder()
+        .order_by(OrderMangaListBy::Score)
+        .sort(Sort::Descending);
+    let user_manga_list = jikan.find_user("Bruno319", UserInfo::Mangalist { query }).await.unwrap();
+    if let UserResultEnum::MangaList(manga_list) = user_manga_list {
+        assert!(manga_list.len() > 0);
     } else {
         panic!()
     }

@@ -1,9 +1,13 @@
-use crate::base::{MALTypeItem, MALImageItem};
+use serde::de;
+
+use crate::base::{MALImageItem, MALTypeItem};
 
 pub enum UserResultEnum {
     Profile(Profile),
     History(Vec<HistoryItem>),
     Friends(Vec<Friend>),
+    AnimeList(Vec<AnimeListEntry>),
+    MangaList(Vec<MangaListEntry>),
 }
 
 jikan_response_entity!(
@@ -86,4 +90,82 @@ pub struct Friend {
     pub image_url: Option<String>,
     pub last_online: Option<String>,
     pub friends_since: Option<String>,
+}
+
+jikan_response_entity!(
+    pub struct AnimeListResponse {
+        pub anime: Vec<AnimeListEntry>,
+    }
+);
+
+#[derive(Deserialize, Debug)]
+pub struct AnimeListEntry {
+    pub mal_id: u32,
+    pub title: String,
+    pub url: String,
+    pub image_url: Option<String>,
+    pub video_url: Option<String>,
+    #[serde(rename = "type")]
+    pub anime_type: String,
+    #[serde(deserialize_with = "define_status")]
+    pub watching_status: bool,
+    pub score: u8,
+    pub watched_episodes: u32,
+    pub total_episodes: u32,
+    #[serde(deserialize_with = "define_status")]
+    pub airing_status: bool,
+    pub has_episode_video: bool,
+    pub has_promo_video: bool,
+    pub has_video: bool,
+    pub is_rewatching: bool,
+    pub rating: Option<String>,
+    pub start_date: Option<String>,
+    pub end_date: Option<String>,
+    pub watch_start_date: Option<String>,
+    pub watch_end_date: Option<String>,
+    pub days: Option<u32>,
+    pub priority: Option<String>,
+    pub added_to_list: bool,
+}
+
+jikan_response_entity!(
+    pub struct MangaListResponse {
+        pub manga: Vec<MangaListEntry>,
+    }
+);
+
+#[derive(Deserialize, Debug)]
+pub struct MangaListEntry {
+    pub mal_id: u32,
+    pub title: String,
+    pub url: String,
+    pub image_url: Option<String>,
+    #[serde(rename = "type")]
+    pub manga_type: String,
+    #[serde(deserialize_with = "define_status")]
+    pub reading_status: bool,
+    pub score: u8,
+    pub read_chapters: u32,
+    pub total_chapters: u32,
+    pub read_volumes: u32,
+    pub total_volumes: u32,
+    #[serde(deserialize_with = "define_status")]
+    pub publishing_status: bool,
+    pub is_rereading: bool,
+    pub rating: Option<String>,
+    pub start_date: Option<String>,
+    pub end_date: Option<String>,
+    pub read_start_date: Option<String>,
+    pub read_end_date: Option<String>,
+    pub days: Option<u32>,
+    pub priority: Option<String>,
+    pub added_to_list: bool,
+}
+
+fn define_status<'de, D>(deserializer: D) -> Result<bool, D::Error>
+    where
+        D: de::Deserializer<'de>,
+{
+    let status: u8 = de::Deserialize::deserialize(deserializer)?;
+    if status == 1 { Ok(true) } else { Ok(false) }
 }

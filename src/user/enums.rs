@@ -1,6 +1,5 @@
 use crate::base::{AnimeStatusForUser, Date, MangaStatusForUser, Resource};
 use crate::search::enums::{AnimeStatus, MangaStatus, Sort};
-use crate::season::Season;
 
 #[derive(Resource)]
 pub enum HistorySource {
@@ -12,17 +11,16 @@ pub enum HistorySource {
 
 builder!(
     pub struct AnimeListQuery {
-        title: String,
-        status: AnimeStatusForUser,
-        page: u16,
-        sort: Sort,
-        order_by: OrderAnimeListBy,
-        order_by2: OrderAnimeListBy,
-        aired_from: Date,
-        aired_to: Date,
-        producer: u32,
-        season: Season,
-        airing_status: AnimeStatus,
+        pub(crate) title: String,
+        pub(crate) status: AnimeStatusForUser,
+        pub(crate) page: u16,
+        pub(crate) sort: Sort,
+        pub(crate) order_by: OrderAnimeListBy,
+        pub(crate) order_by_2: OrderAnimeListBy,
+        pub(crate) aired_from: Date,
+        pub(crate) aired_to: Date,
+        pub(crate) producer: u32,
+        pub(crate) airing_status: AnimeStatus,
     }
 );
 
@@ -43,18 +41,19 @@ pub enum OrderAnimeListBy {
     AirEnd,
     Status,
 }
+
 builder!(
     pub struct MangaListQuery {
-        title: String,
-        status: MangaStatusForUser,
-        page: u16,
-        sort: Sort,
-        order_by: OrderMangaListBy,
-        order_by2: OrderMangaListBy,
-        published_from: Date,
-        published_to: Date,
-        magazine: u32,
-        publishing_status: MangaStatus,
+        pub(crate) title: String,
+        pub(crate) status: MangaStatusForUser,
+        pub(crate) page: u16,
+        pub(crate) sort: Sort,
+        pub(crate) order_by: OrderMangaListBy,
+        pub(crate) order_by_2: OrderMangaListBy,
+        pub(crate) published_from: Date,
+        pub(crate) published_to: Date,
+        pub(crate) magazine: u32,
+        pub(crate) publishing_status: MangaStatus,
     }
 );
 
@@ -72,12 +71,4 @@ pub enum OrderMangaListBy {
     PublishStart,
     PublishEnd,
     Status,
-}
-
-pub(crate) fn build_animelist_query(query_builder: &AnimeListQuery) -> String {
-    unimplemented!()
-}
-
-pub(crate) fn build_mangalist_query(query_builder: &MangaListQuery) -> String {
-    unimplemented!()
 }

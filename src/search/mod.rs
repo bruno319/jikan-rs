@@ -1,7 +1,7 @@
-use percent_encoding::{AsciiSet, CONTROLS, utf8_percent_encode};
+use percent_encoding::utf8_percent_encode;
 use reqwest::Client;
 
-use crate::base::Date;
+use crate::base::{Date, FRAGMENT};
 use crate::base::Resource;
 use crate::client::BASE_URL;
 use crate::search::enums::{Genres, OrderBy, Rating, Sort, Source, SourceStatus, SourceType};
@@ -11,23 +11,6 @@ pub mod enums;
 pub mod results;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
-
-const FRAGMENT: &AsciiSet = &CONTROLS
-    .add(b' ')
-    .add(b'"')
-    .add(b'<')
-    .add(b'>')
-    .add(b'`')
-    .add(b'?')
-    .add(b';')
-    .add(b'/')
-    .add(b':')
-    .add(b'@')
-    .add(b'+')
-    .add(b'=')
-    .add(b'$')
-    .add(b',')
-    .add(b'&');
 
 pub(crate) async fn search(search_query: SearchQuery, http_clt: &Client) -> Result<SearchResultEnum> {
     let url = format!("{}{}?{}", BASE_URL, search_query.source.uri(), search_query.query);
@@ -178,15 +161,15 @@ impl SearchQueryBuilder {
 
         if let Some(source_type) = self.source_type {
             match source_type {
-                SourceType::Anime(anime_type) => query = format!("{}&{}", query, anime_type.uri()),
-                SourceType::Manga(manga_type) => query = format!("{}&{}", query, manga_type.uri()),
+                SourceType::Anime(anime_type) => query = format!("{}&status={}", query, anime_type.uri()),
+                SourceType::Manga(manga_type) => query = format!("{}&status={}", query, manga_type.uri()),
             }
         }
 
         if let Some(status) = self.status {
             match status {
-                SourceStatus::Anime(anime_status) => query = format!("{}&{}", query, anime_status.uri()),
-                SourceStatus::Manga(manga_status) => query = format!("{}&{}", query, manga_status.uri()),
+                SourceStatus::Anime(anime_status) => query = format!("{}&status={}", query, anime_status.uri()),
+                SourceStatus::Manga(manga_status) => query = format!("{}&status={}", query, manga_status.uri()),
             }
         }
 

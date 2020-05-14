@@ -42,7 +42,6 @@ pub enum SourceStatus {
 }
 
 #[derive(Resource, Clone)]
-#[uri_prefix = "status="]
 pub enum AnimeStatus {
     Airing,
     #[rename_uri = "complete"]
@@ -51,7 +50,6 @@ pub enum AnimeStatus {
 }
 
 #[derive(Resource)]
-#[uri_prefix = "status="]
 pub enum MangaStatus {
     Publishing,
     #[rename_uri = "complete"]

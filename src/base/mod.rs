@@ -1,4 +1,5 @@
 use std::fmt;
+use percent_encoding::{CONTROLS, AsciiSet};
 
 pub trait Resource {
     fn uri(&self) -> String;
@@ -21,6 +22,23 @@ impl Resource for SourceType {
         }
     }
 }
+
+pub(crate) const FRAGMENT: &AsciiSet = &CONTROLS
+    .add(b' ')
+    .add(b'"')
+    .add(b'<')
+    .add(b'>')
+    .add(b'`')
+    .add(b'?')
+    .add(b';')
+    .add(b'/')
+    .add(b':')
+    .add(b'@')
+    .add(b'+')
+    .add(b'=')
+    .add(b'$')
+    .add(b',')
+    .add(b'&');
 
 #[derive(Deserialize, Debug)]
 pub struct MALTypeItem {
@@ -57,8 +75,9 @@ pub struct VoiceActor {
     pub language: String,
 }
 
-#[derive(Deserialize, Debug, Resource, Clone)]
+#[derive(Deserialize, Debug, Resource)]
 pub enum AnimeStatusForUser {
+    #[rename_uri = ""]
     All,
     Watching,
     Completed,
@@ -73,6 +92,7 @@ pub enum AnimeStatusForUser {
 
 #[derive(Deserialize, Debug, Resource)]
 pub enum MangaStatusForUser {
+    #[rename_uri = ""]
     All,
     Reading,
     Completed,
@@ -158,7 +178,6 @@ pub struct MangaInfo {
     pub serialization: Vec<String>,
 }
 
-#[derive(Clone)]
 pub struct Date {
     year: u16,
     month: u8,
