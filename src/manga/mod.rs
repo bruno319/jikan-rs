@@ -28,40 +28,38 @@ pub(crate) async fn find_manga(mal_id: u32, http_clt: &Client) -> Result<Manga> 
     Ok(manga)
 }
 
-#[derive(Deserialize, Debug)]
-pub struct Manga {
-    #[serde(skip)]
-    client: Client,
-    pub request_hash: String,
-    pub request_cached: bool,
-    pub request_cache_expiry: u32,
-    pub mal_id: u32,
-    pub url: String,
-    pub image_url: Option<String>,
-    pub title: String,
-    pub title_english: Option<String>,
-    pub title_japanese: Option<String>,
-    pub title_synonyms: Vec<String>,
-    pub status: String,
-    #[serde(rename = "type")]
-    pub manga_type: String,
-    pub volumes: Option<u32>,
-    pub chapters: Option<u32>,
-    pub publishing: bool,
-    pub published: Published,
-    pub rank: Option<u32>,
-    pub score: Option<f32>,
-    pub scored_by: Option<u32>,
-    pub popularity: Option<u32>,
-    pub members: Option<u32>,
-    pub favorites: Option<u32>,
-    pub synopsis: String,
-    pub background: Option<String>,
-    pub related: RelatedContent,
-    pub genres: Vec<MALTypeItem>,
-    pub authors: Vec<MALTypeItem>,
-    pub serializations: Vec<MALTypeItem>,
-}
+jikan_response_entity!(
+    pub struct Manga {
+        #[serde(skip)]
+        client: Client,
+        pub mal_id: u32,
+        pub url: String,
+        pub image_url: Option<String>,
+        pub title: String,
+        pub title_english: Option<String>,
+        pub title_japanese: Option<String>,
+        pub title_synonyms: Vec<String>,
+        pub status: String,
+        #[serde(rename = "type")]
+        pub manga_type: String,
+        pub volumes: Option<u32>,
+        pub chapters: Option<u32>,
+        pub publishing: bool,
+        pub published: Published,
+        pub rank: Option<u32>,
+        pub score: Option<f32>,
+        pub scored_by: Option<u32>,
+        pub popularity: Option<u32>,
+        pub members: Option<u32>,
+        pub favorites: Option<u32>,
+        pub synopsis: String,
+        pub background: Option<String>,
+        pub related: RelatedContent,
+        pub genres: Vec<MALTypeItem>,
+        pub authors: Vec<MALTypeItem>,
+        pub serializations: Vec<MALTypeItem>,
+    }
+);
 
 #[derive(Deserialize, Debug)]
 pub struct Published {

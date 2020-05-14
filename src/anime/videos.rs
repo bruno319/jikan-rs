@@ -15,14 +15,12 @@ pub(crate) async fn find_videos(mal_id: &u32, http_clt: &Client) -> Result<Video
     Ok(videos)
 }
 
-#[derive(Deserialize, Debug)]
-pub struct Videos {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    pub promo: Vec<PromoVideo>,
-    pub episodes: Vec<Episode>,
-}
+jikan_response_entity!(
+    pub struct Videos {
+        pub promo: Vec<PromoVideo>,
+        pub episodes: Vec<Episode>,
+    }
+);
 
 #[derive(Deserialize, Debug)]
 pub struct PromoVideo {

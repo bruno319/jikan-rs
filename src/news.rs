@@ -17,13 +17,11 @@ pub(crate) async fn find_news(mal_id: SourceType, http_clt: &Client) -> Result<V
     Ok(response.articles)
 }
 
-#[derive(Deserialize, Debug)]
-struct Response {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    pub articles: Vec<News>,
-}
+jikan_response_entity!(
+    struct Response {
+        articles: Vec<News>,
+    }
+);
 
 #[derive(Deserialize, Debug)]
 pub struct News {

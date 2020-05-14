@@ -17,13 +17,11 @@ pub(crate) async fn find_pictures(mal_id: SourceType, http_clt: &Client) -> Resu
     Ok(response.pictures)
 }
 
-#[derive(Deserialize, Debug)]
-struct Response {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    pub pictures: Vec<Picture>,
-}
+jikan_response_entity!(
+    struct Response {
+        pictures: Vec<Picture>,
+    }
+);
 
 #[derive(Deserialize, Debug)]
 pub struct Picture {

@@ -31,13 +31,11 @@ pub enum Reviews {
     Manga(Vec<Review<MangaReviewer>>),
 }
 
-#[derive(Deserialize, Debug)]
-pub struct ResponseReview<T> {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    pub reviews: Vec<Review<T>>,
-}
+jikan_response_entity!(
+    struct ResponseReview<T> {
+        reviews: Vec<Review<T>>,
+    }
+);
 
 #[derive(Deserialize, Debug)]
 pub struct Review<T> {

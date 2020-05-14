@@ -16,13 +16,11 @@ pub(crate) async fn find_magazine(id: u32, page: &u16, http_clt: &Client) -> Res
     Ok(magazine)
 }
 
-#[derive(Deserialize, Debug)]
-pub struct Magazine {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    #[serde(rename = "meta")]
-    pub data: MALTypeItem,
-    #[serde(rename = "manga")]
-    pub mangas: Vec<MangaInfo>,
-}
+jikan_response_entity!(
+    pub struct Magazine {
+        #[serde(rename = "meta")]
+        pub data: MALTypeItem,
+        #[serde(rename = "manga")]
+        pub mangas: Vec<MangaInfo>,
+    }
+);

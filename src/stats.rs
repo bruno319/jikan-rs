@@ -26,33 +26,29 @@ pub enum Stats {
     Manga(MangaStats),
 }
 
-#[derive(Deserialize, Debug)]
-pub struct AnimeStats {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    pub watching: u32,
-    pub completed: u32,
-    pub on_hold: u32,
-    pub dropped: u32,
-    pub plan_to_watch: u32,
-    pub total: u32,
-    pub scores: Score,
-}
+jikan_response_entity!(
+    pub struct AnimeStats {
+        pub watching: u32,
+        pub completed: u32,
+        pub on_hold: u32,
+        pub dropped: u32,
+        pub plan_to_watch: u32,
+        pub total: u32,
+        pub scores: Score,
+    }
+);
 
-#[derive(Deserialize, Debug)]
-pub struct MangaStats {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    pub reading: u32,
-    pub completed: u32,
-    pub on_hold: u32,
-    pub dropped: u32,
-    pub plan_to_read: u32,
-    pub total: u32,
-    pub scores: Score,
-}
+jikan_response_entity!(
+    pub struct MangaStats {
+        pub reading: u32,
+        pub completed: u32,
+        pub on_hold: u32,
+        pub dropped: u32,
+        pub plan_to_read: u32,
+        pub total: u32,
+        pub scores: Score,
+    }
+);
 
 #[derive(Deserialize, Debug)]
 pub struct Score {

@@ -1,7 +1,7 @@
 [package]
 name = "jikan-rs"
 version = "0.1.0"
-authors = ["BrunoVieira319 <brunovieira319@hotmail.com>"]
+authors = ["bruno319 <brunovieira319@hotmail.com>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

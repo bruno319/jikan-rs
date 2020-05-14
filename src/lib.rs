@@ -1,12 +1,17 @@
 #[macro_use]
+extern crate jikan_resource_derive;
+#[macro_use]
 extern crate serde_derive;
 
+#[macro_use]
+mod macros;
 pub mod client;
 pub mod anime;
 pub mod manga;
 pub mod person;
 pub mod character;
 pub mod search;
+pub mod user;
 pub mod news;
 pub mod pictures;
 pub mod forum;

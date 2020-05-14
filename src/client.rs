@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use crate::{anime, character, club, forum, genre, magazine, manga, meta, more_info, news, person, pictures,
-            producer, recommendations, reviews, schedule, search, season, stats, top, user_updates};
+            producer, recommendations, reviews, schedule, search, season, stats, top, user, user_updates};
 use crate::anime::{Anime, characters::CharactersStaff, episodes::Episode, videos::Videos};
 use crate::base::{MALRoleItem, SourceType};
 use crate::character::Character;
@@ -25,6 +25,8 @@ use crate::season::archive::ArchivedSeason;
 use crate::stats::Stats;
 use crate::top::{Top, TopResult};
 use crate::user_updates::UserUpdates;
+use crate::user::UserInfo;
+use crate::user::results::UserResultEnum;
 
 pub const BASE_URL: &str = "http://api.jikan.moe/v3";
 
@@ -143,6 +145,10 @@ impl Jikan {
 
     pub async fn find_club_members(&self, club_id: u32, page: &u32) -> Result<Vec<ClubMember>> {
         club::find_club_members(club_id, page, &self.http_client).await
+    }
+
+    pub async fn find_user(&self, username: &str, user_info: UserInfo) -> Result<UserResultEnum> {
+        user::find_user(username, user_info, &self.http_client).await
     }
 
     pub async fn search(&self, query: SearchQuery) -> Result<SearchResultEnum> {

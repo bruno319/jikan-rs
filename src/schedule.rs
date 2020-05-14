@@ -1,4 +1,3 @@
-use jikan_resource_derive::Resource;
 use reqwest::Client;
 
 use crate::base::AnimeInfo;
@@ -33,30 +32,28 @@ pub enum ScheduleOn {
     Unknown,
 }
 
-#[derive(Deserialize, Debug)]
-pub struct Schedule {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    #[serde(default = "default_content")]
-    pub monday: Vec<AnimeInfo>,
-    #[serde(default = "default_content")]
-    pub tuesday: Vec<AnimeInfo>,
-    #[serde(default = "default_content")]
-    pub wednesday: Vec<AnimeInfo>,
-    #[serde(default = "default_content")]
-    pub thursday: Vec<AnimeInfo>,
-    #[serde(default = "default_content")]
-    pub friday: Vec<AnimeInfo>,
-    #[serde(default = "default_content")]
-    pub saturday: Vec<AnimeInfo>,
-    #[serde(default = "default_content")]
-    pub sunday: Vec<AnimeInfo>,
-    #[serde(default = "default_content")]
-    pub other: Vec<AnimeInfo>,
-    #[serde(default = "default_content")]
-    pub unknown: Vec<AnimeInfo>,
-}
+jikan_response_entity!(
+    pub struct Schedule {
+        #[serde(default = "default_content")]
+        pub monday: Vec<AnimeInfo>,
+        #[serde(default = "default_content")]
+        pub tuesday: Vec<AnimeInfo>,
+        #[serde(default = "default_content")]
+        pub wednesday: Vec<AnimeInfo>,
+        #[serde(default = "default_content")]
+        pub thursday: Vec<AnimeInfo>,
+        #[serde(default = "default_content")]
+        pub friday: Vec<AnimeInfo>,
+        #[serde(default = "default_content")]
+        pub saturday: Vec<AnimeInfo>,
+        #[serde(default = "default_content")]
+        pub sunday: Vec<AnimeInfo>,
+        #[serde(default = "default_content")]
+        pub other: Vec<AnimeInfo>,
+        #[serde(default = "default_content")]
+        pub unknown: Vec<AnimeInfo>,
+    }
+);
 
 fn default_content() -> Vec<AnimeInfo> {
     Vec::with_capacity(0)

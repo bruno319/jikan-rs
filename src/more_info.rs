@@ -17,10 +17,8 @@ pub(crate) async fn find_more_info(mal_id: SourceType, http_clt: &Client) -> Res
     Ok(response.moreinfo)
 }
 
-#[derive(Deserialize, Debug)]
-struct Response {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    moreinfo: Option<String>,
-}
+jikan_response_entity! (
+    struct Response {
+        moreinfo: Option<String>,
+    }
+);

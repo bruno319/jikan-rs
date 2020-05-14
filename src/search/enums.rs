@@ -1,5 +1,3 @@
-use jikan_resource_derive::Resource;
-
 use crate::base::Resource;
 
 #[derive(Resource)]
@@ -43,20 +41,22 @@ pub enum SourceStatus {
     Manga(MangaStatus),
 }
 
-#[derive(Resource)]
+#[derive(Resource, Clone)]
 #[uri_prefix = "status="]
 pub enum AnimeStatus {
     Airing,
+    #[rename_uri = "complete"]
     Completed,
-    Upcoming,
+    ToBeAired,
 }
 
 #[derive(Resource)]
 #[uri_prefix = "status="]
 pub enum MangaStatus {
     Publishing,
+    #[rename_uri = "complete"]
     Completed,
-    Upcoming,
+    ToBePublished,
 }
 
 #[derive(Resource)]
@@ -86,7 +86,7 @@ pub enum OrderBy {
     Chapters,
 }
 
-#[derive(Resource)]
+#[derive(Resource, Clone)]
 #[uri_prefix = "sort="]
 pub enum Sort {
     Ascending,

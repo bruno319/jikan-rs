@@ -1,6 +1,5 @@
 use std::collections::HashMap;
 
-use jikan_resource_derive::Resource;
 use reqwest::Client;
 
 use crate::base::Resource;

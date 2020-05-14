@@ -33,14 +33,12 @@ async fn make_request(mal_id: &u32, http_clt: &Client, page: &u8) -> Result<Resp
     Ok(response)
 }
 
-#[derive(Deserialize, Debug)]
-struct Response {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    episodes_last_page: u8,
-    episodes: Vec<Episode>,
-}
+jikan_response_entity!(
+    struct Response {
+        episodes_last_page: u8,
+        episodes: Vec<Episode>,
+    }
+);
 
 #[derive(Deserialize, Debug)]
 pub struct Episode {

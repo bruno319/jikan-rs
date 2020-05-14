@@ -16,13 +16,11 @@ pub(crate) async fn find_producer(id: u32, page: &u16, http_clt: &Client) -> Res
     Ok(producer)
 }
 
-#[derive(Deserialize, Debug)]
-pub struct Producer {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    #[serde(rename = "meta")]
-    pub data: MALTypeItem,
-    #[serde(rename = "anime")]
-    pub animes: Vec<AnimeInfo>,
-}
+jikan_response_entity!(
+    pub struct Producer {
+        #[serde(rename = "meta")]
+        pub data: MALTypeItem,
+        #[serde(rename = "anime")]
+        pub animes: Vec<AnimeInfo>,
+    }
+);

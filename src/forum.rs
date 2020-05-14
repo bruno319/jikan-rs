@@ -17,13 +17,11 @@ pub(crate) async fn find_forum(mal_id: SourceType, http_clt: &Client) -> Result<
     Ok(response.topics)
 }
 
-#[derive(Deserialize, Debug)]
-struct Response {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    pub topics: Vec<Topic>,
-}
+jikan_response_entity!(
+    struct Response {
+        pub topics: Vec<Topic>,
+    }
+);
 
 #[derive(Deserialize, Debug)]
 pub struct Topic {

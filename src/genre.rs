@@ -28,24 +28,20 @@ pub(crate) async fn find_mangas_with_genre(genre: MangaGenre, page: &u16, http_c
     Ok(mangas)
 }
 
-#[derive(Deserialize, Debug)]
-pub struct GenreAnimeResult {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    pub mal_url: MALTypeItem,
-    pub item_count: u32,
-    #[serde(rename = "anime")]
-    pub animes: Vec<AnimeInfo>,
-}
+jikan_response_entity!(
+    pub struct GenreAnimeResult {
+        pub mal_url: MALTypeItem,
+        pub item_count: u32,
+        #[serde(rename = "anime")]
+        pub animes: Vec<AnimeInfo>,
+    }
+);
 
-#[derive(Deserialize, Debug)]
-pub struct GenreMangaResult {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    pub mal_url: MALTypeItem,
-    pub item_count: u32,
-    #[serde(rename = "manga")]
-    pub mangas: Vec<MangaInfo>,
-}
+jikan_response_entity!(
+    pub struct GenreMangaResult {
+        pub mal_url: MALTypeItem,
+        pub item_count: u32,
+        #[serde(rename = "manga")]
+        pub mangas: Vec<MangaInfo>,
+    }
+);

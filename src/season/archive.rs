@@ -15,13 +15,11 @@ pub(crate) async fn find_season_archives(http_clt: &Client) -> Result<Vec<Archiv
     Ok(response.archive)
 }
 
-#[derive(Deserialize, Debug)]
-struct Response {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    archive: Vec<ArchivedSeason>,
-}
+jikan_response_entity!(
+    struct Response {
+        archive: Vec<ArchivedSeason>,
+    }
+);
 
 #[derive(Deserialize, Debug)]
 pub struct ArchivedSeason {

@@ -32,21 +32,17 @@ pub enum UserUpdates {
     Manga(Vec<MangaUserUpdate>),
 }
 
-#[derive(Deserialize, Debug)]
-struct AnimeUserUpdatesResponse {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    users: Vec<AnimeUserUpdate>,
-}
+jikan_response_entity!(
+    struct AnimeUserUpdatesResponse {
+        users: Vec<AnimeUserUpdate>,
+    }
+);
 
-#[derive(Deserialize, Debug)]
-struct MangaUserUpdatesResponse {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    users: Vec<MangaUserUpdate>,
-}
+jikan_response_entity!(
+    struct MangaUserUpdatesResponse {
+        users: Vec<MangaUserUpdate>,
+    }
+);
 
 #[derive(Deserialize, Debug)]
 pub struct AnimeUserUpdate {

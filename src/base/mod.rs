@@ -57,25 +57,31 @@ pub struct VoiceActor {
     pub language: String,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Resource, Clone)]
 pub enum AnimeStatusForUser {
+    All,
     Watching,
     Completed,
     #[serde(rename = "On-Hold")]
+    #[rename_uri = "onhold"]
     OnHold,
     Dropped,
     #[serde(rename = "Plan to Watch")]
+    #[rename_uri = "plantowatch"]
     PlanToWatch,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Resource)]
 pub enum MangaStatusForUser {
+    All,
     Reading,
     Completed,
     #[serde(rename = "On-Hold")]
+    #[rename_uri = "onhold"]
     OnHold,
     Dropped,
     #[serde(rename = "Plan to Read")]
+    #[rename_uri = "plantoread"]
     PlanToRead,
 }
 
@@ -152,6 +158,7 @@ pub struct MangaInfo {
     pub serialization: Vec<String>,
 }
 
+#[derive(Clone)]
 pub struct Date {
     year: u16,
     month: u8,

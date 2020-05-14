@@ -7,14 +7,12 @@ pub enum SearchResultEnum {
     Character(SearchResult<CharacterResult>),
 }
 
-#[derive(Deserialize, Debug)]
-pub struct SearchResult<T> {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    pub results: Vec<T>,
-    pub last_page: u16,
-}
+jikan_response_entity!(
+    pub struct SearchResult<T> {
+        pub results: Vec<T>,
+        pub last_page: u16,
+    }
+);
 
 #[derive(Deserialize, Debug)]
 pub struct AnimeResult {

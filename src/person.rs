@@ -20,28 +20,26 @@ pub(crate) async fn find_person(mal_id: u32, http_clt: &Client) -> Result<Person
     Ok(person)
 }
 
-#[derive(Deserialize, Debug)]
-pub struct Person {
-    #[serde(skip)]
-    client: Client,
-    pub request_hash: String,
-    pub request_cached: bool,
-    pub request_cache_expiry: u32,
-    pub mal_id: u32,
-    pub url: String,
-    pub image_url: Option<String>,
-    pub website_url: Option<String>,
-    pub name: String,
-    pub given_name: Option<String>,
-    pub family_name: Option<String>,
-    pub alternate_names: Vec<String>,
-    pub birthday: Option<String>,
-    pub member_favorites: Option<u32>,
-    pub about: Option<String>,
-    pub voice_acting_roles: Vec<VoiceActingRole>,
-    pub anime_staff_positions: Vec<AnimeStaffPosition>,
-    pub published_manga: Vec<PublishedManga>,
-}
+jikan_response_entity!(
+    pub struct Person {
+        #[serde(skip)]
+        client: Client,
+        pub mal_id: u32,
+        pub url: String,
+        pub image_url: Option<String>,
+        pub website_url: Option<String>,
+        pub name: String,
+        pub given_name: Option<String>,
+        pub family_name: Option<String>,
+        pub alternate_names: Vec<String>,
+        pub birthday: Option<String>,
+        pub member_favorites: Option<u32>,
+        pub about: Option<String>,
+        pub voice_acting_roles: Vec<VoiceActingRole>,
+        pub anime_staff_positions: Vec<AnimeStaffPosition>,
+        pub published_manga: Vec<PublishedManga>,
+    }
+);
 
 #[derive(Deserialize, Debug)]
 pub struct VoiceActingRole {

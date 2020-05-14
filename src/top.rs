@@ -1,4 +1,3 @@
-use jikan_resource_derive::Resource;
 use reqwest::Client;
 
 use crate::base::MALTypeItem;

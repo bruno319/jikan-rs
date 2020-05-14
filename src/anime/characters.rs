@@ -17,14 +17,12 @@ pub(crate) async fn find_characters(mal_id: &u32, http_clt: &Client) -> Result<C
 }
 
 
-#[derive(Deserialize, Debug)]
-pub struct CharactersStaff {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    pub characters: Vec<AnimeCharacter>,
-    pub staff: Vec<StaffMember>,
-}
+jikan_response_entity!(
+    pub struct CharactersStaff {
+        pub characters: Vec<AnimeCharacter>,
+        pub staff: Vec<StaffMember>,
+    }
+);
 
 #[derive(Deserialize, Debug)]
 pub struct AnimeCharacter {

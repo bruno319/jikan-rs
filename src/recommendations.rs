@@ -17,13 +17,11 @@ pub(crate) async fn find_recommendations(mal_id: SourceType, http_clt: &Client) 
     Ok(response.recommendations)
 }
 
-#[derive(Deserialize, Debug)]
-struct Response {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    recommendations: Vec<Recommendation>,
-}
+jikan_response_entity!(
+    struct Response {
+        recommendations: Vec<Recommendation>,
+    }
+);
 
 #[derive(Deserialize, Debug)]
 pub struct Recommendation {

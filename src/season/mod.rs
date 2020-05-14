@@ -18,6 +18,7 @@ pub(crate) async fn find_season(season: Season, http_clt: &Client) -> Result<Sea
     Ok(season_result)
 }
 
+#[derive(Clone)]
 pub enum Season {
     Winter(u16),
     Fall(u16),
@@ -38,13 +39,11 @@ impl Resource for Season {
     }
 }
 
-#[derive(Deserialize, Debug)]
-pub struct SeasonResult {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    pub season_name: String,
-    pub season_year: Option<u16>,
-    #[serde(rename = "anime")]
-    pub animes: Vec<AnimeInfo>,
-}
+jikan_response_entity!(
+    pub struct SeasonResult {
+        pub season_name: String,
+        pub season_year: Option<u16>,
+        #[serde(rename = "anime")]
+        pub animes: Vec<AnimeInfo>,
+    }
+);

@@ -32,48 +32,46 @@ pub(crate) async fn find_anime(mal_id: u32, http_clt: &Client) -> Result<Anime> 
     Ok(anime)
 }
 
-#[derive(Deserialize, Debug)]
-pub struct Anime {
-    #[serde(skip)]
-    client: Client,
-    pub request_hash: String,
-    pub request_cached: bool,
-    pub request_cache_expiry: u32,
-    pub mal_id: u32,
-    pub url: String,
-    pub image_url: Option<String>,
-    pub trailer_url: Option<String>,
-    pub title: String,
-    pub title_english: Option<String>,
-    pub title_japanese: Option<String>,
-    pub title_synonyms: Vec<String>,
-    #[serde(rename = "type")]
-    pub anime_type: String,
-    pub source: String,
-    pub episodes: Option<u16>,
-    pub status: String,
-    pub airing: bool,
-    pub aired: Aired,
-    pub duration: Option<String>,
-    pub rating: Option<String>,
-    pub score: Option<f32>,
-    pub scored_by: Option<u32>,
-    pub rank: Option<u32>,
-    pub popularity: Option<u32>,
-    pub members: Option<u32>,
-    pub favorites: Option<u32>,
-    pub synopsis: String,
-    pub background: Option<String>,
-    pub premiered: Option<String>,
-    pub broadcast: Option<String>,
-    pub related: RelatedContent,
-    pub producers: Vec<MALTypeItem>,
-    pub licensors: Vec<MALTypeItem>,
-    pub studios: Vec<MALTypeItem>,
-    pub genres: Vec<MALTypeItem>,
-    pub opening_themes: Vec<String>,
-    pub ending_themes: Vec<String>,
-}
+jikan_response_entity!(
+    pub struct Anime {
+        #[serde(skip)]
+        client: Client,
+        pub mal_id: u32,
+        pub url: String,
+        pub image_url: Option<String>,
+        pub trailer_url: Option<String>,
+        pub title: String,
+        pub title_english: Option<String>,
+        pub title_japanese: Option<String>,
+        pub title_synonyms: Vec<String>,
+        #[serde(rename = "type")]
+        pub anime_type: String,
+        pub source: String,
+        pub episodes: Option<u16>,
+        pub status: String,
+        pub airing: bool,
+        pub aired: Aired,
+        pub duration: Option<String>,
+        pub rating: Option<String>,
+        pub score: Option<f32>,
+        pub scored_by: Option<u32>,
+        pub rank: Option<u32>,
+        pub popularity: Option<u32>,
+        pub members: Option<u32>,
+        pub favorites: Option<u32>,
+        pub synopsis: String,
+        pub background: Option<String>,
+        pub premiered: Option<String>,
+        pub broadcast: Option<String>,
+        pub related: RelatedContent,
+        pub producers: Vec<MALTypeItem>,
+        pub licensors: Vec<MALTypeItem>,
+        pub studios: Vec<MALTypeItem>,
+        pub genres: Vec<MALTypeItem>,
+        pub opening_themes: Vec<String>,
+        pub ending_themes: Vec<String>,
+    }
+);
 
 #[derive(Deserialize, Debug)]
 pub struct Aired {

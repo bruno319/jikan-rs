@@ -20,25 +20,23 @@ pub(crate) async fn find_character(mal_id: u32, http_clt: &Client) -> Result<Cha
     Ok(character)
 }
 
-#[derive(Deserialize, Debug)]
-pub struct Character {
-    #[serde(skip)]
-    client: Client,
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    pub mal_id: u32,
-    pub url: String,
-    pub image_url: String,
-    pub name: String,
-    pub name_kanji: Option<String>,
-    pub nicknames: Vec<String>,
-    pub about: Option<String>,
-    pub member_favorites: u32,
-    pub animeography: Vec<MALRoleItem>,
-    pub mangaography: Vec<MALRoleItem>,
-    pub voice_actors: Vec<VoiceActor>
-}
+jikan_response_entity!(
+    pub struct Character {
+        #[serde(skip)]
+        client: Client,
+        pub mal_id: u32,
+        pub url: String,
+        pub image_url: String,
+        pub name: String,
+        pub name_kanji: Option<String>,
+        pub nicknames: Vec<String>,
+        pub about: Option<String>,
+        pub member_favorites: u32,
+        pub animeography: Vec<MALRoleItem>,
+        pub mangaography: Vec<MALRoleItem>,
+        pub voice_actors: Vec<VoiceActor>
+    }
+);
 
 impl Character {
     pub async fn get_pictures(&self) -> Result<Vec<Picture>> {

@@ -1,17 +1,21 @@
 extern crate jikan_rs;
 
+use std::thread;
+use std::time::Duration;
+
 use jikan_rs::base::SourceType;
 use jikan_rs::client::Jikan;
+use jikan_rs::meta::{InfoAbout, Period};
 use jikan_rs::reviews::Reviews;
 use jikan_rs::schedule::ScheduleOn;
 use jikan_rs::search::enums::{AnimeGenre, MangaGenre};
 use jikan_rs::season::Season;
 use jikan_rs::stats::Stats;
 use jikan_rs::top::{Top, TopAnimeSubtype, TopMangaSubtype, TopResult};
+use jikan_rs::user::enums::HistorySource;
+use jikan_rs::user::results::UserResultEnum;
+use jikan_rs::user::UserInfo;
 use jikan_rs::user_updates::UserUpdates;
-use jikan_rs::meta::{InfoAbout, Period};
-use std::thread;
-use std::time::Duration;
 
 #[tokio::test]
 async fn should_find_an_anime() {
@@ -372,6 +376,42 @@ async fn should_find_a_magazine() {
     let jikan = Jikan::new();
     let magazine = jikan.find_magazine(1, &1).await.unwrap();
     assert!(magazine.mangas.len() > 0);
+}
+
+#[tokio::test]
+async fn should_find_an_user_profile() {
+    thread::sleep(Duration::from_secs(3));
+    let jikan = Jikan::new();
+    let user_profile = jikan.find_user("Bruno319", UserInfo::Profile).await.unwrap();
+    if let UserResultEnum::Profile(profile) = user_profile {
+        assert_eq!(profile.username, "Bruno319");
+    } else {
+        panic!()
+    }
+}
+
+#[tokio::test]
+async fn should_find_an_user_history() {
+    thread::sleep(Duration::from_secs(3));
+    let jikan = Jikan::new();
+    let user_profile = jikan.find_user("Bruno319", UserInfo::History { source: HistorySource::Both }).await.unwrap();
+    if let UserResultEnum::History(_history) = user_profile {
+        assert!(true);
+    } else {
+        panic!()
+    }
+}
+
+#[tokio::test]
+async fn should_find_user_friends() {
+    thread::sleep(Duration::from_secs(3));
+    let jikan = Jikan::new();
+    let user_profile = jikan.find_user("Bruno319", UserInfo::Friends { page: 1 }).await.unwrap();
+    if let UserResultEnum::Friends(friends) = user_profile {
+        assert!(friends.len() > 0);
+    } else {
+        panic!()
+    }
 }
 
 #[tokio::test]

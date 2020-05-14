@@ -16,10 +16,8 @@ pub(crate) async fn find_characters(mal_id: &u32, http_clt: &Client) -> Result<V
     Ok(response.characters)
 }
 
-#[derive(Deserialize, Debug)]
-struct Response {
-    request_hash: String,
-    request_cached: bool,
-    request_cache_expiry: u32,
-    pub characters: Vec<MALRoleItem>,
-}
+jikan_response_entity!(
+    struct Response {
+        characters: Vec<MALRoleItem>,
+    }
+);
