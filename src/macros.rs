@@ -30,7 +30,7 @@ macro_rules! builder {
         }
 
         impl $src_name {
-            pub fn builder() -> $src_name {
+            pub fn new() -> $src_name {
                 $src_name {
                     $(
                         $attr_name : None

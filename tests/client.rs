@@ -257,7 +257,7 @@ async fn should_find_season_archives() {
 async fn should_find_schedule() {
     thread::sleep(Duration::from_secs(3));
     let jikan = Jikan::new();
-    let schedule = jikan.find_schedule(ScheduleOn::All).await.unwrap();
+    let schedule = jikan.find_schedule(ScheduleOn::Week).await.unwrap();
     assert!(schedule.monday.len() > 0);
     assert!(schedule.tuesday.len() > 0);
     assert!(schedule.wednesday.len() > 0);
@@ -407,7 +407,7 @@ async fn should_find_user_friends() {
 async fn should_find_anime_list_from_user() {
     thread::sleep(Duration::from_secs(3));
     let jikan = Jikan::new();
-    let query = AnimeListQuery::builder();
+    let query = AnimeListQuery::new();
     let user_anime_list = jikan.find_user("Bruno319", UserInfo::Animelist { query }).await.unwrap();
     if let UserResultEnum::AnimeList(anime_list) = user_anime_list {
         assert!(anime_list.len() > 0);
@@ -420,7 +420,7 @@ async fn should_find_anime_list_from_user() {
 async fn should_find_top_scored_animes_from_user() {
     thread::sleep(Duration::from_secs(3));
     let jikan = Jikan::new();
-    let query = AnimeListQuery::builder()
+    let query = AnimeListQuery::new()
         .order_by(OrderAnimeListBy::Score)
         .sort(Sort::Descending);
     let user_anime_list = jikan.find_user("Bruno319", UserInfo::Animelist { query }).await.unwrap();
@@ -435,7 +435,7 @@ async fn should_find_top_scored_animes_from_user() {
 async fn should_find_manga_list_from_user() {
     thread::sleep(Duration::from_secs(3));
     let jikan = Jikan::new();
-    let query = MangaListQuery::builder();
+    let query = MangaListQuery::new();
     let user_manga_list = jikan.find_user("Bruno319", UserInfo::Mangalist { query }).await.unwrap();
     if let UserResultEnum::MangaList(manga_list) = user_manga_list {
         assert!(manga_list.len() > 0);
@@ -448,7 +448,7 @@ async fn should_find_manga_list_from_user() {
 async fn should_find_top_scored_mangas_from_user() {
     thread::sleep(Duration::from_secs(3));
     let jikan = Jikan::new();
-    let query = MangaListQuery::builder()
+    let query = MangaListQuery::new()
         .order_by(OrderMangaListBy::Score)
         .sort(Sort::Descending);
     let user_manga_list = jikan.find_user("Bruno319", UserInfo::Mangalist { query }).await.unwrap();
