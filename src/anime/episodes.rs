@@ -4,7 +4,7 @@ use crate::client::BASE_URL;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub(crate) async fn find_anime_episodes(mal_id: &u32, http_clt: &Client) -> Result<Vec<Episode>> {
+pub(crate) async fn find_anime_episodes(mal_id: &u32, http_clt: &Client) -> Result<Vec<EpisodeInfo>> {
     let mut page = 1 as u8;
 
     let response = make_request(mal_id, http_clt, &page).await?;
@@ -36,12 +36,12 @@ async fn make_request(mal_id: &u32, http_clt: &Client, page: &u8) -> Result<Resp
 jikan_response_entity!(
     struct Response {
         episodes_last_page: u8,
-        episodes: Vec<Episode>,
+        episodes: Vec<EpisodeInfo>,
     }
 );
 
 #[derive(Deserialize, Debug)]
-pub struct Episode {
+pub struct EpisodeInfo {
     pub episode_id: i16,
     pub title: Option<String>,
     pub title_japanese: Option<String>,

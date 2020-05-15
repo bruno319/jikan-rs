@@ -18,7 +18,7 @@ pub(crate) async fn find_videos(mal_id: &u32, http_clt: &Client) -> Result<Video
 jikan_response_entity!(
     pub struct Videos {
         pub promo: Vec<PromoVideo>,
-        pub episodes: Vec<Episode>,
+        pub episodes: Vec<EpisodeVideo>,
     }
 );
 
@@ -30,7 +30,7 @@ pub struct PromoVideo {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct Episode {
+pub struct EpisodeVideo {
     pub title: Option<String>,
     pub episode: Option<String>,
     pub url: Option<String>,

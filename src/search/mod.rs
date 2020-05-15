@@ -4,7 +4,7 @@ use reqwest::Client;
 use crate::base::{Date, FRAGMENT};
 use crate::base::Resource;
 use crate::client::BASE_URL;
-use crate::search::enums::{Genres, OrderBy, Rating, Sort, Source, SourceStatus, SourceType};
+use crate::search::enums::{Genres, OrderBy, Rating, Sort, SearchSource, SourceStatus, SearchSourceType};
 use crate::search::results::SearchResultEnum;
 
 pub mod enums;
@@ -20,24 +20,24 @@ pub(crate) async fn search(query_builder: SearchQueryBuilder, http_clt: &Client)
         .text()
         .await?;
     let search_result = match query.source {
-        Source::Anime => SearchResultEnum::Anime(serde_json::from_str(&body)?),
-        Source::Manga => SearchResultEnum::Manga(serde_json::from_str(&body)?),
-        Source::Person => SearchResultEnum::Person(serde_json::from_str(&body)?),
-        Source::Character => SearchResultEnum::Character(serde_json::from_str(&body)?),
+        SearchSource::Anime => SearchResultEnum::Anime(serde_json::from_str(&body)?),
+        SearchSource::Manga => SearchResultEnum::Manga(serde_json::from_str(&body)?),
+        SearchSource::Person => SearchResultEnum::Person(serde_json::from_str(&body)?),
+        SearchSource::Character => SearchResultEnum::Character(serde_json::from_str(&body)?),
     };
     Ok(search_result)
 }
 
 pub struct SearchQuery {
-    source: Source,
+    source: SearchSource,
     query: String,
 }
 
 pub struct SearchQueryBuilder {
-    source: Source,
+    source: SearchSource,
     page: u16,
     name: Option<String>,
-    source_type: Option<SourceType>,
+    source_type: Option<SearchSourceType>,
     status: Option<SourceStatus>,
     rating: Option<Rating>,
     order_by: Option<OrderBy>,
@@ -54,7 +54,7 @@ pub struct SearchQueryBuilder {
 }
 
 impl SearchQueryBuilder {
-    pub fn new(source: Source) -> SearchQueryBuilder {
+    pub fn new(source: SearchSource) -> SearchQueryBuilder {
         SearchQueryBuilder {
             source,
             page: 1,
@@ -86,7 +86,7 @@ impl SearchQueryBuilder {
         self
     }
 
-    pub fn type_source(mut self, source_type: SourceType) -> SearchQueryBuilder {
+    pub fn type_source(mut self, source_type: SearchSourceType) -> SearchQueryBuilder {
         self.source_type = Some(source_type);
         self
     }
@@ -162,8 +162,8 @@ impl SearchQueryBuilder {
 
         if let Some(source_type) = self.source_type {
             match source_type {
-                SourceType::Anime(anime_type) => query = format!("{}&status={}", query, anime_type.uri()),
-                SourceType::Manga(manga_type) => query = format!("{}&status={}", query, manga_type.uri()),
+                SearchSourceType::Anime(anime_type) => query = format!("{}&status={}", query, anime_type.uri()),
+                SearchSourceType::Manga(manga_type) => query = format!("{}&status={}", query, manga_type.uri()),
             }
         }
 

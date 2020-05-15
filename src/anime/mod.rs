@@ -2,7 +2,7 @@ use reqwest::Client;
 
 use crate::{forum, more_info, news, pictures, recommendations, reviews, stats, user_updates};
 use crate::anime::characters::CharactersStaff;
-use crate::anime::episodes::Episode;
+use crate::anime::episodes::EpisodeInfo;
 use crate::anime::videos::Videos;
 use crate::base::{MALTypeItem, RelatedContent, SourceType};
 use crate::client::BASE_URL;
@@ -84,7 +84,7 @@ impl Anime {
         characters::find_characters(&self.mal_id, &self.client).await
     }
 
-    pub async fn get_episodes(&self) -> Result<Vec<Episode>> {
+    pub async fn get_episodes(&self) -> Result<Vec<EpisodeInfo>> {
         episodes::find_anime_episodes(&self.mal_id, &self.client).await
     }
 

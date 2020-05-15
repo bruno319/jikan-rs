@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use crate::{anime, character, club, forum, genre, magazine, manga, meta, more_info, news, person, pictures,
             producer, recommendations, reviews, schedule, search, season, stats, top, user, user_updates};
-use crate::anime::{Anime, characters::CharactersStaff, episodes::Episode, videos::Videos};
+use crate::anime::{Anime, characters::CharactersStaff, episodes::EpisodeInfo, videos::Videos};
 use crate::base::{MALRoleItem, SourceType};
 use crate::character::Character;
 use crate::club::{Club, ClubMember};
@@ -67,7 +67,7 @@ impl Jikan {
         manga::characters::find_characters(&mal_id, &self.http_client).await
     }
 
-    pub async fn find_episodes(&self, mal_id: u32) -> Result<Vec<Episode>> {
+    pub async fn find_episodes(&self, mal_id: u32) -> Result<Vec<EpisodeInfo>> {
         anime::episodes::find_anime_episodes(&mal_id, &self.http_client).await
     }
 

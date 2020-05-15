@@ -2,14 +2,14 @@ use crate::base::Resource;
 
 #[derive(Resource)]
 #[uri_prefix = "/search/"]
-pub enum Source {
+pub enum SearchSource {
     Anime,
     Manga,
     Person,
     Character,
 }
 
-pub enum SourceType {
+pub enum SearchSourceType {
     Anime(AnimeType),
     Manga(MangaType),
 }

@@ -3,10 +3,7 @@ extern crate jikan_rs;
 extern crate lazy_static;
 
 use jikan_rs::client::Jikan;
-use jikan_rs::search::enums::{AnimeType, Genres, MangaType, Source, SourceType};
-use jikan_rs::search::enums::AnimeGenre::{Adventure, Shounen};
-use jikan_rs::search::results::SearchResultEnum;
-use jikan_rs::search::SearchQueryBuilder;
+use jikan_rs::prelude::*;
 use std::thread;
 use std::time::Duration;
 
@@ -17,10 +14,10 @@ lazy_static! {
 #[tokio::test]
 async fn should_search_for_anime_one_piece() {
     thread::sleep(Duration::from_secs(3));
-    let query = SearchQueryBuilder::new(Source::Anime)
+    let query = SearchQueryBuilder::new(SearchSource::Anime)
         .name("one p")
-        .type_source(SourceType::Anime(AnimeType::TV))
-        .genre(Genres::Anime(vec![Shounen, Adventure]));
+        .type_source(SearchSourceType::Anime(AnimeType::TV))
+        .genre(Genres::Anime(vec![AnimeGenre::Shounen, AnimeGenre::Adventure]));
 
     let anime = JIKAN.search(query)
         .await.unwrap();
@@ -36,9 +33,9 @@ async fn should_search_for_anime_one_piece() {
 #[tokio::test]
 async fn should_search_for_manga_berserk() {
     thread::sleep(Duration::from_secs(3));
-    let query = SearchQueryBuilder::new(Source::Manga)
+    let query = SearchQueryBuilder::new(SearchSource::Manga)
         .name("berser")
-        .type_source(SourceType::Manga(MangaType::Manga));
+        .type_source(SearchSourceType::Manga(MangaType::Manga));
 
     let manga = JIKAN.search(query)
         .await.unwrap();
@@ -54,7 +51,7 @@ async fn should_search_for_manga_berserk() {
 #[tokio::test]
 async fn should_search_for_person_masashi_kishimoto() {
     thread::sleep(Duration::from_secs(3));
-    let query = SearchQueryBuilder::new(Source::Person)
+    let query = SearchQueryBuilder::new(SearchSource::Person)
         .name("岸本 斉史");
 
     let person = JIKAN.search(query)
@@ -71,7 +68,7 @@ async fn should_search_for_person_masashi_kishimoto() {
 #[tokio::test]
 async fn should_search_for_character_lelouch_lamperouge() {
     thread::sleep(Duration::from_secs(3));
-    let query = SearchQueryBuilder::new(Source::Character)
+    let query = SearchQueryBuilder::new(SearchSource::Character)
         .name("ルルーシュ");
 
     let characters = JIKAN.search(query)

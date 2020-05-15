@@ -47,7 +47,7 @@ jikan_response_entity!(
 );
 
 jikan_response_entity!(
-    pub struct ClubMembersResponse {
+    struct ClubMembersResponse {
         members: Vec<ClubMember>,
     }
 );

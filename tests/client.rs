@@ -3,19 +3,8 @@ extern crate jikan_rs;
 use std::thread;
 use std::time::Duration;
 
-use jikan_rs::base::SourceType;
 use jikan_rs::client::Jikan;
-use jikan_rs::meta::{InfoAbout, Period};
-use jikan_rs::reviews::Reviews;
-use jikan_rs::schedule::ScheduleOn;
-use jikan_rs::search::enums::{AnimeGenre, MangaGenre, Sort};
-use jikan_rs::season::Season;
-use jikan_rs::stats::Stats;
-use jikan_rs::top::{Top, TopAnimeSubtype, TopMangaSubtype, TopResult};
-use jikan_rs::user::enums::{AnimeListQuery, HistorySource, MangaListQuery, OrderAnimeListBy, OrderMangaListBy};
-use jikan_rs::user::results::UserResultEnum;
-use jikan_rs::user::UserInfo;
-use jikan_rs::user_updates::UserUpdates;
+use jikan_rs::prelude::*;
 
 #[tokio::test]
 async fn should_find_an_anime() {
