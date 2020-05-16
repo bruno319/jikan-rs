@@ -32,6 +32,7 @@ pub const BASE_URL: &str = "http://api.jikan.moe/v3";
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
+#[derive(Default)]
 pub struct Jikan {
     http_client: reqwest::Client,
 }
@@ -57,6 +58,7 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     ///
     /// let jikan = Jikan::new();
@@ -64,6 +66,7 @@ impl Jikan {
     /// let anime = jikan.find_anime(1)
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
     pub async fn find_anime(&self, mal_id: u32) -> Result<Anime> {
         anime::find_anime(mal_id, &self.http_client).await
@@ -74,6 +77,7 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     ///
     /// let jikan = Jikan::new();
@@ -81,6 +85,7 @@ impl Jikan {
     /// let manga = jikan.find_manga(1)
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
     pub async fn find_manga(&self, mal_id: u32) -> Result<Manga> {
         manga::find_manga(mal_id, &self.http_client).await
@@ -91,6 +96,7 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     ///
     /// let jikan = Jikan::new();
@@ -98,6 +104,7 @@ impl Jikan {
     /// let person = jikan.find_person(1)
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
     pub async fn find_person(&self, mal_id: u32) -> Result<Person> {
         person::find_person(mal_id, &self.http_client).await
@@ -108,6 +115,7 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     ///
     /// let jikan = Jikan::new();
@@ -115,6 +123,7 @@ impl Jikan {
     /// let character = jikan.find_character(1)
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
     pub async fn find_character(&self, mal_id: u32) -> Result<Character> {
         character::find_character(mal_id, &self.http_client).await
@@ -125,6 +134,7 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     ///
     /// let jikan = Jikan::new();
@@ -132,9 +142,10 @@ impl Jikan {
     /// let characters = jikan.find_anime_characters(1)
     ///     .await
     ///     .unwrap();
+    /// }
     /// ```
     pub async fn find_anime_characters(&self, mal_id: u32) -> Result<CharactersStaff> {
-        anime::characters::find_characters(&mal_id, &self.http_client).await
+        anime::characters::find_characters(mal_id, &self.http_client).await
     }
 
     /// Get all characters of the manga.
@@ -142,6 +153,7 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     ///
     /// let jikan = Jikan::new();
@@ -149,9 +161,10 @@ impl Jikan {
     /// let characters = jikan.find_manga_characters(1)
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
     pub async fn find_manga_characters(&self, mal_id: u32) -> Result<Vec<MALRoleItem>> {
-        manga::characters::find_characters(&mal_id, &self.http_client).await
+        manga::characters::find_characters(mal_id, &self.http_client).await
     }
 
     /// Get information about the anime episodes.
@@ -159,6 +172,7 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     ///
     /// let jikan = Jikan::new();
@@ -166,9 +180,10 @@ impl Jikan {
     /// let episodes = jikan.find_episodes(1)
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
     pub async fn find_episodes(&self, mal_id: u32) -> Result<Vec<EpisodeInfo>> {
-        anime::episodes::find_anime_episodes(&mal_id, &self.http_client).await
+        anime::episodes::find_anime_episodes(mal_id, &self.http_client).await
     }
 
     /// Get news of the anime/manga.
@@ -176,6 +191,7 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     /// use jikan_rs::prelude::SourceType;
     ///
@@ -184,6 +200,7 @@ impl Jikan {
     /// let news = jikan.find_news(SourceType::Anime(1))
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
     pub async fn find_news(&self, mal_id: SourceType) -> Result<Vec<News>> {
         news::find_news(mal_id, &self.http_client).await
@@ -194,6 +211,7 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     /// use jikan_rs::prelude::SourceType;
     ///
@@ -202,6 +220,7 @@ impl Jikan {
     /// let pictures = jikan.find_pictures(SourceType::Manga(1))
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
     pub async fn find_pictures(&self, mal_id: SourceType) -> Result<Vec<Picture>> {
         pictures::find_pictures(mal_id, &self.http_client).await
@@ -212,6 +231,7 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     ///
     /// let jikan = Jikan::new();
@@ -219,9 +239,10 @@ impl Jikan {
     /// let videos = jikan.find_videos(1)
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
     pub async fn find_videos(&self, mal_id: u32) -> Result<Videos> {
-        anime::videos::find_videos(&mal_id, &self.http_client).await
+        anime::videos::find_videos(mal_id, &self.http_client).await
     }
 
     /// Get statistical information of the anime/manga.
@@ -229,6 +250,7 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     /// use jikan_rs::prelude::{SourceType, Stats};
     ///
@@ -241,6 +263,7 @@ impl Jikan {
     /// if let Stats::Anime(anime_stats) = stats {
     ///     let stats = anime_stats;
     /// }
+    /// # }
     /// ```
     pub async fn find_stats(&self, mal_id: SourceType) -> Result<Stats> {
         stats::find_stats(mal_id, &self.http_client).await
@@ -251,6 +274,7 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     /// use jikan_rs::prelude::SourceType;
     ///
@@ -259,6 +283,7 @@ impl Jikan {
     /// let topics = jikan.find_forum(SourceType::Manga(1))
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
     pub async fn find_forum(&self, mal_id: SourceType) -> Result<Vec<Topic>> {
         forum::find_forum(mal_id, &self.http_client).await
@@ -269,6 +294,7 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     /// use jikan_rs::prelude::SourceType;
     ///
@@ -277,6 +303,7 @@ impl Jikan {
     /// let info = jikan.find_more_info(SourceType::Anime(1))
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
     pub async fn find_more_info(&self, mal_id: SourceType) -> Result<Option<String>> {
         more_info::find_more_info(mal_id, &self.http_client).await
@@ -289,20 +316,22 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     /// use jikan_rs::prelude::{SourceType, Reviews};
     ///
     /// let jikan = Jikan::new();
     /// // Returns reviews about Cowboy Bebop
-    /// let reviews = jikan.find_reviews(SourceType::Anime(1), &1)
+    /// let reviews = jikan.find_reviews(SourceType::Anime(1), 1)
     ///     .await
     ///     .unwrap();
     ///
     /// if let Reviews::Anime(anime_reviews) = reviews {
     ///     let reviews = anime_reviews;
     /// }
+    /// # }
     /// ```
-    pub async fn find_reviews(&self, mal_id: SourceType, page: &u16) -> Result<Reviews> {
+    pub async fn find_reviews(&self, mal_id: SourceType, page: u16) -> Result<Reviews> {
         reviews::find_reviews(mal_id, page, &self.http_client).await
     }
 
@@ -311,6 +340,7 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     /// use jikan_rs::prelude::SourceType;
     ///
@@ -319,6 +349,7 @@ impl Jikan {
     /// let recommendations = jikan.find_recommendations(SourceType::Anime(1))
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
     pub async fn find_recommendations(&self, mal_id: SourceType) -> Result<Vec<Recommendation>> {
         recommendations::find_recommendations(mal_id, &self.http_client).await
@@ -331,20 +362,22 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     /// use jikan_rs::prelude::{SourceType, UserUpdates};
     ///
     /// let jikan = Jikan::new();
     /// // Returns Cowboy Bebop latest updates
-    /// let last_updates = jikan.find_user_updates(SourceType::Anime(1), &1)
+    /// let last_updates = jikan.find_user_updates(SourceType::Anime(1), 1)
     ///     .await
     ///     .unwrap();
     ///
     /// if let UserUpdates::Anime(anime_updates) = last_updates {
     ///     let last_updates = anime_updates;
     /// }
+    /// # }
     /// ```
-    pub async fn find_user_updates(&self, mal_id: SourceType, page: &u16) -> Result<UserUpdates> {
+    pub async fn find_user_updates(&self, mal_id: SourceType, page: u16) -> Result<UserUpdates> {
         user_updates::find_user_updates(mal_id, page, &self.http_client).await
     }
 
@@ -353,6 +386,7 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     /// use jikan_rs::prelude::Season;
     ///
@@ -361,6 +395,7 @@ impl Jikan {
     /// let season = jikan.find_season(Season::Spring(2020))
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
     pub async fn find_season(&self, season: Season) -> Result<SeasonResult> {
         season::find_season(season, &self.http_client).await
@@ -372,12 +407,14 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     ///
     /// let jikan = Jikan::new();
     /// let archived_seasons = jikan.find_season_archives()
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
     pub async fn find_season_archives(&self) -> Result<Vec<ArchivedSeason>> {
         season::archive::find_season_archives(&self.http_client).await
@@ -388,6 +425,7 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     /// use jikan_rs::prelude::ScheduleOn;
     ///
@@ -400,6 +438,7 @@ impl Jikan {
     /// let animes_on_sunday = jikan.find_schedule(ScheduleOn::Sunday)
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
     pub async fn find_schedule(&self, schedule_on: ScheduleOn) -> Result<Schedule> {
         schedule::find_schedule(schedule_on, &self.http_client).await
@@ -412,6 +451,7 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     /// use jikan_rs::prelude::{Top, TopAnimeSubtype, TopResult};
     ///
@@ -424,6 +464,7 @@ impl Jikan {
     /// if let TopResult::Anime(top_anime) = top {
     ///     let top = top_anime;
     /// }
+    /// # }
     /// ```
     pub async fn find_top(&self, top: Top) -> Result<TopResult> {
         top::find_top(top, &self.http_client).await
@@ -436,15 +477,17 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     /// use jikan_rs::prelude::AnimeGenre;
     ///
     /// let jikan = Jikan::new();
-    /// let adventure_animes = jikan.find_animes_with_genre(AnimeGenre::Adventure, &1)
+    /// let adventure_animes = jikan.find_animes_with_genre(AnimeGenre::Adventure, 1)
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
-    pub async fn find_animes_with_genre(&self, genre: AnimeGenre, page: &u16) -> Result<GenreAnimeResult> {
+    pub async fn find_animes_with_genre(&self, genre: AnimeGenre, page: u16) -> Result<GenreAnimeResult> {
         genre::find_animes_with_genre(genre, page, &self.http_client).await
     }
 
@@ -455,15 +498,17 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     /// use jikan_rs::prelude::MangaGenre;
     ///
     /// let jikan = Jikan::new();
-    /// let shoujo_mangas = jikan.find_mangas_with_genre(MangaGenre::Shoujo, &1)
+    /// let shoujo_mangas = jikan.find_mangas_with_genre(MangaGenre::Shoujo, 1)
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
-    pub async fn find_mangas_with_genre(&self, genre: MangaGenre, page: &u16) -> Result<GenreMangaResult> {
+    pub async fn find_mangas_with_genre(&self, genre: MangaGenre, page: u16) -> Result<GenreMangaResult> {
         genre::find_mangas_with_genre(genre, page, &self.http_client).await
     }
 
@@ -474,15 +519,17 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     ///
     /// let jikan = Jikan::new();
     /// // Returns animes from Studio Pierrot
-    /// let producer = jikan.find_producer(1, &1)
+    /// let producer = jikan.find_producer(1, 1)
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
-    pub async fn find_producer(&self, id: u32, page: &u16) -> Result<Producer> {
+    pub async fn find_producer(&self, id: u32, page: u16) -> Result<Producer> {
         producer::find_producer(id, page, &self.http_client).await
     }
 
@@ -493,15 +540,17 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     ///
     /// let jikan = Jikan::new();
     /// // Returns mangas from Big Comic Original
-    /// let magazine = jikan.find_magazine(1, &1)
+    /// let magazine = jikan.find_magazine(1, 1)
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
-    pub async fn find_magazine(&self, id: u32, page: &u16) -> Result<Magazine> {
+    pub async fn find_magazine(&self, id: u32, page: u16) -> Result<Magazine> {
         magazine::find_magazine(id, page, &self.http_client).await
     }
 
@@ -510,6 +559,7 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     ///
     /// let jikan = Jikan::new();
@@ -517,6 +567,7 @@ impl Jikan {
     /// let club = jikan.find_club(1)
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
     pub async fn find_club(&self, mal_id: u32) -> Result<Club> {
         club::find_club(mal_id, &self.http_client).await
@@ -529,15 +580,17 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     ///
     /// let jikan = Jikan::new();
     /// // Returns Cowboy Bebop club members
-    /// let club_members = jikan.find_club_members(1, &1)
+    /// let club_members = jikan.find_club_members(1, 1)
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
-    pub async fn find_club_members(&self, club_id: u32, page: &u32) -> Result<Vec<ClubMember>> {
+    pub async fn find_club_members(&self, club_id: u32, page: u32) -> Result<Vec<ClubMember>> {
         club::find_club_members(club_id, page, &self.http_client).await
     }
 
@@ -548,6 +601,7 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     /// use jikan_rs::prelude::{UserInfo, UserResultEnum, AnimeListQuery};
     ///
@@ -569,6 +623,7 @@ impl Jikan {
     /// if let UserResultEnum::AnimeList(anime_list) = user_result {
     ///     let user_result = anime_list;
     /// }
+    /// # }
     /// ```
     pub async fn find_user(&self, username: &str, user_info: UserInfo) -> Result<UserResultEnum> {
         user::find_user(username, user_info, &self.http_client).await
@@ -579,6 +634,7 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     /// use jikan_rs::prelude::*;
     ///
@@ -596,6 +652,7 @@ impl Jikan {
     /// if let SearchResultEnum::Anime(anime_result) = search_result {
     ///     let search_result = anime_result;
     /// }
+    /// # }
     /// ```
     pub async fn search(&self, query_builder: SearchQueryBuilder) -> Result<SearchResultEnum> {
         search::search(query_builder, &self.http_client).await
@@ -606,12 +663,14 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     ///
     /// let jikan = Jikan::new();
     /// let api_status = jikan.retrieve_api_status()
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
     pub async fn retrieve_api_status(&self) -> Result<ApiStatus> {
         meta::retrieve_api_status(&self.http_client).await
@@ -624,6 +683,7 @@ impl Jikan {
     /// # Examples
     ///
     /// ```rust,no_run
+    /// # async fn run() {
     /// use jikan_rs::client::Jikan;
     /// use jikan_rs::prelude::{InfoAbout, Period};
     ///
@@ -632,6 +692,7 @@ impl Jikan {
     /// let api_status = jikan.retrieve_request_info(InfoAbout::Anime, Period::Today, 1)
     ///     .await
     ///     .unwrap();
+    /// # }
     /// ```
     pub async fn retrieve_request_info(&self, about: InfoAbout, period: Period, offset: u32) -> Result<HashMap<String, u16>> {
         meta::retrieve_request_info(about, period, offset, &self.http_client).await

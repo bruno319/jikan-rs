@@ -69,7 +69,7 @@ pub struct Published {
 
 impl Manga {
     pub async fn get_characters(&self) -> Result<Vec<MALRoleItem>> {
-        characters::find_characters(&self.mal_id, &self.client).await
+        characters::find_characters(self.mal_id, &self.client).await
     }
 
     pub async fn get_news(&self) -> Result<Vec<News>> {
@@ -96,7 +96,7 @@ impl Manga {
         more_info::find_more_info(SourceType::Manga(self.mal_id), &self.client).await
     }
 
-    pub async fn get_reviews(&self, page: &u16) -> Result<Vec<Review<MangaReviewer>>> {
+    pub async fn get_reviews(&self, page: u16) -> Result<Vec<Review<MangaReviewer>>> {
         let reviews = reviews::find_reviews(SourceType::Manga(self.mal_id), page, &self.client).await?;
         match reviews {
             Reviews::Manga(reviews) => Ok(reviews),
@@ -108,7 +108,7 @@ impl Manga {
         recommendations::find_recommendations(SourceType::Manga(self.mal_id), &self.client).await
     }
 
-    pub async fn get_user_updates(&self, page: &u16) -> Result<Vec<MangaUserUpdate>> {
+    pub async fn get_user_updates(&self, page: u16) -> Result<Vec<MangaUserUpdate>> {
         let user_updates = user_updates::find_user_updates(SourceType::Manga(self.mal_id), page, &self.client).await?;
         match user_updates {
             UserUpdates::Manga(user_updates) => Ok(user_updates),

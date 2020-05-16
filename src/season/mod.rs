@@ -34,7 +34,7 @@ impl Resource for Season {
             Season::Fall(year) => format!("{}/fall", year),
             Season::Summer(year) => format!("{}/summer", year),
             Season::Spring(year) => format!("{}/spring", year),
-            Season::Later => format!("later"),
+            Season::Later => "later".to_string(),
         }
     }
 }

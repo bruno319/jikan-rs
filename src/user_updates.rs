@@ -6,7 +6,7 @@ use crate::client::BASE_URL;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub(crate) async fn find_user_updates(mal_id: SourceType, page: &u16, http_clt: &Client) -> Result<UserUpdates> {
+pub(crate) async fn find_user_updates(mal_id: SourceType, page: u16, http_clt: &Client) -> Result<UserUpdates> {
     let url = format!("{}{}/userupdates/{}", BASE_URL, mal_id.uri(), page);
     let body = http_clt.get(&url).send()
         .await?

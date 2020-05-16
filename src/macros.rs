@@ -25,6 +25,7 @@ macro_rules! builder {
         $( $attr_vis:vis $attr_name:ident : $attr_type:ty ),* $(,)?
     })
     => {
+        #[derive(Default)]
         $vis_st struct $src_name {
             $( $attr_vis $attr_name : Option<$attr_type> ),*
         }

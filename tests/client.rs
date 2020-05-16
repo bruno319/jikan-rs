@@ -168,7 +168,7 @@ async fn should_find_more_manga_info() {
 async fn should_find_anime_reviews() {
     thread::sleep(Duration::from_secs(3));
     let jikan = Jikan::new();
-    let reviews = jikan.find_reviews(SourceType::Anime(1), &1).await.unwrap();
+    let reviews = jikan.find_reviews(SourceType::Anime(1), 1).await.unwrap();
     let reviews = match reviews {
         Reviews::Anime(u) => Some(u),
         _ => None,
@@ -180,7 +180,7 @@ async fn should_find_anime_reviews() {
 async fn should_find_manga_reviews() {
     thread::sleep(Duration::from_secs(3));
     let jikan = Jikan::new();
-    let reviews = jikan.find_reviews(SourceType::Manga(1), &1).await.unwrap();
+    let reviews = jikan.find_reviews(SourceType::Manga(1), 1).await.unwrap();
     let reviews = match reviews {
         Reviews::Manga(u) => Some(u),
         _ => None,
@@ -208,7 +208,7 @@ async fn should_find_manga_recommendations() {
 async fn should_find_anime_user_updates() {
     thread::sleep(Duration::from_secs(3));
     let jikan = Jikan::new();
-    let user_updates = jikan.find_user_updates(SourceType::Anime(1), &1).await.unwrap();
+    let user_updates = jikan.find_user_updates(SourceType::Anime(1), 1).await.unwrap();
     let user_updates = match user_updates {
         UserUpdates::Anime(u) => Some(u),
         _ => None,
@@ -220,7 +220,7 @@ async fn should_find_anime_user_updates() {
 async fn should_find_manga_user_updates() {
     thread::sleep(Duration::from_secs(3));
     let jikan = Jikan::new();
-    let user_updates = jikan.find_user_updates(SourceType::Manga(1), &1).await.unwrap();
+    let user_updates = jikan.find_user_updates(SourceType::Manga(1), 1).await.unwrap();
     let user_updates = match user_updates {
         UserUpdates::Manga(u) => Some(u),
         _ => None,
@@ -337,7 +337,7 @@ async fn should_find_top_people() {
 async fn should_find_action_animes() {
     thread::sleep(Duration::from_secs(3));
     let jikan = Jikan::new();
-    let action_animes = jikan.find_animes_with_genre(AnimeGenre::Action, &1).await.unwrap();
+    let action_animes = jikan.find_animes_with_genre(AnimeGenre::Action, 1).await.unwrap();
     assert_eq!(action_animes.mal_url.name, "Action Anime");
     assert!(action_animes.animes.len() > 0);
 }
@@ -346,7 +346,7 @@ async fn should_find_action_animes() {
 async fn should_find_shoujo_mangas() {
     thread::sleep(Duration::from_secs(3));
     let jikan = Jikan::new();
-    let shoujo_mangas = jikan.find_mangas_with_genre(MangaGenre::Shoujo, &1).await.unwrap();
+    let shoujo_mangas = jikan.find_mangas_with_genre(MangaGenre::Shoujo, 1).await.unwrap();
     assert_eq!(shoujo_mangas.mal_url.name, "Shoujo Manga");
     assert!(shoujo_mangas.mangas.len() > 0);
 }
@@ -355,7 +355,7 @@ async fn should_find_shoujo_mangas() {
 async fn should_find_a_producer() {
     thread::sleep(Duration::from_secs(3));
     let jikan = Jikan::new();
-    let producer = jikan.find_producer(1, &1).await.unwrap();
+    let producer = jikan.find_producer(1, 1).await.unwrap();
     assert!(producer.animes.len() > 0);
 }
 
@@ -363,7 +363,7 @@ async fn should_find_a_producer() {
 async fn should_find_a_magazine() {
     thread::sleep(Duration::from_secs(3));
     let jikan = Jikan::new();
-    let magazine = jikan.find_magazine(1, &1).await.unwrap();
+    let magazine = jikan.find_magazine(1, 1).await.unwrap();
     assert!(magazine.mangas.len() > 0);
 }
 
@@ -471,7 +471,7 @@ async fn should_find_a_club() {
 async fn should_find_club_members() {
     thread::sleep(Duration::from_secs(3));
     let jikan = Jikan::new();
-    let members = jikan.find_club_members(1, &1).await.unwrap();
+    let members = jikan.find_club_members(1, 1).await.unwrap();
     assert!(members.len() > 0);
 }
 

@@ -16,7 +16,7 @@ pub(crate) async fn find_club(mal_id: u32, http_clt: &Client) -> Result<Club> {
     Ok(club)
 }
 
-pub(crate) async fn find_club_members(club_id: u32, page: &u32, http_clt: &Client) -> Result<Vec<ClubMember>> {
+pub(crate) async fn find_club_members(club_id: u32, page: u32, http_clt: &Client) -> Result<Vec<ClubMember>> {
     let url = format!("{}/club/{}/members/{}", BASE_URL, club_id, page);
     let body = http_clt.get(&url).send()
         .await?

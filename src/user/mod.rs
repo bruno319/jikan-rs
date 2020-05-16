@@ -105,7 +105,7 @@ fn build_animelist_query(query_builder: &AnimeListQuery) -> String {
         query = format!("{}&airing_status={}", query, status.uri());
     }
 
-    return query;
+    query
 }
 
 fn build_mangalist_query(query_builder: &MangaListQuery) -> String {
@@ -153,5 +153,5 @@ fn build_mangalist_query(query_builder: &MangaListQuery) -> String {
         query = format!("{}&publishing_status={}", query, status.uri());
     }
 
-    return query;
+    query
 }

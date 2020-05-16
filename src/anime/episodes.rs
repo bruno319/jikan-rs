@@ -4,10 +4,10 @@ use crate::client::BASE_URL;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub(crate) async fn find_anime_episodes(mal_id: &u32, http_clt: &Client) -> Result<Vec<EpisodeInfo>> {
+pub(crate) async fn find_anime_episodes(mal_id: u32, http_clt: &Client) -> Result<Vec<EpisodeInfo>> {
     let mut page = 1 as u8;
 
-    let response = make_request(mal_id, http_clt, &page).await?;
+    let response = make_request(mal_id, http_clt, page).await?;
 
     let mut episodes = response.episodes;
     let mut total_pages = response.episodes_last_page;
@@ -16,14 +16,14 @@ pub(crate) async fn find_anime_episodes(mal_id: &u32, http_clt: &Client) -> Resu
         total_pages -= 1;
         page += 1;
 
-        let mut response = make_request(mal_id, http_clt, &page).await?;
+        let mut response = make_request(mal_id, http_clt, page).await?;
         episodes.append(&mut response.episodes);
     }
 
     Ok(episodes)
 }
 
-async fn make_request(mal_id: &u32, http_clt: &Client, page: &u8) -> Result<Response> {
+async fn make_request(mal_id: u32, http_clt: &Client, page: u8) -> Result<Response> {
     let url = format!("{}/anime/{}/episodes/{}", BASE_URL, mal_id, page);
     let body = http_clt.get(&url).send()
         .await?

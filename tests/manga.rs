@@ -75,7 +75,7 @@ async fn should_get_manga_reviews() {
     thread::sleep(Duration::from_secs(3));
     let reviews = JIKAN.find_manga(1)
         .await.unwrap()
-        .get_reviews(&1)
+        .get_reviews(1)
         .await.unwrap();
     assert!(reviews.len() > 0 && reviews.len() <= 20);
 }
@@ -95,7 +95,7 @@ async fn should_get_manga_user_updates() {
     thread::sleep(Duration::from_secs(3));
     let user_updates = JIKAN.find_manga(1)
         .await.unwrap()
-        .get_user_updates(&1)
+        .get_user_updates(1)
         .await.unwrap();
     assert!(!user_updates.is_empty());
 }

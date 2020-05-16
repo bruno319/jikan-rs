@@ -6,7 +6,7 @@ use crate::search::enums::{AnimeGenre, MangaGenre};
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub(crate) async fn find_animes_with_genre(genre: AnimeGenre, page: &u16, http_clt: &Client) -> Result<GenreAnimeResult> {
+pub(crate) async fn find_animes_with_genre(genre: AnimeGenre, page: u16, http_clt: &Client) -> Result<GenreAnimeResult> {
     let url = format!("{}/genre/anime/{}/{}", BASE_URL, genre as u8, page);
     let body = http_clt.get(&url).send()
         .await?
@@ -17,7 +17,7 @@ pub(crate) async fn find_animes_with_genre(genre: AnimeGenre, page: &u16, http_c
     Ok(animes)
 }
 
-pub(crate) async fn find_mangas_with_genre(genre: MangaGenre, page: &u16, http_clt: &Client) -> Result<GenreMangaResult> {
+pub(crate) async fn find_mangas_with_genre(genre: MangaGenre, page: u16, http_clt: &Client) -> Result<GenreMangaResult> {
     let url = format!("{}/genre/manga/{}/{}", BASE_URL, genre as u8, page);
     let body = http_clt.get(&url).send()
         .await?

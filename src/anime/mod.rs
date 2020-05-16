@@ -81,11 +81,11 @@ pub struct Aired {
 
 impl Anime {
     pub async fn get_characters(&self) -> Result<CharactersStaff> {
-        characters::find_characters(&self.mal_id, &self.client).await
+        characters::find_characters(self.mal_id, &self.client).await
     }
 
     pub async fn get_episodes(&self) -> Result<Vec<EpisodeInfo>> {
-        episodes::find_anime_episodes(&self.mal_id, &self.client).await
+        episodes::find_anime_episodes(self.mal_id, &self.client).await
     }
 
     pub async fn get_news(&self) -> Result<Vec<News>> {
@@ -97,7 +97,7 @@ impl Anime {
     }
 
     pub async fn get_videos(&self) -> Result<Videos> {
-        videos::find_videos(&self.mal_id, &self.client).await
+        videos::find_videos(self.mal_id, &self.client).await
     }
 
     pub async fn get_stats(&self) -> Result<AnimeStats> {
@@ -116,7 +116,7 @@ impl Anime {
         more_info::find_more_info(SourceType::Anime(self.mal_id), &self.client).await
     }
 
-    pub async fn get_reviews(&self, page: &u16) -> Result<Vec<Review<AnimeReviewer>>> {
+    pub async fn get_reviews(&self, page: u16) -> Result<Vec<Review<AnimeReviewer>>> {
         let reviews = reviews::find_reviews(SourceType::Anime(self.mal_id), page, &self.client).await?;
         match reviews {
             Reviews::Anime(reviews) => Ok(reviews),
@@ -128,7 +128,7 @@ impl Anime {
         recommendations::find_recommendations(SourceType::Anime(self.mal_id), &self.client).await
     }
 
-    pub async fn get_user_updates(&self, page: &u16) -> Result<Vec<AnimeUserUpdate>> {
+    pub async fn get_user_updates(&self, page: u16) -> Result<Vec<AnimeUserUpdate>> {
         let user_updates = user_updates::find_user_updates(SourceType::Anime(self.mal_id), page, &self.client).await?;
         match user_updates {
             UserUpdates::Anime(user_updates) => Ok(user_updates),

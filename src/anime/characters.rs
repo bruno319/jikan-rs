@@ -5,7 +5,7 @@ use crate::client::BASE_URL;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-pub(crate) async fn find_characters(mal_id: &u32, http_clt: &Client) -> Result<CharactersStaff> {
+pub(crate) async fn find_characters(mal_id: u32, http_clt: &Client) -> Result<CharactersStaff> {
     let url = format!("{}/anime/{}/characters_staff", BASE_URL, mal_id);
     let body = http_clt.get(&url).send()
         .await?
